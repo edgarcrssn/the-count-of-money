@@ -2,8 +2,8 @@ import { createUser } from "./users.service"
 
 export const registerController = async (req, res) => {
   try {
-    await createUser(req.body)
-    res.status(200).send({ message: 'Coucou' })
+    const newUser = await createUser(req.body)
+    res.status(201).send({ newUser })
   } catch (error) {
     console.error(error)
   }
