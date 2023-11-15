@@ -5,6 +5,6 @@ export const registerController = async (req, res) => {
     const newUser = await createUser(req.body)
     res.status(201).send({ newUser })
   } catch (error) {
-    console.error(error)
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
   }
 }
