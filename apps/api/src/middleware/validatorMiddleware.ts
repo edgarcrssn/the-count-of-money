@@ -1,6 +1,7 @@
 import { validationResult } from 'express-validator';
+import { NextFunction, Request, Response } from 'express';
 
-export const validatorMiddleware = (req, res, next) => {
+export const validatorMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty())
     return res.status(400).send({ errors: errors.array() });

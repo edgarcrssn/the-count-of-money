@@ -1,6 +1,7 @@
 import { createUser } from "./users.service"
+import { Request, Response } from 'express';
 
-export const registerController = async (req, res) => {
+export const registerController = async (req: Request, res: Response) => {
   try {
     const newUser = await createUser(req.body)
     res.status(201).send({ newUser })
