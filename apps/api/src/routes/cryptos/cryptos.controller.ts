@@ -1,23 +1,24 @@
-// cryptos.controller.ts
-
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
 export const getCryptosController = (req: Request, res: Response) => {
-  res.send('getCryptosController')
-}
+  res.send('getCryptosController');
+};
 
 export const getCryptoByIdController = (req: Request, res: Response) => {
-  res.send('getCryptoByIdController')
-}
+  res.send('getCryptoByIdController');
+};
 
-export const getCryptoPriceHistoryController = (req: Request, res: Response) => {
-  res.send('getCryptoPriceHistoryController')
-}
+export const getCryptoPriceHistoryController = (
+  req: Request,
+  res: Response
+) => {
+  res.send('getCryptoPriceHistoryController');
+};
 
 export const postCryptoController = (req: Request, res: Response) => {
-  res.send('postCryptoController')
-}
+  res.send('postCryptoController');
+};
 
 export const deleteCryptoController = (req: Request, res: Response) => {
-  res.send('deleteCryptoController')
-}
+  res.send('deleteCryptoController');
+};

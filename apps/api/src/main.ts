@@ -1,11 +1,12 @@
 import express from 'express';
-import cors from 'cors'
+import cors from 'cors';
 
-import usersRouter from './routes/users/users.router'
-import cryptosRouter from './routes/cryptos/cryptos.router'
+import usersRouter from './routes/users/users.router';
+import cryptosRouter from './routes/cryptos/cryptos.router';
 
 import { apiKeyMiddleware } from './middleware/apiKeyMiddleware';
 import { corsMiddleware, corsOptions } from './middleware/corsMiddleware';
+import articlesRouter from './routes/articles/articles.router';
 
 const host = process.env.HOST ?? 'localhost';
 const port = process.env.PORT ? Number(process.env.PORT) : 3000;
@@ -25,6 +26,7 @@ app.get('/', (req, res) => {
 
 app.use('/users', usersRouter);
 app.use('/cryptos', cryptosRouter);
+app.use('/articles', articlesRouter);
 
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);
