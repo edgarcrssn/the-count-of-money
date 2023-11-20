@@ -18,10 +18,10 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   const authHeader = req.headers.authorization;
   const token = authHeader && authHeader.split(' ')[1];
 
-  if (!token) return res.sendStatus(401);
+  if (!token) return res.status(401).send({message: 'Unauthorized'});
 
   jwt.verify(token, process.env.JWT_SECRET, (error, payload: JwtPayload) => {
-    if (error) return res.sendStatus(401);
+    if (error) return res.status(401).send({message: 'Unauthorized'});
     req.user = payload;
     next();
   });

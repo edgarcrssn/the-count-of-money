@@ -78,6 +78,188 @@
 			]
 		},
 		{
+			"name": "cryptos",
+			"item": [
+				{
+					"name": "get cryptos",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/cryptos",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cryptos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get crypto",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/cryptos/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cryptos",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get crypto price history",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/cryptos/1/history/:period",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cryptos",
+								"1",
+								"history",
+								":period"
+							],
+							"variable": [
+								{
+									"key": "period",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add crypto",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/cryptos",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cryptos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete crypto",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/cryptos",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cryptos"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "articles",
+			"item": [
+				{
+					"name": "get articles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/articles",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"articles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get article",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "{{API_KEY}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{URL}}/articles/1",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"articles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "hello",
 			"request": {
 				"method": "GET",
