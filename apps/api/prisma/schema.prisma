@@ -1,0 +1,32 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                  Int      @id @default(autoincrement())
+  email               String   @unique
+  nickname            String   @unique
+  password            String
+  role                Role     @default(USER)
+  crypto_currencies   Json
+  keywords            Json
+  default_currency_id Int
+  default_currency    Currency @relation(fields: [default_currency_id], references: [id])
+  createdAt           DateTime @default(now())
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Currency {
+  id   Int    @id @default(autoincrement())
+  name String @unique
+  User User[]
+}
