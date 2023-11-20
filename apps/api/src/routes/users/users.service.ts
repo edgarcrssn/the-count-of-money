@@ -1,9 +1,18 @@
-import { Prisma, PrismaClient, User } from '@prisma/client';
+import { Prisma, PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
 const prisma = new PrismaClient();
 
+interface RegisterDto {
+  email: string;
+  nickname: string;
+  password: string;
+}
+interface LoginDto {
+  nickname: string;
+  password: string;
+}
 export interface JwtPayload {
   id: number;
 }
@@ -12,18 +21,33 @@ export const generateAccessToken = (payload: JwtPayload) =>
   jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
 
 export const createUser = async (
-  user: Omit<User, 'id'>
+  user: RegisterDto
 ): Promise<{ token: string }> => {
   try {
     const newUser = await prisma.user.create({
-      data: user,
+      data: {
+        ...user,
+        crypto_currencies: JSON.stringify({}),
+        keywords: JSON.stringify({}),
+        default_currency: {
+          connectOrCreate: {
+            where: {
+              name: 'EUR',
+            },
+            create: {
+              name: 'EUR',
+            },
+          },
+        },
+      },
     });
     const token = generateAccessToken({ id: newUser.id });
     return { token };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
-        throw { code: 409, message: 'This email is already taken' };
+        const target = error.meta.target as string[]
+        throw { code: 409, message: `This ${target[0]} is already taken` };
       }
     }
     throw error;
@@ -31,12 +55,12 @@ export const createUser = async (
 };
 
 export const verifyCredentials = async ({
-  email,
+  nickname,
   password,
-}: Omit<User, 'id'>): Promise<{ token: string }> => {
+}: LoginDto): Promise<{ token: string }> => {
   try {
     const user = await prisma.user.findUnique({
-      where: { email },
+      where: { nickname },
     });
     if (!user) throw { code: 401, message: 'Invalid credentials' };
 

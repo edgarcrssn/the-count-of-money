@@ -22,7 +22,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"edgarcresson@hotmail.com\",\n    \"password\": \"Azerty123\"\n}",
+							"raw": "{\n    \"email\": \"edgar.cresson@hotmail.com\",\n    \"nickname\": \"edgarcrssn\",\n    \"password\": \"Azerty123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -55,7 +55,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"email\": \"edgarcresson@hotmail.com\",\n    \"password\": \"Azerty123\"\n}",
+							"raw": "{\n    \"nickname\": \"edgarcrssn\",\n    \"password\": \"Azerty123\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"

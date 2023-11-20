@@ -5,6 +5,12 @@ export const registerValidator = [
     .notEmpty()
     .isEmail()
     .withMessage('please provide a valid email address'),
+  body('nickname')
+    .notEmpty()
+    .isLength({ min: 3, max: 18 })
+    .withMessage('nickname must be between 3 and 18 characters long')
+    .matches(/^[a-zA-Z]+$/)
+    .withMessage('nickname must contain only letters'),
   body('password')
     .notEmpty()
     .isLength({ min: 8, max: 32 })
@@ -18,10 +24,8 @@ export const registerValidator = [
 ];
 
 export const loginValidator = [
-  body('email')
-    .notEmpty()
-    .isEmail()
-    .withMessage('please provide a valid email address'),
+  body('nickname')
+    .notEmpty(),
   body('password')
     .notEmpty()
 ];
