@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors'
 
 import usersRouter from './routes/users/users.router'
+import cryptosRouter from './routes/cryptos/cryptos.router'
 
 import { apiKeyMiddleware } from './middleware/apiKeyMiddleware';
 import { corsMiddleware, corsOptions } from './middleware/corsMiddleware';
@@ -23,6 +24,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/users', usersRouter);
+app.use('/cryptos', cryptosRouter);
 
 app.listen(port, host, () => {
   console.log(`[ ready ] http://${host}:${port}`);

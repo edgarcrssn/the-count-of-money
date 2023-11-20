@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, Role } from '@prisma/client';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 
@@ -15,6 +15,7 @@ interface LoginDto {
 }
 export interface JwtPayload {
   id: number;
+  role: Role;
 }
 
 export const generateAccessToken = (payload: JwtPayload) =>
@@ -41,7 +42,7 @@ export const createUser = async (
         },
       },
     });
-    const token = generateAccessToken({ id: newUser.id });
+    const token = generateAccessToken({ id: newUser.id, role: newUser.role });
     return { token };
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -67,7 +68,7 @@ export const verifyCredentials = async ({
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) throw { code: 401, message: 'Invalid credentials' };
 
-    const token = generateAccessToken({ id: user.id });
+    const token = generateAccessToken({ id: user.id, role: user.role });
     return { token };
   } catch (error) {
     console.error(error);
