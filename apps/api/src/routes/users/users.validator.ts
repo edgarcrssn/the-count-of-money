@@ -16,3 +16,12 @@ export const registerValidator = [
     .matches(/\d/)
     .withMessage('password must contain at least one digit'),
 ];
+
+export const loginValidator = [
+  body('email')
+    .notEmpty()
+    .isEmail()
+    .withMessage('please provide a valid email address'),
+  body('password')
+    .notEmpty()
+];
