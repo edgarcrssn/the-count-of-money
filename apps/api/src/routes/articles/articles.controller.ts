@@ -1,9 +1,9 @@
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'
 
 export const getArticlesController = (req: Request, res: Response) => {
-  res.send('getArticlesController');
-};
+  res.send('getArticlesController')
+}
 
 export const getArticleByIdController = (req: Request, res: Response) => {
-  res.send('getArticleByIdController');
-};
+  res.send('getArticleByIdController')
+}

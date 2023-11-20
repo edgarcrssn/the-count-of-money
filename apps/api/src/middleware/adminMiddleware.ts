@@ -1,15 +1,10 @@
-import { Role } from '@prisma/client';
-import { authMiddleware } from './authMiddleware';
-import { NextFunction, Request, Response } from 'express';
+import { Role } from '@prisma/client'
+import { authMiddleware } from './authMiddleware'
+import { NextFunction, Request, Response } from 'express'
 
-export const adminMiddleware = (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+export const adminMiddleware = (req: Request, res: Response, next: NextFunction) => {
   authMiddleware(req, res, () => {
-    if (req.user.role !== Role.ADMIN)
-      return res.status(403).send({ message: 'Forbidden' });
-    next();
-  });
-};
+    if (req.user.role !== Role.ADMIN) return res.status(403).send({ message: 'Forbidden' })
+    next()
+  })
+}

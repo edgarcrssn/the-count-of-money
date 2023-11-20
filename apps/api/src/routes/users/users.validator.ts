@@ -1,10 +1,7 @@
-import { body } from 'express-validator';
+import { body } from 'express-validator'
 
 export const registerValidator = [
-  body('email')
-    .notEmpty()
-    .isEmail()
-    .withMessage('please provide a valid email address'),
+  body('email').notEmpty().isEmail().withMessage('please provide a valid email address'),
   body('nickname')
     .notEmpty()
     .isLength({ min: 3, max: 18 })
@@ -21,11 +18,6 @@ export const registerValidator = [
     .withMessage('password must contain at least one lowercase letter')
     .matches(/\d/)
     .withMessage('password must contain at least one digit'),
-];
+]
 
-export const loginValidator = [
-  body('nickname')
-    .notEmpty(),
-  body('password')
-    .notEmpty()
-];
+export const loginValidator = [body('nickname').notEmpty(), body('password').notEmpty()]

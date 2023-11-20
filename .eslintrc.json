@@ -6,13 +6,7 @@
       "version": "detect"
     }
   },
-  "plugins": [
-    "import",
-    "promise",
-    "@typescript-eslint",
-    "react",
-    "@nrwl/nx"
-  ],
+  "plugins": ["import", "promise", "@typescript-eslint", "react", "@nrwl/nx"],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "project": "./tsconfig.base.json",
@@ -24,16 +18,15 @@
     "plugin:react/recommended",
     "plugin:@nx/typescript"
   ],
-  "rules": {
-  },
-    "overrides": [
+  "rules": {},
+  "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
       "rules": {
-          // This rule requires the TypeScript type checker to be present when it runs
-          "@typescript-eslint/await-thenable": "error",
-          "@typescript-eslint/no-namespace": "off",
-          "@nrwl/nx/enforce-module-boundaries": "error"
+        // This rule requires the TypeScript type checker to be present when it runs
+        "@typescript-eslint/await-thenable": "error",
+        "@typescript-eslint/no-namespace": "off",
+        "@nrwl/nx/enforce-module-boundaries": "error"
       }
     },
     {
