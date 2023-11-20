@@ -28,8 +28,8 @@ export const createUser = async (
     const newUser = await prisma.user.create({
       data: {
         ...user,
-        crypto_currencies: JSON.stringify({}),
-        keywords: JSON.stringify({}),
+        crypto_currencies: JSON.stringify(null),
+        keywords: JSON.stringify(null),
         default_currency: {
           connectOrCreate: {
             where: {
