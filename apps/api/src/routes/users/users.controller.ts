@@ -25,8 +25,6 @@ export const loginController = async (req: Request, res: Response) => {
 
 export const googleOAuthCallbackController = async (req: Request, res: Response) => {
   try {
-    console.log(req.user)
-
     const user = req.user
     if (!user) return res.status(401).json({ message: 'Unauthorized' })
 
