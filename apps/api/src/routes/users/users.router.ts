@@ -4,21 +4,25 @@ import {
   editMyProfileController,
   getMyProfileController,
   googleOAuthCallbackController,
-  googleOAuthController,
   loginController,
   logoutController,
   registerController,
 } from './users.controller'
 import { validatorMiddleware } from '../../middleware/validatorMiddleware'
 import { authMiddleware } from '../../middleware/authMiddleware'
+import passport from 'passport'
 
 const router = express.Router()
 
 router.post('/register', registerValidator, validatorMiddleware, registerController)
 router.post('/login', loginValidator, validatorMiddleware, loginController)
 
-router.get('/auth/google', googleOAuthController)
-router.get('/auth/google/callback', googleOAuthCallbackController)
+router.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }))
+router.post(
+  '/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/users/login' }),
+  googleOAuthCallbackController,
+)
 
 router.post('/logout', authMiddleware, logoutController)
 

@@ -77,8 +77,6 @@ const upsertUsers = async () => {
       nickname: 'admin',
       password: hash,
       role: Role.ADMIN,
-      crypto_currencies: JSON.stringify(null),
-      keywords: JSON.stringify(null),
       default_currency: {
         connectOrCreate: {
           where: {

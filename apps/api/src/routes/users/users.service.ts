@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient, Role } from '@prisma/client'
+import { AuthType, Prisma, PrismaClient, Role } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
@@ -26,8 +26,6 @@ export const createUser = async (user: RegisterDto): Promise<{ token: string }> 
     const newUser = await prisma.user.create({
       data: {
         ...user,
-        crypto_currencies: JSON.stringify(null),
-        keywords: JSON.stringify(null),
         default_currency: {
           connectOrCreate: {
             where: {
@@ -56,7 +54,7 @@ export const createUser = async (user: RegisterDto): Promise<{ token: string }> 
 export const verifyCredentials = async ({ nickname, password }: LoginDto): Promise<{ token: string }> => {
   try {
     const user = await prisma.user.findUnique({
-      where: { nickname },
+      where: { nickname, auth_type: AuthType.CLASSIC },
     })
     if (!user) throw { code: 401, message: 'Invalid credentials' }
 
