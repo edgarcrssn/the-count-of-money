@@ -7,7 +7,8 @@ const prisma = new PrismaClient()
 interface RegisterDto {
   email: string
   nickname: string
-  password: string
+  password?: string
+  auth_type?: AuthType
 }
 interface LoginDto {
   nickname: string
@@ -67,4 +68,20 @@ export const verifyCredentials = async ({ nickname, password }: LoginDto): Promi
     console.error(error)
     throw error
   }
+}
+
+interface IGoogleUserData {
+  sub: string
+  name: string
+  given_name: string
+  family_name: string
+  picture: string
+  email: string
+  email_verified: boolean
+  locale: string
+}
+export const getGoogleUserData = async (accessToken: string): Promise<IGoogleUserData> => {
+  const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`)
+  const data = await response.json()
+  return data
 }

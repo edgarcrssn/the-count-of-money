@@ -4,6 +4,7 @@ import {
   editMyProfileController,
   getMyProfileController,
   googleOAuthCallbackController,
+  googleOAuthController,
   loginController,
   logoutController,
   registerController,
@@ -16,7 +17,7 @@ const router = express.Router()
 router.post('/register', registerValidator, validatorMiddleware, registerController)
 router.post('/login', loginValidator, validatorMiddleware, loginController)
 
-router.get('/auth/google')
+router.get('/auth/google', googleOAuthController)
 router.post('/auth/google/callback', googleOAuthCallbackController)
 
 router.post('/logout', authMiddleware, logoutController)
