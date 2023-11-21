@@ -76,7 +76,7 @@
 					"response": []
 				},
 				{
-					"name": "oAuth",
+					"name": "google oAuth",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -95,32 +95,6 @@
 								"users",
 								"auth",
 								"google"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "oAuth callback",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/users/auth/google/callback",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"auth",
-								"google",
-								"callback"
 							]
 						}
 					},
