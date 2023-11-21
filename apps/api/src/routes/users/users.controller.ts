@@ -1,4 +1,4 @@
-import { createUser, generateAccessToken, verifyCredentials } from './users.service'
+import { createUser, verifyCredentials } from './users.service'
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 
@@ -24,15 +24,7 @@ export const loginController = async (req: Request, res: Response) => {
 }
 
 export const googleOAuthCallbackController = async (req: Request, res: Response) => {
-  try {
-    const user = req.user
-    if (!user) return res.status(401).json({ message: 'Unauthorized' })
-
-    const token = generateAccessToken(user)
-    res.status(200).send({ token })
-  } catch (error) {
-    if (error.code && error.message) res.status(error.code).send({ message: error.message })
-  }
+  res.send('googleOAuthCallbackController')
 }
 
 export const logoutController = async (req: Request, res: Response) => {

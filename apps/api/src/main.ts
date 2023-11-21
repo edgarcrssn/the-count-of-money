@@ -7,10 +7,6 @@ import { apiKeyMiddleware } from './middleware/apiKeyMiddleware'
 import { corsMiddleware, corsWithOptions } from './middleware/corsMiddleware'
 import articlesRouter from './routes/articles/articles.router'
 
-import passport from 'passport'
-import session from 'express-session'
-import './routes/users/auth/passport'
-
 const host = process.env.HOST ?? 'localhost'
 const port = process.env.PORT ? Number(process.env.PORT) : 3000
 
@@ -22,17 +18,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use(corsWithOptions)
 app.use(corsMiddleware)
 app.use(apiKeyMiddleware)
-
-app.use(
-  session({
-    secret: process.env.JWT_SECRET,
-    resave: false,
-    saveUninitialized: false,
-  }),
-)
-
-app.use(passport.initialize())
-app.use(passport.session())
 
 app.get('/', (req, res) => {
   res.send({ message: 'Welcome to "The count of money" API!' })
