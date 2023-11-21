@@ -4,7 +4,7 @@ import cors from 'cors'
 
 dotenv.config()
 
-const allowedOrigins = [process.env.FRONT_URL]
+const allowedOrigins = [process.env.FRONT_URL, 'https://accounts.google.com']
 const env = process.env.ENV
 
 export const corsOptions: cors.CorsOptions = {
