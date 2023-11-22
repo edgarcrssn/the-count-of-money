@@ -76,7 +76,7 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
 
     if (existingUser) {
       if (existingUser.auth_type !== AuthType.GOOGLE) {
-        res.status(400).send({
+        res.status(409).send({
           message: `A user with this email is already registered with another auth method (${existingUser.auth_type})`,
         })
       } else {
