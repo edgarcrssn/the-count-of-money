@@ -23,6 +23,6 @@ router.post('/auth/google/callback', googleOAuthCallbackValidator, validatorMidd
 router.post('/logout', authMiddleware, logoutController)
 
 router.get('/profile', authMiddleware, getMyProfileController)
-router.put('/profile', authMiddleware, editMyProfileController)
+router.patch('/profile', authMiddleware, editMyProfileController)
 
 export default router
