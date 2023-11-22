@@ -1,4 +1,4 @@
 {
-  "cSpell.words": ["american", "australian", "canadian", "Renminbi", "resave", "swiss"],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true
 }
