@@ -88,6 +88,7 @@ export const verifyCredentials = async ({ nickname, password }: IClassicLogin): 
 }
 
 export const getGoogleUserData = async (accessToken: string): Promise<IGoogleUserData> => {
+  // TODO: Utiliser axios une fois la pr #4 merged
   const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`)
   const data: IGoogleUserData = await response.json()
   return data
