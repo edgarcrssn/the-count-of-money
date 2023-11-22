@@ -5,6 +5,9 @@ import { NextFunction, Request, Response } from 'express'
 
 dotenv.config()
 
+const jwtSecret = process.env.JWT_SECRET
+if (!jwtSecret) throw new Error('JWT_SECRET env variable is not defined')
+
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
@@ -20,7 +23,7 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
 
   if (!token) return res.status(401).send({ message: 'Unauthorized' })
 
-  jwt.verify(token, process.env.JWT_SECRET, (error, payload: JwtPayload) => {
+  jwt.verify(token, jwtSecret, (error, payload: JwtPayload) => {
     if (error) return res.status(401).send({ message: 'Unauthorized' })
     req.user = payload
     next()

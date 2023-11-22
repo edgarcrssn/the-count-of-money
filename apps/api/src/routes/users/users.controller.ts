@@ -8,9 +8,13 @@ import { AuthType, PrismaClient } from '@prisma/client'
 
 dotenv.config()
 
+const saltRound = process.env.SALT_ROUND
+
 const clientID = process.env.GOOGLE_CLIENT_ID
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 const redirectUrl = process.env.GOOGLE_CALLBACK_URL
+
+if (!saltRound) throw new Error('SALT_ROUND env variable is not defined')
 
 if (!clientID) throw new Error('GOOGLE_CLIENT_ID env variable is not defined')
 if (!clientSecret) throw new Error('GOOGLE_CLIENT_SECRET env variable is not defined')
@@ -21,9 +25,10 @@ const prisma = new PrismaClient()
 export const registerController = async (req: Request, res: Response) => {
   try {
     const { email, nickname, password } = req.body
-    const hash = await bcrypt.hash(password, +process.env.SALT_ROUND)
-    const result = await createUser({ email, nickname, password: hash })
-    res.status(201).send(result)
+    const hash = await bcrypt.hash(password, +saltRound)
+    const newUser = await createUser({ email, nickname, password: hash })
+    const token = generateAccessToken({ id: newUser.id, role: newUser.role })
+    res.status(201).send({ token })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
   }
@@ -55,7 +60,7 @@ export const googleOAuthController = async (req: Request, res: Response) => {
 }
 
 export const googleOAuthCallbackController = async (req: Request, res: Response) => {
-  const code = req.body.code.toString()
+  const { code } = req.body
 
   try {
     const oAuth2Client = new OAuth2Client(clientID, clientSecret, redirectUrl)
@@ -79,12 +84,13 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
         res.status(200).send({ token })
       }
     } else {
-      const result = await createUser({
+      const newUser = await createUser({
         email: googleUserData.email,
         nickname: googleUserData.name,
         auth_type: AuthType.GOOGLE,
       })
-      res.status(200).send(result)
+      const token = generateAccessToken({ id: newUser.id, role: newUser.role })
+      res.status(201).send({ token })
     }
   } catch (error) {
     console.log('Error while signing in with Google: ', error)

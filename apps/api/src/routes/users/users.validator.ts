@@ -21,3 +21,5 @@ export const registerValidator = [
 ]
 
 export const loginValidator = [body('nickname').notEmpty(), body('password').notEmpty()]
+
+export const googleOAuthCallbackValidator = [body('code').isString().notEmpty()]

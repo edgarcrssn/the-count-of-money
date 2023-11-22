@@ -4,8 +4,13 @@ import cors from 'cors'
 
 dotenv.config()
 
-const allowedOrigins = [process.env.FRONT_URL, 'https://accounts.google.com']
+const frontUrl = process.env.FRONT_URL
 const env = process.env.ENV
+
+if (!frontUrl) console.warn('FRONT_URL env variable is not defined')
+if (!env) console.warn('ENV env variable is not defined')
+
+const allowedOrigins = [frontUrl, 'https://accounts.google.com']
 
 export const corsOptions: cors.CorsOptions = {
   origin: (origin, callback) => {
