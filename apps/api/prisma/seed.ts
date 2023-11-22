@@ -48,6 +48,7 @@ const upsertCurrencies = async () => {
     create: { name: 'CNH' },
   })
 
+  // eslint-disable-next-line no-console
   console.log({
     euro,
     americanDollar,
@@ -89,7 +90,7 @@ const upsertUsers = async () => {
       },
     },
   })
-
+  // eslint-disable-next-line no-console
   console.log({ admin })
 }
 
@@ -103,6 +104,7 @@ main()
     await prisma.$disconnect()
   })
   .catch(async (e) => {
+    // eslint-disable-next-line no-console
     console.error(e)
     await prisma.$disconnect()
     process.exit(1)

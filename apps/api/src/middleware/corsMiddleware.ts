@@ -6,8 +6,9 @@ dotenv.config()
 
 const frontUrl = process.env.FRONT_URL
 const env = process.env.ENV
-
+// eslint-disable-next-line no-console
 if (!frontUrl) console.warn('FRONT_URL env variable is not defined')
+// eslint-disable-next-line no-console
 if (!env) console.warn('ENV env variable is not defined')
 
 const allowedOrigins = [frontUrl, 'https://accounts.google.com']

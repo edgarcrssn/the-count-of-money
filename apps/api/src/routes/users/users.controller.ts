@@ -1,4 +1,10 @@
-import { createUser, generateAccessToken, getGoogleUserData, verifyCredentials } from './users.service'
+import {
+  createUser,
+  generateAccessToken,
+  generateUniqueNickname,
+  getGoogleUserData,
+  verifyCredentials,
+} from './users.service'
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { OAuth2Client } from 'google-auth-library'
@@ -86,13 +92,14 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
     } else {
       const newUser = await createUser({
         email: googleUserData.email,
-        nickname: googleUserData.name,
+        nickname: await generateUniqueNickname(googleUserData.name),
         auth_type: AuthType.GOOGLE,
       })
       const token = generateAccessToken({ id: newUser.id, role: newUser.role })
       res.status(201).send({ token })
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.log('Error while signing in with Google: ', error)
   }
 }

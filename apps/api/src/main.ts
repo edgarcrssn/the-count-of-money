@@ -28,5 +28,6 @@ app.use('/cryptos', cryptosRouter)
 app.use('/articles', articlesRouter)
 
 app.listen(port, host, () => {
+  // eslint-disable-next-line no-console
   console.log(`[ ready ] http://${host}:${port}`)
 })

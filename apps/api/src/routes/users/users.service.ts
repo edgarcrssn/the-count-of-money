@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 
 import * as dotenv from 'dotenv'
+import slugify from 'slugify'
 
 dotenv.config()
 
@@ -80,7 +81,8 @@ export const verifyCredentials = async ({ nickname, password }: IClassicLogin): 
     const token = generateAccessToken({ id: user.id, role: user.role })
     return { token }
   } catch (error) {
-    console.error(error)
+    // eslint-disable-next-line no-console
+    console.log('verifyCredentials: ', error)
     throw error
   }
 }
@@ -89,4 +91,25 @@ export const getGoogleUserData = async (accessToken: string): Promise<IGoogleUse
   const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`)
   const data: IGoogleUserData = await response.json()
   return data
+}
+
+export const generateUniqueNickname = async (name: string) => {
+  const MAX_ATTEMPTS = 20
+  let nickname = slugify(name, { lower: true })
+  let i = 0
+
+  do {
+    const isNicknameAlreadyTaken = await prisma.user.findUnique({ where: { nickname } })
+
+    if (!isNicknameAlreadyTaken) break
+
+    i++
+    nickname = `${slugify(name, { lower: true })}-${i}`
+  } while (i <= MAX_ATTEMPTS)
+
+  if (i > MAX_ATTEMPTS) {
+    throw new Error('Maximum attempts reached. Unable to generate a unique nickname.')
+  }
+
+  return nickname
 }
