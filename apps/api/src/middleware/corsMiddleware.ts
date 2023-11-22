@@ -17,7 +17,7 @@ export const corsOptions: cors.CorsOptions = {
     if (allowedOrigins.includes(origin) || (env === 'dev' && !origin)) callback(null, true)
     else callback(new Error('CORS policy violation'))
   },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  methods: 'GET,POST,PUT,PATCH,DELETE',
   credentials: true,
 }
 
