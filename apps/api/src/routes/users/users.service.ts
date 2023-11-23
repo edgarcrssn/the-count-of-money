@@ -108,9 +108,7 @@ export const generateUniqueNickname = async (name: string) => {
     nickname = `${slugify(name, { lower: true })}-${i}`
   } while (i <= MAX_ATTEMPTS)
 
-  if (i > MAX_ATTEMPTS) {
-    throw new Error('Maximum attempts reached. Unable to generate a unique nickname.')
-  }
+  if (i > MAX_ATTEMPTS) throw new Error('Maximum attempts reached. Unable to generate a unique nickname.')
 
   return nickname
 }
