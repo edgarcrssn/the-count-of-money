@@ -1,11 +1,10 @@
 import express from 'express'
-import cors from 'cors'
 
 import usersRouter from './routes/users/users.router'
 import cryptosRouter from './routes/cryptos/cryptos.router'
 
 import { apiKeyMiddleware } from './middleware/apiKeyMiddleware'
-import { corsMiddleware, corsOptions } from './middleware/corsMiddleware'
+import { corsMiddleware, corsWithOptions } from './middleware/corsMiddleware'
 import articlesRouter from './routes/articles/articles.router'
 
 const host = process.env.HOST ?? 'localhost'
@@ -16,7 +15,7 @@ const app = express()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use(cors(corsOptions))
+app.use(corsWithOptions)
 app.use(corsMiddleware)
 app.use(apiKeyMiddleware)
 
@@ -29,5 +28,6 @@ app.use('/cryptos', cryptosRouter)
 app.use('/articles', articlesRouter)
 
 app.listen(port, host, () => {
+  // eslint-disable-next-line no-console
   console.log(`[ ready ] http://${host}:${port}`)
 })

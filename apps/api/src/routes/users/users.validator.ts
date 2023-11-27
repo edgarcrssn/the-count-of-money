@@ -6,8 +6,8 @@ export const registerValidator = [
     .notEmpty()
     .isLength({ min: 3, max: 18 })
     .withMessage('nickname must be between 3 and 18 characters long')
-    .matches(/^[a-zA-Z]+$/)
-    .withMessage('nickname must contain only letters'),
+    .matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
+    .withMessage('nickname must only contain lowercase letters and numbers that can be separated by hyphen'),
   body('password')
     .notEmpty()
     .isLength({ min: 8, max: 32 })
@@ -21,3 +21,5 @@ export const registerValidator = [
 ]
 
 export const loginValidator = [body('nickname').notEmpty(), body('password').notEmpty()]
+
+export const googleOAuthCallbackValidator = [body('code').isString().notEmpty()]

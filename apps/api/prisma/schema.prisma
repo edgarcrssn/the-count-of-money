@@ -11,13 +11,19 @@ model User {
   id                  Int      @id @default(autoincrement())
   email               String   @unique
   nickname            String   @unique
-  password            String
+  auth_type           AuthType @default(CLASSIC)
+  password            String?
   role                Role     @default(USER)
-  crypto_currencies   Json
-  keywords            Json
+  crypto_currencies   Json?
+  keywords            Json?
   default_currency_id Int
   default_currency    Currency @relation(fields: [default_currency_id], references: [id])
   created_at          DateTime @default(now())
+}
+
+enum AuthType {
+  CLASSIC
+  GOOGLE
 }
 
 enum Role {

@@ -1,406 +1,314 @@
 {
-	"info": {
-		"_postman_id": "84e48d18-ede0-4bb0-aea3-4548b6d5852b",
-		"name": "The count of money",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "25226995"
-	},
-	"item": [
-		{
-			"name": "users",
-			"item": [
-				{
-					"name": "register",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"email\": \"edgar.cresson@hotmail.com\",\n    \"nickname\": \"edgarcrssn\",\n    \"password\": \"Azerty123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/users/register",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"register"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "login",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"nickname\": \"edgarcrssn\",\n    \"password\": \"Azerty123\"\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{URL}}/users/login",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "oAuth",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/users/auth/google",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"auth",
-								"google"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "oAuth callback",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/users/auth/google/callback",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"auth",
-								"google",
-								"callback"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "logout",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/users/logout",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"logout"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "my profile",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/users/profile",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"profile"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "New Request",
-					"request": {
-						"method": "PUT",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/users/profile",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"users",
-								"profile"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "cryptos",
-			"item": [
-				{
-					"name": "get cryptos",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/cryptos",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"cryptos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get crypto",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/cryptos/1",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"cryptos",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get crypto price history",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/cryptos/1/history/:period",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"cryptos",
-								"1",
-								"history",
-								":period"
-							],
-							"variable": [
-								{
-									"key": "period",
-									"value": ""
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "add crypto",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/cryptos",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"cryptos"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete crypto",
-					"request": {
-						"method": "DELETE",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/cryptos",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"cryptos"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "articles",
-			"item": [
-				{
-					"name": "get articles",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/articles",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"articles"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "get article",
-					"request": {
-						"method": "GET",
-						"header": [
-							{
-								"key": "x-api-key",
-								"value": "{{API_KEY}}",
-								"type": "text"
-							}
-						],
-						"url": {
-							"raw": "{{URL}}/articles/1",
-							"host": [
-								"{{URL}}"
-							],
-							"path": [
-								"articles",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "hello",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "x-api-key",
-						"value": "{{API_KEY}}",
-						"type": "text"
-					}
-				],
-				"url": {
-					"raw": "{{URL}}",
-					"host": [
-						"{{URL}}"
-					]
-				}
-			},
-			"response": []
-		}
-	]
+  "info": {
+    "_postman_id": "84e48d18-ede0-4bb0-aea3-4548b6d5852b",
+    "name": "The count of money",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25226995"
+  },
+  "item": [
+    {
+      "name": "users",
+      "item": [
+        {
+          "name": "register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"edgar.cresson@hotmail.com\",\n    \"nickname\": \"edgarcrssn\",\n    \"password\": \"Azerty123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/users/register",
+              "host": ["{{URL}}"],
+              "path": ["users", "register"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nickname\": \"edgarcrssn\",\n    \"password\": \"Azerty123\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{URL}}/users/login",
+              "host": ["{{URL}}"],
+              "path": ["users", "login"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "google oAuth",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/users/auth/google",
+              "host": ["{{URL}}"],
+              "path": ["users", "auth", "google"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/users/logout",
+              "host": ["{{URL}}"],
+              "path": ["users", "logout"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "my profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/users/profile",
+              "host": ["{{URL}}"],
+              "path": ["users", "profile"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "my profile",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/users/profile",
+              "host": ["{{URL}}"],
+              "path": ["users", "profile"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "cryptos",
+      "item": [
+        {
+          "name": "get cryptos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/cryptos",
+              "host": ["{{URL}}"],
+              "path": ["cryptos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get crypto",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/cryptos/1",
+              "host": ["{{URL}}"],
+              "path": ["cryptos", "1"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get crypto price history",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/cryptos/1/history/:period",
+              "host": ["{{URL}}"],
+              "path": ["cryptos", "1", "history", ":period"],
+              "variable": [
+                {
+                  "key": "period",
+                  "value": ""
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add crypto",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/cryptos",
+              "host": ["{{URL}}"],
+              "path": ["cryptos"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "delete crypto",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/cryptos",
+              "host": ["{{URL}}"],
+              "path": ["cryptos"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "articles",
+      "item": [
+        {
+          "name": "get articles",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/articles",
+              "host": ["{{URL}}"],
+              "path": ["articles"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "get article",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/articles/1",
+              "host": ["{{URL}}"],
+              "path": ["articles", "1"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "hello",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "x-api-key",
+            "value": "{{API_KEY}}",
+            "type": "text"
+          }
+        ],
+        "url": {
+          "raw": "{{URL}}",
+          "host": ["{{URL}}"]
+        }
+      },
+      "response": []
+    }
+  ]
 }

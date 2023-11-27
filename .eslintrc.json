@@ -26,7 +26,8 @@
         // This rule requires the TypeScript type checker to be present when it runs
         "@typescript-eslint/await-thenable": "error",
         "@typescript-eslint/no-namespace": "off",
-        "@nrwl/nx/enforce-module-boundaries": "error"
+        "@nrwl/nx/enforce-module-boundaries": "error",
+        "no-console": "warn"
       }
     },
     {

@@ -48,6 +48,7 @@ const upsertCurrencies = async () => {
     create: { name: 'CNH' },
   })
 
+  // eslint-disable-next-line no-console
   console.log({
     euro,
     americanDollar,
@@ -77,8 +78,6 @@ const upsertUsers = async () => {
       nickname: 'admin',
       password: hash,
       role: Role.ADMIN,
-      crypto_currencies: JSON.stringify(null),
-      keywords: JSON.stringify(null),
       default_currency: {
         connectOrCreate: {
           where: {
@@ -91,7 +90,7 @@ const upsertUsers = async () => {
       },
     },
   })
-
+  // eslint-disable-next-line no-console
   console.log({ admin })
 }
 
@@ -105,6 +104,7 @@ main()
     await prisma.$disconnect()
   })
   .catch(async (e) => {
+    // eslint-disable-next-line no-console
     console.error(e)
     await prisma.$disconnect()
     process.exit(1)

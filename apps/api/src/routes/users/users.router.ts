@@ -1,5 +1,5 @@
 import express from 'express'
-import { loginValidator, registerValidator } from './users.validator'
+import { googleOAuthCallbackValidator, loginValidator, registerValidator } from './users.validator'
 import {
   editMyProfileController,
   getMyProfileController,
@@ -18,11 +18,11 @@ router.post('/register', registerValidator, validatorMiddleware, registerControl
 router.post('/login', loginValidator, validatorMiddleware, loginController)
 
 router.get('/auth/google', googleOAuthController)
-router.get('/auth/google/callback', googleOAuthCallbackController)
+router.post('/auth/google/callback', googleOAuthCallbackValidator, validatorMiddleware, googleOAuthCallbackController)
 
 router.post('/logout', authMiddleware, logoutController)
 
 router.get('/profile', authMiddleware, getMyProfileController)
-router.put('/profile', authMiddleware, editMyProfileController)
+router.patch('/profile', authMiddleware, editMyProfileController)
 
 export default router
