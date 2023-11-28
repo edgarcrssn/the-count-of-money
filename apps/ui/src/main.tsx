@@ -7,6 +7,8 @@ import Home from './app/pages/home/home'
 import Login from './app/pages/login/login'
 import Register from './app/pages/register/register'
 import GoogleRedirect from './app/pages/google-redirect/google-redirect'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from 'react-query/devtools'
 
 const router = createBrowserRouter([
   {
@@ -27,10 +29,15 @@ const router = createBrowserRouter([
   },
 ])
 
+const queryClient = new QueryClient()
+
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <StrictMode>
-    <RouterProvider router={router} />
-    <Toaster richColors />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster richColors />
+      <ReactQueryDevtools initialIsOpen={true} />
+    </QueryClientProvider>
   </StrictMode>,
 )

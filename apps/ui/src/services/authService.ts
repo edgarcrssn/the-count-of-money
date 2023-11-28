@@ -1,14 +1,14 @@
 import { customFetch } from './customFetch'
 
 export interface RegisterDto {
-  username: string
-  email: string
   nickname: string
+  email: string
+  password: string
 }
 
 export interface LoginDto {
-  username: string
   nickname: string
+  password: string
 }
 
 type Data =
