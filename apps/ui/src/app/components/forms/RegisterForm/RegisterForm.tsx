@@ -6,21 +6,10 @@ import { toast } from 'sonner'
 import { Link, useNavigate } from 'react-router-dom'
 import { manageToken } from '../../../../utils/manageToken'
 import { capitalize } from '../../../../utils/capitalize'
+import GoogleAuthButton from '../../GoogleAuthButton/GoogleAuthButton'
 
 const RegisterForm = () => {
   const navigate = useNavigate()
-
-  const registerWithGoogle = async () => {
-    const response = await authService.getGoogleLoginUrl()
-    if (response.status === 200 && response.data) {
-      window.location.href = response.data.url
-      return
-    }
-
-    toast.error(`An unknown error occurred while registering with Google (${response.status})`, {
-      description: 'Please contact the support.',
-    })
-  }
 
   const registerWithPassword = async (values: RegisterDto) => {
     const response = await authService.register(values)
@@ -51,9 +40,7 @@ const RegisterForm = () => {
 
   return (
     <>
-      <Button onClick={registerWithGoogle} block>
-        Register with Google
-      </Button>
+      <GoogleAuthButton />
       <div style={{ textAlign: 'center', margin: '.5rem 0' }}>or</div>
       <Form name="normal_login" initialValues={{ remember: true }} onFinish={registerWithPassword}>
         <Form.Item

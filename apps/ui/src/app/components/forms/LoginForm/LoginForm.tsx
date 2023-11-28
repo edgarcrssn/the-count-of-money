@@ -5,21 +5,10 @@ import { LoginDto, authService } from '../../../../services/authService'
 import { toast } from 'sonner'
 import { Link, useNavigate } from 'react-router-dom'
 import { manageToken } from '../../../../utils/manageToken'
+import GoogleAuthButton from '../../GoogleAuthButton/GoogleAuthButton'
 
 const LoginForm = () => {
   const navigate = useNavigate()
-
-  const loginWithGoogle = async () => {
-    const response = await authService.getGoogleLoginUrl()
-    if (response.status === 200 && response.data) {
-      window.location.href = response.data.url
-      return
-    }
-
-    toast.error(`An unknown error occurred while login in with Google (${response.status})`, {
-      description: 'Please contact the support.',
-    })
-  }
 
   const loginWithPassword = async (values: LoginDto) => {
     const response = await authService.login(values)
@@ -42,9 +31,7 @@ const LoginForm = () => {
 
   return (
     <>
-      <Button onClick={loginWithGoogle} block>
-        Login with Google
-      </Button>
+      <GoogleAuthButton />
       <div style={{ textAlign: 'center', margin: '.5rem 0' }}>or</div>
       <Form name="normal_login" initialValues={{ remember: true }} onFinish={loginWithPassword}>
         <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname.' }]}>
