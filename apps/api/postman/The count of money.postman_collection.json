@@ -1,9 +1,9 @@
 {
   "info": {
-    "_postman_id": "84e48d18-ede0-4bb0-aea3-4548b6d5852b",
+    "_postman_id": "1412674b-785b-4c49-ae5d-188e006f98eb",
     "name": "The count of money",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-    "_exporter_id": "25226995"
+    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+    "_exporter_id": "18507381"
   },
   "item": [
     {
@@ -29,11 +29,7 @@
                 }
               }
             },
-            "url": {
-              "raw": "{{URL}}/users/register",
-              "host": ["{{URL}}"],
-              "path": ["users", "register"]
-            }
+            "url": "{{URL}}/users/register"
           },
           "response": []
         },
@@ -50,23 +46,19 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"nickname\": \"edgarcrssn\",\n    \"password\": \"Azerty123\"\n}",
+              "raw": "{\n    \"nickname\": \"admin\",\n    \"password\": \"admin\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": {
-              "raw": "{{URL}}/users/login",
-              "host": ["{{URL}}"],
-              "path": ["users", "login"]
-            }
+            "url": "{{URL}}/users/login"
           },
           "response": []
         },
         {
-          "name": "google oAuth",
+          "name": "oAuth",
           "request": {
             "method": "GET",
             "header": [
@@ -76,11 +68,22 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/users/auth/google",
-              "host": ["{{URL}}"],
-              "path": ["users", "auth", "google"]
-            }
+            "url": "{{URL}}/users/auth/google"
+          },
+          "response": []
+        },
+        {
+          "name": "oAuth callback",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": "{{URL}}/users/auth/google/callback"
           },
           "response": []
         },
@@ -95,11 +98,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/users/logout",
-              "host": ["{{URL}}"],
-              "path": ["users", "logout"]
-            }
+            "url": "{{URL}}/users/logout"
           },
           "response": []
         },
@@ -114,18 +113,14 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/users/profile",
-              "host": ["{{URL}}"],
-              "path": ["users", "profile"]
-            }
+            "url": "{{URL}}/users/profile"
           },
           "response": []
         },
         {
-          "name": "my profile",
+          "name": "update profile",
           "request": {
-            "method": "PATCH",
+            "method": "PUT",
             "header": [
               {
                 "key": "x-api-key",
@@ -133,11 +128,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/users/profile",
-              "host": ["{{URL}}"],
-              "path": ["users", "profile"]
-            }
+            "url": "{{URL}}/users/profile"
           },
           "response": []
         }
@@ -157,11 +148,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/cryptos",
-              "host": ["{{URL}}"],
-              "path": ["cryptos"]
-            }
+            "url": "{{URL}}/cryptos"
           },
           "response": []
         },
@@ -177,9 +164,15 @@
               }
             ],
             "url": {
-              "raw": "{{URL}}/cryptos/1",
+              "raw": "{{URL}}/cryptos/:id",
               "host": ["{{URL}}"],
-              "path": ["cryptos", "1"]
+              "path": ["cryptos", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "bitcoin"
+                }
+              ]
             }
           },
           "response": []
@@ -196,13 +189,17 @@
               }
             ],
             "url": {
-              "raw": "{{URL}}/cryptos/1/history/:period",
+              "raw": "{{URL}}/cryptos/:id/history/:period",
               "host": ["{{URL}}"],
-              "path": ["cryptos", "1", "history", ":period"],
+              "path": ["cryptos", ":id", "history", ":period"],
               "variable": [
                 {
+                  "key": "id",
+                  "value": "bitcoin"
+                },
+                {
                   "key": "period",
-                  "value": ""
+                  "value": "1"
                 }
               ]
             }
@@ -220,11 +217,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/cryptos",
-              "host": ["{{URL}}"],
-              "path": ["cryptos"]
-            }
+            "url": "{{URL}}/cryptos"
           },
           "response": []
         },
@@ -239,11 +232,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/cryptos",
-              "host": ["{{URL}}"],
-              "path": ["cryptos"]
-            }
+            "url": "{{URL}}/cryptos"
           },
           "response": []
         }
@@ -263,11 +252,7 @@
                 "type": "text"
               }
             ],
-            "url": {
-              "raw": "{{URL}}/articles",
-              "host": ["{{URL}}"],
-              "path": ["articles"]
-            }
+            "url": "{{URL}}/articles"
           },
           "response": []
         },
@@ -282,10 +267,94 @@
                 "type": "text"
               }
             ],
+            "url": "{{URL}}/articles/1"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "rss_sources",
+      "item": [
+        {
+          "name": "rss_feed api",
+          "request": {
+            "method": "GET",
+            "header": [],
             "url": {
-              "raw": "{{URL}}/articles/1",
+              "raw": "https://api.rss2json.com/v1/api.json?rss_url=https://coinacademy.fr/actu/bitcoin?feed=gn&api_key=k1df8l6rclsvkbgb16n8mx7m2qxft7vnxystu6fo",
+              "protocol": "https",
+              "host": ["api", "rss2json", "com"],
+              "path": ["v1", "api.json"],
+              "query": [
+                {
+                  "key": "rss_url",
+                  "value": "https://coinacademy.fr/actu/bitcoin?feed=gn"
+                },
+                {
+                  "key": "api_key",
+                  "value": "k1df8l6rclsvkbgb16n8mx7m2qxft7vnxystu6fo"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "add rss_sources",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzAxMTYyODQ0LCJleHAiOjE3MDExNjY0NDR9.0rW-_Zz46iVi9a9SyFY5lqYkZw3on8D1M4NuGYgwHgw",
+                "type": "text"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"url\": \"https://cointelegraph.com/rss\" }",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": "{{URL}}/sources"
+          },
+          "response": []
+        },
+        {
+          "name": "delete rss_sources",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzAxMTYyODQ0LCJleHAiOjE3MDExNjY0NDR9.0rW-_Zz46iVi9a9SyFY5lqYkZw3on8D1M4NuGYgwHgw",
+                "type": "text"
+              },
+              {
+                "key": "x-api-key",
+                "value": "{{API_KEY}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{URL}}/sources/:id",
               "host": ["{{URL}}"],
-              "path": ["articles", "1"]
+              "path": ["sources", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "1"
+                }
+              ]
             }
           },
           "response": []
@@ -303,10 +372,7 @@
             "type": "text"
           }
         ],
-        "url": {
-          "raw": "{{URL}}",
-          "host": ["{{URL}}"]
-        }
+        "url": "{{URL}}"
       },
       "response": []
     }

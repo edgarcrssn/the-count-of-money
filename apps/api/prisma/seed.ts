@@ -94,9 +94,29 @@ const upsertUsers = async () => {
   console.log({ admin })
 }
 
+const upsertRssSources = async () => {
+  const urls = [
+    'https://cointelegraph.com/rss/tag/altcoin',
+    'https://cointelegraph.com/rss/tag/bitcoin',
+    'https://cointelegraph.com/rss/tag/blockchain',
+    'https://cointelegraph.com/rss/tag/litecoin',
+    'https://cointelegraph.com/rss/tag/regulation',
+    'https://cointelegraph.com/rss/tag/monero',
+  ]
+
+  for (const url of urls) {
+    await prisma.rssSource.upsert({
+      where: { url: url },
+      update: {},
+      create: { url: url },
+    })
+  }
+}
+
 const main = async () => {
   await upsertCurrencies()
   await upsertUsers()
+  await upsertRssSources()
 }
 
 main()

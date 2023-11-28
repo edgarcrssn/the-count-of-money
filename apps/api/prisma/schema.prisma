@@ -21,6 +21,11 @@ model User {
   created_at          DateTime @default(now())
 }
 
+model RssSource {
+  id  Int     @id @default(autoincrement())
+  url String  @unique
+}
+
 enum AuthType {
   CLASSIC
   GOOGLE
