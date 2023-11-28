@@ -19,13 +19,13 @@ export const isValidRssSource = async (url: string): Promise<boolean> => {
   }
 }
 
-export function isValidUrl(url: string): boolean {
+export const isValidUrl = (url: string): boolean => {
   const urlRegex = /^(http|https):\/\/[^ "]+$/
 
   return urlRegex.test(url)
 }
 
-export async function doesUrlAlreadyExist(url: string): Promise<boolean> {
+export const doesUrlAlreadyExist = async (url: string): Promise<boolean> => {
   const source = await prisma.rssSource.findUnique({
     where: { url },
   })

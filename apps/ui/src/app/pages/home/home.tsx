@@ -9,7 +9,7 @@ interface IUser {
   nickname: string
 }
 
-export function Home() {
+export const Home = () => {
   const [me, setMe] = useState<IUser | null>(null)
 
   useEffect(() => {

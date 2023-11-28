@@ -4,7 +4,7 @@ import LoginForm from '../../components/forms/LoginForm/LoginForm'
 import withoutAuth from '../../components/hoc/withoutAuth'
 import AuthLayout from '../../components/AuthLayout/AuthLayout'
 
-export function Login() {
+export const Login = () => {
   return (
     <AuthLayout title="Login">
       <LoginForm />

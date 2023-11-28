@@ -4,7 +4,7 @@ import AuthLayout from '../../components/AuthLayout/AuthLayout'
 import RegisterForm from '../../components/forms/RegisterForm/RegisterForm'
 // import styles from './Register.module.scss'
 
-export function Register() {
+export const Register = () => {
   return (
     <AuthLayout reverse title="Register">
       <RegisterForm />
