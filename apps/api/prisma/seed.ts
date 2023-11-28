@@ -1,4 +1,4 @@
-import { PrismaClient, Role } from '@prisma/client'
+import { PrismaClient, Role, RssSource } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import * as dotenv from 'dotenv'
 
@@ -94,9 +94,34 @@ const upsertUsers = async () => {
   console.log({ admin })
 }
 
+const upsertRssSources = async () => {
+  const urls = [
+    'https://cointelegraph.com/rss/tag/altcoin',
+    'https://cointelegraph.com/rss/tag/bitcoin',
+    'https://cointelegraph.com/rss/tag/blockchain',
+    'https://cointelegraph.com/rss/tag/litecoin',
+    'https://cointelegraph.com/rss/tag/regulation',
+    'https://cointelegraph.com/rss/tag/monero',
+  ]
+
+  const rssSources: RssSource[] = []
+
+  for (const url of urls) {
+    const rssSource = await prisma.rssSource.upsert({
+      where: { url },
+      update: {},
+      create: { url },
+    })
+    rssSources.push(rssSource)
+  }
+  // eslint-disable-next-line no-console
+  console.log({ rssSources })
+}
+
 const main = async () => {
   await upsertCurrencies()
   await upsertUsers()
+  await upsertRssSources()
 }
 
 main()
