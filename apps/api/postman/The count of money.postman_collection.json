@@ -1,9 +1,9 @@
 {
   "info": {
-    "_postman_id": "1412674b-785b-4c49-ae5d-188e006f98eb",
+    "_postman_id": "feb2e993-2feb-41ac-9d25-592caf7f8c46",
     "name": "The count of money",
-    "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
-    "_exporter_id": "18507381"
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "25226995"
   },
   "item": [
     {
@@ -29,7 +29,11 @@
                 }
               }
             },
-            "url": "{{URL}}/users/register"
+            "url": {
+              "raw": "{{URL}}/users/register",
+              "host": ["{{URL}}"],
+              "path": ["users", "register"]
+            }
           },
           "response": []
         },
@@ -46,14 +50,18 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n    \"nickname\": \"admin\",\n    \"password\": \"admin\"\n}",
+              "raw": "{\n    \"nickname\": \"admin\",\n    \"password\": \"azerty\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
                 }
               }
             },
-            "url": "{{URL}}/users/login"
+            "url": {
+              "raw": "{{URL}}/users/login",
+              "host": ["{{URL}}"],
+              "path": ["users", "login"]
+            }
           },
           "response": []
         },
@@ -68,22 +76,11 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/users/auth/google"
-          },
-          "response": []
-        },
-        {
-          "name": "oAuth callback",
-          "request": {
-            "method": "GET",
-            "header": [
-              {
-                "key": "x-api-key",
-                "value": "{{API_KEY}}",
-                "type": "text"
-              }
-            ],
-            "url": "{{URL}}/users/auth/google/callback"
+            "url": {
+              "raw": "{{URL}}/users/auth/google",
+              "host": ["{{URL}}"],
+              "path": ["users", "auth", "google"]
+            }
           },
           "response": []
         },
@@ -98,13 +95,27 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/users/logout"
+            "url": {
+              "raw": "{{URL}}/users/logout",
+              "host": ["{{URL}}"],
+              "path": ["users", "logout"]
+            }
           },
           "response": []
         },
         {
           "name": "my profile",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "GET",
             "header": [
               {
@@ -113,13 +124,27 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/users/profile"
+            "url": {
+              "raw": "{{URL}}/users/profile",
+              "host": ["{{URL}}"],
+              "path": ["users", "profile"]
+            }
           },
           "response": []
         },
         {
           "name": "update my profile",
           "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{JWT}}",
+                  "type": "string"
+                }
+              ]
+            },
             "method": "PATCH",
             "header": [
               {
@@ -128,7 +153,11 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/users/profile"
+            "url": {
+              "raw": "{{URL}}/users/profile",
+              "host": ["{{URL}}"],
+              "path": ["users", "profile"]
+            }
           },
           "response": []
         }
@@ -148,7 +177,11 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/cryptos"
+            "url": {
+              "raw": "{{URL}}/cryptos",
+              "host": ["{{URL}}"],
+              "path": ["cryptos"]
+            }
           },
           "response": []
         },
@@ -217,7 +250,11 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/cryptos"
+            "url": {
+              "raw": "{{URL}}/cryptos",
+              "host": ["{{URL}}"],
+              "path": ["cryptos"]
+            }
           },
           "response": []
         },
@@ -232,7 +269,11 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/cryptos"
+            "url": {
+              "raw": "{{URL}}/cryptos",
+              "host": ["{{URL}}"],
+              "path": ["cryptos"]
+            }
           },
           "response": []
         }
@@ -252,7 +293,11 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/articles"
+            "url": {
+              "raw": "{{URL}}/articles",
+              "host": ["{{URL}}"],
+              "path": ["articles"]
+            }
           },
           "response": []
         },
@@ -267,7 +312,11 @@
                 "type": "text"
               }
             ],
-            "url": "{{URL}}/articles/1"
+            "url": {
+              "raw": "{{URL}}/articles/1",
+              "host": ["{{URL}}"],
+              "path": ["articles", "1"]
+            }
           },
           "response": []
         }
@@ -325,7 +374,11 @@
                 }
               }
             },
-            "url": "{{URL}}/sources"
+            "url": {
+              "raw": "{{URL}}/sources",
+              "host": ["{{URL}}"],
+              "path": ["sources"]
+            }
           },
           "response": []
         },
@@ -372,7 +425,10 @@
             "type": "text"
           }
         ],
-        "url": "{{URL}}"
+        "url": {
+          "raw": "{{URL}}",
+          "host": ["{{URL}}"]
+        }
       },
       "response": []
     },

@@ -5,7 +5,7 @@ import { PrismaClient } from '@prisma/client'
 dotenv.config()
 const prisma = new PrismaClient()
 
-export async function isValidRssSource(url: string): Promise<boolean> {
+export const isValidRssSource = async (url: string): Promise<boolean> => {
   const params = new URLSearchParams({
     api_key: process.env.RSS_TO_JSON_API_KEY,
     rss_url: url,
@@ -25,11 +25,9 @@ export function isValidUrl(url: string): boolean {
   return urlRegex.test(url)
 }
 
-export async function isUniqueUrl(url: string): Promise<boolean> {
+export async function doesUrlAlreadyExist(url: string): Promise<boolean> {
   const source = await prisma.rssSource.findUnique({
-    where: {
-      url: url,
-    },
+    where: { url },
   })
-  return source !== null
+  return source && true
 }

@@ -9,10 +9,11 @@ export async function createRssSource(url: string) {
   })
 }
 
-export async function deleteRssSource(id: string) {
-  return await prisma.rssSource.delete({
+export async function deleteRssSource(id: number) {
+  const deletedRssSource = await prisma.rssSource.delete({
     where: {
-      id: parseInt(id),
+      id,
     },
   })
+  return deletedRssSource
 }
