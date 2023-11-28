@@ -3,6 +3,7 @@ import {
   generateAccessToken,
   generateUniqueNickname,
   getGoogleUserData,
+  getUserById,
   verifyCredentials,
 } from './users.service'
 import { Request, Response } from 'express'
@@ -16,12 +17,14 @@ dotenv.config()
 
 const saltRound = process.env.SALT_ROUND
 
+const frontUrl = process.env.FRONT_URL
 const clientID = process.env.GOOGLE_CLIENT_ID
 const clientSecret = process.env.GOOGLE_CLIENT_SECRET
 const redirectUrl = process.env.GOOGLE_CALLBACK_URL
 
 if (!saltRound) throw new Error('SALT_ROUND env variable is not defined')
 
+if (!frontUrl) throw new Error('FRONT_URL env variable is not defined')
 if (!clientID) throw new Error('GOOGLE_CLIENT_ID env variable is not defined')
 if (!clientSecret) throw new Error('GOOGLE_CLIENT_SECRET env variable is not defined')
 if (!redirectUrl) throw new Error('GOOGLE_CALLBACK_URL env variable is not defined')
@@ -51,7 +54,7 @@ export const loginController = async (req: Request, res: Response) => {
 }
 
 export const googleOAuthController = async (req: Request, res: Response) => {
-  res.header('Access-Control-Allow-Origin', 'http://localhost:5173')
+  res.header('Access-Control-Allow-Origin', frontUrl)
   res.header('Referrer-Policy', 'no-referrer-when-downgrade')
 
   const oAuth2Client = new OAuth2Client(clientID, clientSecret, redirectUrl)
@@ -109,7 +112,11 @@ export const logoutController = async (req: Request, res: Response) => {
 }
 
 export const getMyProfileController = async (req: Request, res: Response) => {
-  res.send('getMyProfileController')
+  const me = req.user
+  const myData = await getUserById(me.id)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { password, ...nonSensitiveData } = myData
+  res.status(200).send({ me: nonSensitiveData })
 }
 
 export const editMyProfileController = async (req: Request, res: Response) => {

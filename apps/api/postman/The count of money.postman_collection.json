@@ -118,9 +118,9 @@
           "response": []
         },
         {
-          "name": "update profile",
+          "name": "update my profile",
           "request": {
-            "method": "PUT",
+            "method": "PATCH",
             "header": [
               {
                 "key": "x-api-key",
@@ -373,6 +373,30 @@
           }
         ],
         "url": "{{URL}}"
+      },
+      "response": []
+    },
+    {
+      "name": "rss_feed api",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "https://api.rss2json.com/v1/api.json?rss_url=https://cointelegraph.com/rss&api_key=k1df8l6rclsvkbgb16n8mx7m2qxft7vnxystu6fo",
+          "protocol": "https",
+          "host": ["api", "rss2json", "com"],
+          "path": ["v1", "api.json"],
+          "query": [
+            {
+              "key": "rss_url",
+              "value": "https://cointelegraph.com/rss"
+            },
+            {
+              "key": "api_key",
+              "value": "k1df8l6rclsvkbgb16n8mx7m2qxft7vnxystu6fo"
+            }
+          ]
+        }
       },
       "response": []
     }
