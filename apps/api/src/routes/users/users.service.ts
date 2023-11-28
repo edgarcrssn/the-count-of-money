@@ -69,22 +69,16 @@ export const createUser = async (user: ICreateUser): Promise<User> => {
 }
 
 export const verifyCredentials = async ({ nickname, password }: IClassicLogin): Promise<{ token: string }> => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: { nickname, auth_type: AuthType.CLASSIC },
-    })
-    if (!user) throw { code: 401, message: 'Invalid credentials' }
+  const user = await prisma.user.findUnique({
+    where: { nickname, auth_type: AuthType.CLASSIC },
+  })
+  if (!user) throw { code: 401, message: 'Invalid credentials' }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password)
-    if (!isPasswordValid) throw { code: 401, message: 'Invalid credentials' }
+  const isPasswordValid = await bcrypt.compare(password, user.password)
+  if (!isPasswordValid) throw { code: 401, message: 'Invalid credentials' }
 
-    const token = generateAccessToken({ id: user.id, role: user.role })
-    return { token }
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.log('verifyCredentials: ', error)
-    throw error
-  }
+  const token = generateAccessToken({ id: user.id, role: user.role })
+  return { token }
 }
 
 export const getGoogleUserData = async (accessToken: string): Promise<IGoogleUserData> => {
