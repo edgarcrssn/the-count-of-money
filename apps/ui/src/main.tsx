@@ -6,6 +6,7 @@ import { Toaster } from 'sonner'
 import Home from './app/pages/home/home'
 import Login from './app/pages/login/login'
 import Register from './app/pages/register/register'
+import GoogleRedirect from './app/pages/google-redirect/google-redirect'
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
   {
     path: '/register',
     element: <Register />,
+  },
+  {
+    path: '/google-redirect',
+    element: <GoogleRedirect />,
   },
 ])
 

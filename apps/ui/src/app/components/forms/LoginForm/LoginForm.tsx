@@ -9,7 +9,19 @@ import { manageToken } from '../../../../utils/manageToken'
 const LoginForm = () => {
   const navigate = useNavigate()
 
-  const onFinish = async (values: LoginDto) => {
+  const loginWithGoogle = async () => {
+    const response = await authService.getGoogleLoginUrl()
+    if (response.status === 200 && response.data) {
+      window.location.href = response.data.url
+      return
+    }
+
+    toast.error(`An unknown error occurred while login in with Google (${response.status})`, {
+      description: 'Please contact the support.',
+    })
+  }
+
+  const loginWithPassword = async (values: LoginDto) => {
     const response = await authService.login(values)
     if (response.status === 200 && response.data) {
       const { token } = response.data
@@ -23,24 +35,32 @@ const LoginForm = () => {
       return
     }
 
-    toast.error(`An unknown error occurred (${response.status})`, { description: 'Please contact the support.' })
+    toast.error(`An unknown error occurred while login in with password (${response.status})`, {
+      description: 'Please contact the support.',
+    })
   }
 
   return (
-    <Form name="normal_login" initialValues={{ remember: true }} onFinish={onFinish}>
-      <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname.' }]}>
-        <Input placeholder="Nickname" />
-      </Form.Item>
-      <Form.Item name="password" rules={[{ required: true, message: 'Please input your password.' }]}>
-        <Input.Password placeholder="Password" />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>
-          Log in
-        </Button>
-        Or <Link to="/register">register now!</Link>
-      </Form.Item>
-    </Form>
+    <>
+      <Button onClick={loginWithGoogle} block>
+        Login with Google
+      </Button>
+      <div style={{ textAlign: 'center', margin: '.5rem 0' }}>or</div>
+      <Form name="normal_login" initialValues={{ remember: true }} onFinish={loginWithPassword}>
+        <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname.' }]}>
+          <Input placeholder="Nickname" />
+        </Form.Item>
+        <Form.Item name="password" rules={[{ required: true, message: 'Please input your password.' }]}>
+          <Input.Password placeholder="Password" />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" block>
+            Log in
+          </Button>
+          Or <Link to="/register">register now!</Link>
+        </Form.Item>
+      </Form>
+    </>
   )
 }
 
