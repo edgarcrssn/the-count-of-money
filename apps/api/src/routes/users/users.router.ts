@@ -6,7 +6,7 @@ import {
   googleOAuthCallbackController,
   googleOAuthController,
   loginController,
-  logoutController,
+  verifyAuthStatusController,
   registerController,
 } from './users.controller'
 import { validatorMiddleware } from '../../middleware/validatorMiddleware'
@@ -20,7 +20,7 @@ router.post('/login', loginValidator, validatorMiddleware, loginController)
 router.get('/auth/google', googleOAuthController)
 router.post('/auth/google/callback', googleOAuthCallbackValidator, validatorMiddleware, googleOAuthCallbackController)
 
-router.post('/logout', authMiddleware, logoutController)
+router.get('/verify-auth-status', authMiddleware, verifyAuthStatusController)
 
 router.get('/profile', authMiddleware, getMyProfileController)
 router.patch('/profile', authMiddleware, editMyProfileController)

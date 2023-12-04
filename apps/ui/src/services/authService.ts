@@ -1,5 +1,6 @@
 import { customFetch } from './customFetch'
 
+// TODO create a lib to store interfaces and types and share them among the apps (api and ui)
 export interface RegisterDto {
   nickname: string
   email: string
@@ -9,6 +10,13 @@ export interface RegisterDto {
 export interface LoginDto {
   nickname: string
   password: string
+}
+
+export interface JwtPayload {
+  id: number
+  email: string
+  nickname: string
+  role: 'ADMIN' | 'USER'
 }
 
 type Data =
@@ -99,6 +107,27 @@ export const authService = {
       .then((response) => {
         if (response.ok)
           return response.json().then((data: { token: string }) => ({
+            status: response.status,
+            data,
+          }))
+        return { status: response.status }
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error)
+        return { status: 500 }
+      })
+  },
+
+  async verifyAuthStatus(token: string): Promise<{ status: number; data?: { me: JwtPayload } }> {
+    return customFetch('/users/verify-auth-status', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok)
+          return response.json().then((data: { me: JwtPayload }) => ({
             status: response.status,
             data,
           }))

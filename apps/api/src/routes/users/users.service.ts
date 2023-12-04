@@ -24,6 +24,8 @@ interface IClassicLogin {
 }
 export interface JwtPayload {
   id: number
+  email: string
+  nickname: string
   role: Role
 }
 interface IGoogleUserData {
@@ -77,7 +79,7 @@ export const verifyCredentials = async ({ nickname, password }: IClassicLogin): 
   const isPasswordValid = await bcrypt.compare(password, user.password)
   if (!isPasswordValid) throw { code: 401, message: 'Invalid credentials' }
 
-  const token = generateAccessToken({ id: user.id, role: user.role })
+  const token = generateAccessToken({ id: user.id, email: user.email, nickname: user.nickname, role: user.role })
   return { token }
 }
 
