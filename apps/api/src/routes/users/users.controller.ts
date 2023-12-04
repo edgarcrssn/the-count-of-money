@@ -36,12 +36,7 @@ export const registerController = async (req: Request, res: Response) => {
     const { email, nickname, password } = req.body
     const hash = await bcrypt.hash(password, +saltRound)
     const newUser = await createUser({ email, nickname, password: hash })
-    const token = generateAccessToken({
-      id: newUser.id,
-      email: newUser.email,
-      nickname: newUser.nickname,
-      role: newUser.role,
-    })
+    const token = generateAccessToken(newUser)
     res.status(201).send({ token })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
@@ -94,12 +89,7 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
           message: `A user with this email is already registered with another auth method (${existingUser.auth_type})`,
         })
       } else {
-        const token = generateAccessToken({
-          id: existingUser.id,
-          email: existingUser.email,
-          nickname: existingUser.nickname,
-          role: existingUser.role,
-        })
+        const token = generateAccessToken(existingUser)
         res.status(200).send({ token })
       }
     } else {
@@ -108,12 +98,7 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
         nickname: await generateUniqueNickname(googleUserData.name),
         auth_type: AuthType.GOOGLE,
       })
-      const token = generateAccessToken({
-        id: newUser.id,
-        email: newUser.email,
-        nickname: newUser.nickname,
-        role: newUser.role,
-      })
+      const token = generateAccessToken(newUser)
       res.status(201).send({ token })
     }
   } catch (error) {
