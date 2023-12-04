@@ -81,6 +81,13 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
 
     const existingUser = await prisma.user.findUnique({
       where: { email: googleUserData.email },
+      select: {
+        id: true,
+        email: true,
+        nickname: true,
+        role: true,
+        auth_type: true,
+      },
     })
 
     if (existingUser) {
