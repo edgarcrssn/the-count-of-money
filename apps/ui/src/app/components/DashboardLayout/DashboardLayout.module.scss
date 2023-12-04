@@ -1,0 +1,28 @@
+.dashboardLayout {
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+
+  display: flex;
+
+  .aside {
+    height: 100%;
+  }
+
+  .content {
+    flex-grow: 1;
+    background-color: blue;
+
+    display: flex;
+    flex-direction: column;
+
+    .nav {
+      background-color: green;
+      height: 60px;
+    }
+    .main {
+      background-color: burlywood;
+      overflow-y: auto;
+    }
+  }
+}
