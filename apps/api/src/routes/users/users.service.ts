@@ -119,3 +119,18 @@ export const getUserById = async (id: number) => {
     throw { code: 500, message: error }
   }
 }
+
+export const updateUser = async (id: number, userData: Partial<User>): Promise<User> => {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: userData,
+    })
+
+    if (!updatedUser) throw { code: 404, message: 'User Not Found' }
+
+    return updatedUser
+  } catch (error) {
+    throw { code: 500, message: error }
+  }
+}
