@@ -37,7 +37,7 @@ export const registerController = async (req: Request, res: Response) => {
     const { email, nickname, password } = req.body
     const hash = await bcrypt.hash(password, +saltRound)
     const newUser = await createUser({ email, nickname, password: hash })
-    const token = generateAccessToken({ id: newUser.id, role: newUser.role })
+    const token = generateAccessToken(newUser)
     res.status(201).send({ token })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
@@ -82,6 +82,13 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
 
     const existingUser = await prisma.user.findUnique({
       where: { email: googleUserData.email },
+      select: {
+        id: true,
+        email: true,
+        nickname: true,
+        role: true,
+        auth_type: true,
+      },
     })
 
     if (existingUser) {
@@ -90,7 +97,7 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
           message: `A user with this email is already registered with another auth method (${existingUser.auth_type})`,
         })
       } else {
-        const token = generateAccessToken({ id: existingUser.id, role: existingUser.role })
+        const token = generateAccessToken(existingUser)
         res.status(200).send({ token })
       }
     } else {
@@ -99,7 +106,7 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
         nickname: await generateUniqueNickname(googleUserData.name),
         auth_type: AuthType.GOOGLE,
       })
-      const token = generateAccessToken({ id: newUser.id, role: newUser.role })
+      const token = generateAccessToken(newUser)
       res.status(201).send({ token })
     }
   } catch (error) {
@@ -108,8 +115,8 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
   }
 }
 
-export const logoutController = async (req: Request, res: Response) => {
-  res.send('logoutController')
+export const verifyAuthStatusController = async (req: Request, res: Response) => {
+  res.send({ me: req.user })
 }
 
 export const getMyProfileController = async (req: Request, res: Response) => {

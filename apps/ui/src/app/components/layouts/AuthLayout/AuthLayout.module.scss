@@ -1,4 +1,7 @@
-.dashboardLayout {
+@import '../../../../styles.scss';
+
+.authLayout {
+  background-color: $pure-white;
   width: 100vw;
   height: 100vh;
   overflow: hidden;
@@ -16,11 +19,6 @@
 
     .form {
       width: 50%;
-
-      > h1 {
-        text-align: center;
-        margin-bottom: 1rem;
-      }
     }
   }
 

@@ -1,18 +1,14 @@
-import React, { PropsWithChildren } from 'react'
+import React from 'react'
 import styles from './AuthLayout.module.scss'
+import { Outlet } from 'react-router-dom'
+import withoutAuth from '../../hoc/withoutAuth'
 
-type Props = PropsWithChildren & {
-  reverse?: boolean
-  title: string
-}
-
-const AuthLayout = ({ children, reverse, title }: Props) => {
+const AuthLayout = () => {
   return (
-    <div className={styles.dashboardLayout} style={reverse ? { flexDirection: 'row-reverse' } : undefined}>
+    <div className={styles.authLayout}>
       <div className={styles.formContainer}>
         <div className={styles.form}>
-          <h1>{title}</h1>
-          {children}
+          <Outlet />
         </div>
       </div>
       <img
@@ -24,4 +20,4 @@ const AuthLayout = ({ children, reverse, title }: Props) => {
   )
 }
 
-export default AuthLayout
+export default withoutAuth(AuthLayout)
