@@ -5,7 +5,7 @@ import withoutAuth from '../../hoc/withoutAuth'
 
 const AuthLayout = () => {
   return (
-    <div className={styles.dashboardLayout}>
+    <div className={styles.authLayout}>
       <div className={styles.formContainer}>
         <div className={styles.form}>
           <Outlet />
