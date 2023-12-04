@@ -1,6 +1,7 @@
 import { AuthType, Prisma, PrismaClient, Role, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import axios from 'axios'
 
 import * as dotenv from 'dotenv'
 import slugify from 'slugify'
@@ -82,10 +83,8 @@ export const verifyCredentials = async ({ nickname, password }: IClassicLogin): 
 }
 
 export const getGoogleUserData = async (accessToken: string): Promise<IGoogleUserData> => {
-  // TODO: Utiliser axios une fois la pr #4 merged
-  const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`)
-  const data: IGoogleUserData = await response.json()
-  return data
+  const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`)
+  return response.data
 }
 
 export const generateUniqueNickname = async (name: string) => {
