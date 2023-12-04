@@ -4,6 +4,7 @@ import {
   generateUniqueNickname,
   getGoogleUserData,
   getUserById,
+  updateUser,
   verifyCredentials,
 } from './users.service'
 import { Request, Response } from 'express'
@@ -120,5 +121,12 @@ export const getMyProfileController = async (req: Request, res: Response) => {
 }
 
 export const editMyProfileController = async (req: Request, res: Response) => {
-  res.send('editMyProfileController')
+  try {
+    const id = req.user.id
+    const userData = req.body
+    const updatedUser = await updateUser(id, userData)
+    res.status(200).json({ updatedUser })
+  } catch (error) {
+    res.status(error.code).json({ message: 'An error occurred while updating the user profile: ', error })
+  }
 }
