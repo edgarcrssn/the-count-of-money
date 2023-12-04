@@ -1,5 +1,7 @@
+@import '../../../../styles.scss';
+
 .authLayout {
-  background-color: white;
+  background-color: $pure-white;
   width: 100vw;
   height: 100vh;
   overflow: hidden;

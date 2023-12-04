@@ -1,3 +1,5 @@
+@import '../../../../styles.scss';
+
 .dashboardLayout {
   width: 100vw;
   height: 100vh;
@@ -16,7 +18,7 @@
     flex-direction: column;
 
     .header {
-      background-color: white;
+      background-color: $pure-white;
       min-height: 3rem;
       position: relative;
 
@@ -25,7 +27,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        box-shadow: 0px 5px 20px rgba(rgb(50, 50, 50), 0.1);
+        box-shadow: 0px 5px 20px $light-gray;
       }
     }
     .main {
@@ -40,7 +42,7 @@
       .page {
         flex-grow: 1;
         border-radius: 0.25rem;
-        background-color: white;
+        background-color: $pure-white;
         padding: 1rem;
       }
     }
