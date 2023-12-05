@@ -11,7 +11,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import AuthLayout from './app/components/layouts/AuthLayout/AuthLayout'
 import DashboardLayout from './app/components/layouts/DashboardLayout/DashboardLayout'
 import { ConfigProvider } from 'antd'
-import Profile from './app/pages/profile/Profile'
+import Profile from './app/pages/profile/profile'
 
 import variables from './styles/variables.module.scss'
 
@@ -26,7 +26,7 @@ const App = () => {
           element: <Home />,
         },
         {
-          path: '/profile/:nickname',
+          path: 'profile/:nickname',
           element: <Profile />,
         },
       ],
@@ -60,10 +60,9 @@ const App = () => {
       <ConfigProvider
         theme={{
           token: {
+            fontFamily: ralewayFont,
             colorPrimary: bitcoinOrange,
             colorLink: bitcoinOrange,
-            fontFamily: ralewayFont,
-            // colorBgContainer: sunYellow,
           },
         }}
       >
