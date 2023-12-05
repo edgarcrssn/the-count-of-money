@@ -114,11 +114,9 @@ const RegisterForm = ({ onSuccess }: Props) => {
       >
         <Input.Password placeholder="Password" />
       </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>
-          Register
-        </Button>
-      </Form.Item>
+      <Button type="primary" htmlType="submit" block>
+        Register
+      </Button>
     </Form>
   )
 }

@@ -42,11 +42,9 @@ const LoginForm = ({ onSuccess }: Props) => {
       <Form.Item name="password" rules={[{ required: true, message: 'Please input your password.' }]}>
         <Input.Password placeholder="Password" />
       </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit" block>
-          Log in
-        </Button>
-      </Form.Item>
+      <Button type="primary" htmlType="submit" block>
+        Log in
+      </Button>
     </Form>
   )
 }
