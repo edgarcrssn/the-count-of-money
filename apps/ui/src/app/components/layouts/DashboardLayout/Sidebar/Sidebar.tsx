@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
-import { Layout, Menu } from 'antd'
+import styles from './Sidebar.module.scss'
 import { DesktopOutlined, FileOutlined, PieChartOutlined, TeamOutlined, UserOutlined } from '@ant-design/icons'
 import type { MenuProps } from 'antd'
+import { Layout, Menu } from 'antd'
+import { Link } from 'react-router-dom'
 const { Sider } = Layout
 
 type MenuItem = Required<MenuProps>['items'][number]
@@ -28,7 +30,14 @@ export const Sidebar = () => {
 
   return (
     <Sider collapsible collapsed={collapsed} style={{ height: '100%' }} onCollapse={(value) => setCollapsed(value)}>
-      <div className="demo-logo-vertical" />
+      <Link to="/">
+        <h1 className={styles.logo}>
+          {collapsed ? null : <span>The count of money</span>}
+          <span role="img" aria-label="Money bag">
+            💰
+          </span>
+        </h1>
+      </Link>
       <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
     </Sider>
   )
