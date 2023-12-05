@@ -41,3 +41,7 @@ model Currency {
   name String @unique
   User User[]
 }
+
+model Cryptocurrency {
+  id   String @id @unique
+}
