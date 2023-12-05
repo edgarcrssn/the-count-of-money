@@ -3,7 +3,7 @@ import styles from './DashboardLayout.module.scss'
 import { Sidebar } from './Sidebar/Sidebar'
 import { Header } from './Header/Header'
 import { Layout } from 'antd'
-import { BreadcrumbContainer } from './BreadcrumbContainer/BreadcrumbContainer'
+
 import { Outlet } from 'react-router-dom'
 import { CurrentUserProvider } from '../../../context/CurrentUserProvider'
 
@@ -19,10 +19,7 @@ const DashboardLayout = () => {
             <Header />
           </div>
           <main className={styles.main}>
-            <BreadcrumbContainer />
-            <div className={styles.page}>
-              <Outlet />
-            </div>
+            <Outlet />
           </main>
         </div>
       </Layout>

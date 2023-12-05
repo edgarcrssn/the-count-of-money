@@ -10,13 +10,26 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import AuthLayout from './app/components/layouts/AuthLayout/AuthLayout'
 import DashboardLayout from './app/components/layouts/DashboardLayout/DashboardLayout'
+import { ConfigProvider } from 'antd'
+import Profile from './app/pages/profile/Profile'
+
+import variables from './styles/variables.module.scss'
 
 const App = () => {
   const router = createBrowserRouter([
     {
       path: '/',
       element: <DashboardLayout />,
-      children: [{ path: '', element: <Home /> }],
+      children: [
+        {
+          path: '',
+          element: <Home />,
+        },
+        {
+          path: '/profile/:nickname',
+          element: <Profile />,
+        },
+      ],
     },
     {
       path: '/',
@@ -40,13 +53,26 @@ const App = () => {
 
   const queryClient = new QueryClient()
 
+  const { bitcoinOrange, ralewayFont } = variables
+
   return (
     <StrictMode>
-      <QueryClientProvider client={queryClient}>
-        <RouterProvider router={router} />
-        <Toaster richColors />
-        <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
-      </QueryClientProvider>
+      <ConfigProvider
+        theme={{
+          token: {
+            colorPrimary: bitcoinOrange,
+            colorLink: bitcoinOrange,
+            fontFamily: ralewayFont,
+            // colorBgContainer: sunYellow,
+          },
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <Toaster richColors />
+          <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
+        </QueryClientProvider>
+      </ConfigProvider>
     </StrictMode>
   )
 }

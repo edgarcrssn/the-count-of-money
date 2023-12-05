@@ -1,0 +1,29 @@
+// Typography
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;700&display=swap');
+$raleway-font: 'Raleway', sans-serif; // Clean and modern sans-serif font, versatile for various text elements
+
+// Colors
+$theme-colors: (
+  // Ideal for backgrounds or dark elements
+  'darkNavy': #0b0e11,
+  // Useful for less intense dark backgrounds or elements
+  'charcoalGray': #1e2329,
+  // Vibrant, attention-grabbing orange, good for highlights or call-to-actions
+  'bitcoinOrange': #f0b90b,
+  // Bright yellow, suitable for accents or vibrant elements
+  'sunYellow': #fcd535,
+  // Light gray, perfect for subtle backgrounds or borders
+  'lightGray': #eaecef,
+  // Almost white, great for light backgrounds where pure white is too stark
+  'offWhite': #fafafa,
+  // Pure white, versatile for text, backgrounds, and other elements,,
+  'pureWhite': #ffffff
+);
+
+:export {
+  @each $key, $value in $theme-colors {
+    #{unquote($key)}: $value;
+  }
+
+  ralewayFont: $raleway-font;
+}

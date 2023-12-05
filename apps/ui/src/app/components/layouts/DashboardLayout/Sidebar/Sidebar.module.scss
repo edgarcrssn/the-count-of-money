@@ -1,2 +1,18 @@
-.sidebar {
+@import '../../../../../styles//variables.module.scss';
+
+.logo {
+  font-size: 1.2rem;
+  margin: 0.25rem;
+  padding: 0.5rem 1rem;
+  text-align: center;
+  color: map-get($theme-colors, 'pureWhite');
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: map-get($theme-colors, 'bitcoinOrange');
+  }
+
+  line-height: 1.2em;
+  max-height: 3.875em;
+  overflow: hidden;
 }

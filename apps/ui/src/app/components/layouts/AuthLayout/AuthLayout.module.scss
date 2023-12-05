@@ -1,7 +1,7 @@
-@import '../../../../styles.scss';
+@import '../../../../styles/variables.module.scss';
 
 .authLayout {
-  background-color: $pure-white;
+  background-color: map-get($theme-colors, 'pureWhite');
   width: 100vw;
   height: 100vh;
   overflow: hidden;
