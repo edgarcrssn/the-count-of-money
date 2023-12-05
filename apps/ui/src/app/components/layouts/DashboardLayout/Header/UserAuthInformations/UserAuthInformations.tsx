@@ -71,23 +71,21 @@ export const UserAuthInformations = () => {
         onCancel={() => setIsModalOpen(false)}
         footer={null}
       >
-        <div>
-          <GoogleAuthButton />
-          <Separator />
-          <LoginForm
-            onSuccess={() => {
-              setIsModalOpen(false)
-              loadCurrentUser()
-            }}
-          />
-          <Separator />
-          <RegisterForm
-            onSuccess={() => {
-              setIsModalOpen(false)
-              loadCurrentUser()
-            }}
-          />
-        </div>
+        <GoogleAuthButton />
+        <Separator />
+        <LoginForm
+          onSuccess={() => {
+            setIsModalOpen(false)
+            loadCurrentUser()
+          }}
+        />
+        <Separator />
+        <RegisterForm
+          onSuccess={() => {
+            setIsModalOpen(false)
+            loadCurrentUser()
+          }}
+        />
       </Modal>
     </>
   )
