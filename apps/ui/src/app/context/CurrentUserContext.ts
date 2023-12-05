@@ -3,7 +3,7 @@ import { JwtPayload } from '../../services/authService'
 
 interface CurrentUserContextType {
   readonly currentUser: JwtPayload | null
-  readonly setCurrentUser: (me: JwtPayload) => void
+  readonly setCurrentUser: (me: JwtPayload | null) => void
   readonly loadCurrentUser: () => Promise<void>
 }
 
