@@ -1,5 +1,6 @@
 import express from 'express'
 import { adminMiddleware } from '../../middleware/adminMiddleware'
+
 import {
   deleteCryptoController,
   getCryptoByIdController,
@@ -15,6 +16,6 @@ router.get('/:id', getCryptoByIdController)
 router.get('/:id/history/:period', getCryptoPriceHistoryController)
 
 router.post('/', adminMiddleware, postCryptoController)
-router.delete('/', adminMiddleware, deleteCryptoController)
+router.delete('/:id', adminMiddleware, deleteCryptoController)
 
 export default router
