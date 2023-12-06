@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 // import styles from './LoginForm.module.scss'
 import { Button, Form, Input } from 'antd'
 import { LoginDto, authService } from '../../../../services/authService'
@@ -10,10 +10,14 @@ interface Props {
 }
 
 const LoginForm = ({ onSuccess }: Props) => {
+  const [fetching, setFetching] = useState(false)
   const [form] = Form.useForm()
 
   const loginWithPassword = async (values: LoginDto) => {
+    setFetching(true)
     const response = await authService.login(values)
+    setFetching(false)
+
     if (response.status === 200 && response.data) {
       const { token } = response.data
       manageToken.set(token)
@@ -42,7 +46,7 @@ const LoginForm = ({ onSuccess }: Props) => {
       <Form.Item name="password" rules={[{ required: true, message: 'Please input your password.' }]}>
         <Input.Password placeholder="Password" />
       </Form.Item>
-      <Button type="primary" htmlType="submit" block>
+      <Button disabled={fetching} type="primary" htmlType="submit" block>
         Log in
       </Button>
     </Form>
