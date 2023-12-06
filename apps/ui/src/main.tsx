@@ -3,12 +3,9 @@ import * as ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import Home from './app/pages/home/home'
-import Login from './app/pages/login/login'
-import Register from './app/pages/register/register'
 import GoogleRedirect from './app/pages/google-redirect/google-redirect'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
-import AuthLayout from './app/components/layouts/AuthLayout/AuthLayout'
 import DashboardLayout from './app/components/layouts/DashboardLayout/DashboardLayout'
 import { ConfigProvider } from 'antd'
 import Profile from './app/pages/profile/profile'
@@ -28,20 +25,6 @@ const App = () => {
         {
           path: 'profile/:nickname',
           element: <Profile />,
-        },
-      ],
-    },
-    {
-      path: '/',
-      element: <AuthLayout />,
-      children: [
-        {
-          path: 'login',
-          element: <Login />,
-        },
-        {
-          path: 'register',
-          element: <Register />,
         },
       ],
     },

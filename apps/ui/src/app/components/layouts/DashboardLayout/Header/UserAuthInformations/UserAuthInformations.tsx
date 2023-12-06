@@ -1,30 +1,29 @@
-import { Dropdown, MenuProps, Space } from 'antd'
+import { Dropdown, MenuProps, Modal, Space } from 'antd'
 import { CurrentUserContext } from '../../../../../context/CurrentUserContext'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { manageToken } from '../../../../../../utils/manageToken'
+import GoogleAuthButton from '../../../../GoogleAuthButton/GoogleAuthButton'
+import { Separator } from '../../../../Separator/Separator'
+import LoginForm from '../../../../forms/LoginForm/LoginForm'
+import RegisterForm from '../../../../forms/RegisterForm/RegisterForm'
 
 export const UserAuthInformations = () => {
-  const { currentUser, loadCurrentUser } = useContext(CurrentUserContext)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  if (!currentUser)
-    return (
-      <div>
-        You are not logged in. <Link to="/login">Log me in</Link>
-      </div>
-    )
+  const { currentUser, setCurrentUser, loadCurrentUser } = useContext(CurrentUserContext)
 
   const logout = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault()
     manageToken.remove()
-    loadCurrentUser()
+    setCurrentUser(null)
   }
 
   const items: MenuProps['items'] = [
     {
       key: '1',
-      label: <Link to={`/profile/${currentUser.nickname}`}>My profile</Link>,
+      label: <Link to={`/profile/${currentUser?.nickname}`}>My profile</Link>,
       icon: <UserOutlined />,
     },
 
@@ -42,12 +41,52 @@ export const UserAuthInformations = () => {
 
   return (
     <>
-      Hello,{' '}
-      <Dropdown menu={{ items }}>
-        <a href="/" onClick={(e) => e.preventDefault()}>
-          <Space>{currentUser.nickname}</Space>
-        </a>
-      </Dropdown>
+      {currentUser ? (
+        <>
+          Hello,{' '}
+          <Dropdown menu={{ items }}>
+            <a href="/" onClick={(e) => e.preventDefault()}>
+              <Space>{currentUser.nickname}</Space>
+            </a>
+          </Dropdown>
+        </>
+      ) : (
+        <div>
+          You are not logged in.{' '}
+          <Link
+            to="/"
+            onClick={(e) => {
+              e.preventDefault()
+              setIsModalOpen(true)
+            }}
+          >
+            Log me in
+          </Link>
+        </div>
+      )}
+      <Modal
+        title="Join the community!"
+        centered
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}
+      >
+        <GoogleAuthButton />
+        <Separator />
+        <LoginForm
+          onSuccess={() => {
+            setIsModalOpen(false)
+            loadCurrentUser()
+          }}
+        />
+        <Separator />
+        <RegisterForm
+          onSuccess={() => {
+            setIsModalOpen(false)
+            loadCurrentUser()
+          }}
+        />
+      </Modal>
     </>
   )
 }
