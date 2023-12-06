@@ -11,6 +11,8 @@ import { ConfigProvider } from 'antd'
 import Profile from './app/pages/profile/profile'
 
 import variables from './styles/variables.module.scss'
+import Cryptocurrencies from './app/pages/cryptocurrencies/cryptocurrencies'
+import Articles from './app/pages/articles/articles'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -25,6 +27,14 @@ const App = () => {
         {
           path: 'profile/:nickname',
           element: <Profile />,
+        },
+        {
+          path: 'cryptocurrencies',
+          element: <Cryptocurrencies />,
+        },
+        {
+          path: 'articles',
+          element: <Articles />,
         },
       ],
     },
