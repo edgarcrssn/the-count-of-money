@@ -41,10 +41,10 @@ const LoginForm = ({ onSuccess }: Props) => {
   return (
     <Form form={form} name="normal_login" initialValues={{ remember: true }} onFinish={loginWithPassword}>
       <div style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '.5rem' }}>Login with password</div>
-      <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname.' }]}>
+      <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname' }]}>
         <Input placeholder="Nickname" />
       </Form.Item>
-      <Form.Item name="password" rules={[{ required: true, message: 'Please input your password.' }]}>
+      <Form.Item name="password" rules={[{ required: true, message: 'Please input your password' }]}>
         <Input.Password placeholder="Password" />
       </Form.Item>
       <Button disabled={fetching} type="primary" htmlType="submit" block>

@@ -1,9 +1,12 @@
 import axios from 'axios'
 import dotenv from 'dotenv'
 import { PrismaClient } from '@prisma/client'
+import { body } from 'express-validator'
 
 dotenv.config()
 const prisma = new PrismaClient()
+
+export const postRssValidator = [body('url').isURL().withMessage('must be an URL')]
 
 export const isValidRssSource = async (url: string): Promise<boolean> => {
   const params = new URLSearchParams({
@@ -17,12 +20,6 @@ export const isValidRssSource = async (url: string): Promise<boolean> => {
   } catch (error) {
     return false
   }
-}
-
-export const isValidUrl = (url: string): boolean => {
-  const urlRegex = /^(http|https):\/\/[^ "]+$/
-
-  return urlRegex.test(url)
 }
 
 export const doesUrlAlreadyExist = async (url: string): Promise<boolean> => {
