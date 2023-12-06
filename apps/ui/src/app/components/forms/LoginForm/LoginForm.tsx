@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
 // import styles from './LoginForm.module.scss'
 import { Button, Form, Input } from 'antd'
-import { LoginDto, authService } from '../../../../services/authService'
+import { authService } from '../../../../services/authService'
 import { toast } from 'sonner'
 import { manageToken } from '../../../../utils/manageToken'
+import { LoginDto } from '@the-count-of-money/types'
 
 interface Props {
   onSuccess: () => void

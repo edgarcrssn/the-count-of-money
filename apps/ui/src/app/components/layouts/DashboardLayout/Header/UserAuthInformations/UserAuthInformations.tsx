@@ -46,7 +46,7 @@ export const UserAuthInformations = () => {
           Hello,{' '}
           <Dropdown menu={{ items }}>
             <a href="/" onClick={(e) => e.preventDefault()}>
-              <Space>{currentUser.nickname}</Space>
+              <Space>{currentUser.first_name}</Space>
             </a>
           </Dropdown>
         </>

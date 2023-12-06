@@ -74,6 +74,8 @@ const upsertUsers = async () => {
     where: { nickname: 'admin' },
     update: {},
     create: {
+      first_name: 'Admin',
+      last_name: 'ADMIN',
       email: 'admin@admin.fr',
       nickname: 'admin',
       password: hash,

@@ -35,9 +35,9 @@ const prisma = new PrismaClient()
 
 export const registerController = async (req: Request, res: Response) => {
   try {
-    const { email, nickname, password } = req.body as RegisterDto
+    const { first_name, last_name, email, nickname, password } = req.body as RegisterDto
     const hash = await bcrypt.hash(password, +saltRound)
-    const newUser = await createUser({ email, nickname, password: hash })
+    const newUser = await createUser({ first_name, last_name, email, nickname, password: hash })
     const token = generateAccessToken(newUser)
     res.status(201).send({ token })
   } catch (error) {
@@ -85,6 +85,8 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
       where: { email: googleUserData.email },
       select: {
         id: true,
+        first_name: true,
+        last_name: true,
         email: true,
         nickname: true,
         role: true,
@@ -104,6 +106,8 @@ export const googleOAuthCallbackController = async (req: Request, res: Response)
     } else {
       const newUser = await createUser({
         email: googleUserData.email,
+        first_name: googleUserData.given_name,
+        last_name: googleUserData.family_name,
         nickname: await generateUniqueNickname(googleUserData.name),
         auth_type: AuthType.GOOGLE,
       })
