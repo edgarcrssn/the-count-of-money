@@ -1,11 +1,11 @@
 import { body } from 'express-validator'
 
 export const registerValidator = [
-  body('firstName')
+  body('first_name')
     .notEmpty()
     .matches(/^[A-Za-z\s]+$/)
     .withMessage('must only contain letters and/or spaces'),
-  body('lastName')
+  body('last_name')
     .notEmpty()
     .matches(/^[A-Za-z\s]+$/)
     .withMessage('must only contain letters and/or spaces'),

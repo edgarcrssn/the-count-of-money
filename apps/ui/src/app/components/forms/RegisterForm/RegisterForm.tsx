@@ -117,6 +117,7 @@ const RegisterForm = ({ onSuccess }: Props) => {
       >
         <Input placeholder="Nickname" />
       </Form.Item>
+      {/* TODO verify email format */}
       <Form.Item name="email" rules={[{ required: true, message: 'Please input your email.' }]}>
         <Input type="email" placeholder="Email" />
       </Form.Item>
