@@ -13,6 +13,7 @@ import { OAuth2Client } from 'google-auth-library'
 
 import * as dotenv from 'dotenv'
 import { AuthType, PrismaClient } from '@prisma/client'
+import { LoginDto, RegisterDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -34,7 +35,7 @@ const prisma = new PrismaClient()
 
 export const registerController = async (req: Request, res: Response) => {
   try {
-    const { email, nickname, password } = req.body
+    const { email, nickname, password } = req.body as RegisterDto
     const hash = await bcrypt.hash(password, +saltRound)
     const newUser = await createUser({ email, nickname, password: hash })
     const token = generateAccessToken(newUser)
@@ -46,7 +47,7 @@ export const registerController = async (req: Request, res: Response) => {
 
 export const loginController = async (req: Request, res: Response) => {
   try {
-    const { nickname, password } = req.body
+    const { nickname, password } = req.body as LoginDto
     const result = await verifyCredentials({ nickname, password })
     res.status(200).send(result)
   } catch (error) {
@@ -120,8 +121,8 @@ export const verifyAuthStatusController = async (req: Request, res: Response) =>
 }
 
 export const getMyProfileController = async (req: Request, res: Response) => {
-  const me = req.user
-  const myData = await getUserById(me.id)
+  const { id } = req.user
+  const myData = await getUserById(id)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password, ...nonSensitiveData } = myData
   res.status(200).send({ me: nonSensitiveData })
@@ -129,7 +130,8 @@ export const getMyProfileController = async (req: Request, res: Response) => {
 
 export const editMyProfileController = async (req: Request, res: Response) => {
   try {
-    const id = req.user.id
+    const { id } = req.user
+    // TODO Create UserDataDto type in libs/types
     const userData = req.body
     const updatedUser = await updateUser(id, userData)
     res.status(200).json({ updatedUser })

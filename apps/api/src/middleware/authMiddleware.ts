@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 import jwt from 'jsonwebtoken'
-import { JwtPayload } from '../routes/users/users.service'
 import { NextFunction, Request, Response } from 'express'
+import { JwtPayload } from '@the-count-of-money/types'
 
 dotenv.config()
 

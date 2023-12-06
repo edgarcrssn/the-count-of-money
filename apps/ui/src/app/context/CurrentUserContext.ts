@@ -1,5 +1,5 @@
+import { JwtPayload } from '@the-count-of-money/types'
 import { createContext } from 'react'
-import { JwtPayload } from '../../services/authService'
 
 interface CurrentUserContextType {
   readonly currentUser: JwtPayload | null
