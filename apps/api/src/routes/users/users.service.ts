@@ -15,6 +15,8 @@ if (!jwtSecret) throw new Error('JWT_SECRET env variable is not defined')
 const prisma = new PrismaClient()
 
 interface ICreateUser {
+  first_name: string
+  last_name: string
   email: string
   nickname: string
   password?: string
@@ -72,7 +74,7 @@ export const verifyCredentials = async ({ nickname, password }: LoginDto): Promi
   const isPasswordValid = await bcrypt.compare(password, user.password)
   if (!isPasswordValid) throw { code: 401, message: 'Invalid credentials' }
 
-  const token = generateAccessToken({ id: user.id, email: user.email, nickname: user.nickname, role: user.role })
+  const token = generateAccessToken(user)
   return { token }
 }
 

@@ -1,10 +1,11 @@
 import React from 'react'
 // import styles from './RegisterForm.module.scss'
 import { Button, Form, Input } from 'antd'
-import { RegisterDto, authService } from '../../../../services/authService'
+import { authService } from '../../../../services/authService'
 import { toast } from 'sonner'
 import { manageToken } from '../../../../utils/manageToken'
 import { capitalize } from '../../../../utils/capitalize'
+import { RegisterDto } from '@the-count-of-money/types'
 
 interface Props {
   onSuccess: () => void
@@ -14,7 +15,12 @@ const RegisterForm = ({ onSuccess }: Props) => {
   const [form] = Form.useForm()
 
   const registerWithPassword = async (values: RegisterDto) => {
-    const response = await authService.register(values)
+    const response = await authService.register({
+      ...values,
+      first_name: values.first_name.trim(),
+      last_name: values.last_name.trim(),
+      nickname: values.nickname.trim(),
+    })
 
     if (response.status === 201 && response.data && 'token' in response.data) {
       const token = response.data.token
@@ -45,6 +51,46 @@ const RegisterForm = ({ onSuccess }: Props) => {
   return (
     <Form form={form} name="normal_register" initialValues={{ remember: true }} onFinish={registerWithPassword}>
       <div style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '.5rem' }}>Register with password</div>
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          columnGap: '1rem',
+        }}
+      >
+        <Form.Item
+          name="first_name"
+          rules={[
+            { required: true, message: 'Please input your first name.' },
+            () => ({
+              validator(_, value) {
+                if (!value || /^[A-Za-z\s]+$/.test(value)) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('Must only contain letters and/or spaces'))
+              },
+            }),
+          ]}
+        >
+          <Input placeholder="First name" />
+        </Form.Item>
+        <Form.Item
+          name="last_name"
+          rules={[
+            { required: true, message: 'Please input your last name.' },
+            () => ({
+              validator(_, value) {
+                if (!value || /^[A-Za-z\s]+$/.test(value)) {
+                  return Promise.resolve()
+                }
+                return Promise.reject(new Error('Must only contain letters and/or spaces'))
+              },
+            }),
+          ]}
+        >
+          <Input placeholder="Last name" />
+        </Form.Item>
+      </div>
       <Form.Item
         name="nickname"
         rules={[
