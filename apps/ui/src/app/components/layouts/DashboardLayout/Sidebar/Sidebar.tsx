@@ -12,7 +12,10 @@ type MenuItem = Required<MenuProps>['items'][number]
 export const Sidebar = () => {
   const { pathname } = useLocation()
 
-  const [collapsed, setCollapsed] = useState(false)
+  const [collapsed, setCollapsed] = useState<boolean>(() => {
+    const storedCollapsed = localStorage.getItem('tcomSidebarCollapsed')
+    return storedCollapsed ? JSON.parse(storedCollapsed) : false
+  })
   const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
   const { currentUser } = useContext(CurrentUserContext)
@@ -54,6 +57,10 @@ export const Sidebar = () => {
 
     setSelectedKeys(getSelectedKeys())
   }, [pathname])
+
+  useEffect(() => {
+    localStorage.setItem('tcomSidebarCollapsed', JSON.stringify(collapsed))
+  }, [collapsed])
 
   return (
     <Sider

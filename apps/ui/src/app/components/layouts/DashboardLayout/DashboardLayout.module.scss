@@ -32,12 +32,15 @@
     }
     .main {
       flex-grow: 1;
+      padding: 1rem 0.75rem;
       overflow-y: auto;
-      margin: 1rem 0.75rem;
-      height: 100%;
-      border-radius: 0.25rem;
-      background-color: map-get($theme-colors, 'pureWhite');
-      padding: 1rem;
+
+      .page {
+        min-height: 100%;
+        border-radius: 0.25rem;
+        background-color: map-get($theme-colors, 'pureWhite');
+        padding: 1rem;
+      }
     }
   }
 }
