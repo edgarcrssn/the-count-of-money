@@ -76,7 +76,7 @@ const RegisterForm = ({ onSuccess }: Props) => {
             }),
           ]}
         >
-          <Input placeholder="First name" />
+          <Input placeholder="First name" maxLength={32} />
         </Form.Item>
         <Form.Item
           name="last_name"
@@ -92,7 +92,7 @@ const RegisterForm = ({ onSuccess }: Props) => {
             }),
           ]}
         >
-          <Input placeholder="Last name" />
+          <Input placeholder="Last name" maxLength={32} />
         </Form.Item>
       </div>
       <Form.Item
@@ -117,11 +117,11 @@ const RegisterForm = ({ onSuccess }: Props) => {
           }),
         ]}
       >
-        <Input placeholder="Nickname" min={3} max={18} />
+        <Input placeholder="Nickname" minLength={3} maxLength={18} showCount />
       </Form.Item>
       {/* TODO verify email format */}
       <Form.Item name="email" rules={[{ required: true, message: 'Please input your email' }]}>
-        <Input type="email" placeholder="Email" />
+        <Input type="email" placeholder="Email" maxLength={255} />
       </Form.Item>
       <Form.Item
         name="password"
@@ -145,7 +145,7 @@ const RegisterForm = ({ onSuccess }: Props) => {
           }),
         ]}
       >
-        <Input.Password placeholder="Password" min={8} max={32} />
+        <Input.Password placeholder="Password" minLength={8} maxLength={32} showCount />
       </Form.Item>
       <Button disabled={fetching} type="primary" htmlType="submit" block>
         Register
