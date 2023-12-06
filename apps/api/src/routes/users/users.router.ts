@@ -23,6 +23,7 @@ router.post('/auth/google/callback', googleOAuthCallbackValidator, validatorMidd
 router.get('/verify-auth-status', authMiddleware, verifyAuthStatusController)
 
 router.get('/profile', authMiddleware, getMyProfileController)
+// TODO Create express-validator validator
 router.patch('/profile', authMiddleware, editMyProfileController)
 
 export default router

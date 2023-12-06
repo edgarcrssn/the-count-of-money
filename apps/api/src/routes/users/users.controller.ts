@@ -121,8 +121,8 @@ export const verifyAuthStatusController = async (req: Request, res: Response) =>
 }
 
 export const getMyProfileController = async (req: Request, res: Response) => {
-  const me = req.user
-  const myData = await getUserById(me.id)
+  const { id } = req.user
+  const myData = await getUserById(id)
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password, ...nonSensitiveData } = myData
   res.status(200).send({ me: nonSensitiveData })
@@ -130,7 +130,8 @@ export const getMyProfileController = async (req: Request, res: Response) => {
 
 export const editMyProfileController = async (req: Request, res: Response) => {
   try {
-    const id = req.user.id
+    const { id } = req.user
+    // TODO Create UserDataDto type in libs/types
     const userData = req.body
     const updatedUser = await updateUser(id, userData)
     res.status(200).json({ updatedUser })
