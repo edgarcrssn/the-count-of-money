@@ -62,7 +62,7 @@ const App = () => {
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={router} />
           <Toaster richColors />
-          <ReactQueryDevtools initialIsOpen={true} position="bottom-right" />
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
         </QueryClientProvider>
       </ConfigProvider>
     </StrictMode>
