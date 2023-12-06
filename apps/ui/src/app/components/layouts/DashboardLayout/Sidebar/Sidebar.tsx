@@ -11,6 +11,7 @@ type MenuItem = Required<MenuProps>['items'][number]
 
 export const Sidebar = () => {
   const { pathname } = useLocation()
+  const { currentUser } = useContext(CurrentUserContext)
 
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     const storedCollapsed = localStorage.getItem('sidebarIsCollapsed')
@@ -28,6 +29,7 @@ export const Sidebar = () => {
   const homeLabel = useRef<HTMLAnchorElement>(null)
   const cryptocurrenciesLabel = useRef<HTMLAnchorElement>(null)
   const articlesLabel = useRef<HTMLAnchorElement>(null)
+  const myProfileLabel = useRef<HTMLAnchorElement>(null)
 
   const findParent = (element: HTMLElement, levels: number): HTMLElement => {
     let currentElement = element
@@ -37,7 +39,7 @@ export const Sidebar = () => {
     return currentElement
   }
 
-  const steps: TourProps['steps'] = [
+  const tourSteps: TourProps['steps'] = [
     {
       title: 'View the dashboard',
       description: 'Explore combined cryptocurrency and article dashboards for comprehensive insights at a glance.',
@@ -55,7 +57,12 @@ export const Sidebar = () => {
     },
   ]
 
-  const { currentUser } = useContext(CurrentUserContext)
+  if (currentUser)
+    tourSteps.push({
+      title: 'View your profile',
+      description: 'Explore and manage your profile details for a personalized and tailored experience.',
+      target: () => findParent(myProfileLabel.current!, 2),
+    })
 
   const menuItems: MenuItem[] = [
     {
@@ -67,15 +74,8 @@ export const Sidebar = () => {
         </Link>
       ),
     },
-    currentUser
-      ? {
-          key: '2',
-          icon: <UserOutlined />,
-          label: <Link to={`/profile/${currentUser.nickname}`}>My profile</Link>,
-        }
-      : null,
     {
-      key: '3',
+      key: '2',
       icon: <AreaChartOutlined />,
       label: (
         <Link ref={cryptocurrenciesLabel} to="/cryptocurrencies">
@@ -84,7 +84,7 @@ export const Sidebar = () => {
       ),
     },
     {
-      key: '4',
+      key: '3',
       icon: <FileTextOutlined />,
       label: (
         <Link ref={articlesLabel} to="/articles">
@@ -92,14 +92,25 @@ export const Sidebar = () => {
         </Link>
       ),
     },
+    currentUser
+      ? {
+          key: '4',
+          icon: <UserOutlined />,
+          label: (
+            <Link ref={myProfileLabel} to={`/profile/${currentUser.nickname}`}>
+              My profile
+            </Link>
+          ),
+        }
+      : null,
   ]
 
   useEffect(() => {
     const getSelectedKeys = (): string[] => {
       if (pathname === '/') return ['1']
-      if (pathname.startsWith('/profile')) return ['2']
-      if (pathname.startsWith('/cryptocurrencies')) return ['3']
-      if (pathname.startsWith('/articles')) return ['4']
+      if (pathname.startsWith('/cryptocurrencies')) return ['2']
+      if (pathname.startsWith('/articles')) return ['3']
+      if (pathname.startsWith('/profile')) return ['4']
 
       return []
     }
@@ -135,7 +146,13 @@ export const Sidebar = () => {
         </Link>
         <Menu theme="dark" selectedKeys={selectedKeys} mode="inline" items={menuItems} />
       </Sider>
-      <Tour open={isTourOpen} onClose={handleTourClose} onFinish={handleTourClose} steps={steps} placement="right" />
+      <Tour
+        open={isTourOpen}
+        onClose={handleTourClose}
+        onFinish={handleTourClose}
+        steps={tourSteps}
+        placement="right"
+      />
     </>
   )
 }
