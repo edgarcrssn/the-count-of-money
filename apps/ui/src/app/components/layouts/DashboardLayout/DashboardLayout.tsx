@@ -19,7 +19,9 @@ const DashboardLayout = () => {
             <Header />
           </div>
           <main className={styles.main}>
-            <Outlet />
+            <section className={styles.page}>
+              <Outlet />
+            </section>
           </main>
         </div>
       </Layout>

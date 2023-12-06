@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 // import styles from './RegisterForm.module.scss'
 import { Button, Form, Input } from 'antd'
 import { RegisterDto, authService } from '../../../../services/authService'
@@ -11,10 +11,13 @@ interface Props {
 }
 
 const RegisterForm = ({ onSuccess }: Props) => {
+  const [fetching, setFetching] = useState(false)
   const [form] = Form.useForm()
 
   const registerWithPassword = async (values: RegisterDto) => {
+    setFetching(true)
     const response = await authService.register(values)
+    setFetching(false)
 
     if (response.status === 201 && response.data && 'token' in response.data) {
       const token = response.data.token
@@ -114,7 +117,7 @@ const RegisterForm = ({ onSuccess }: Props) => {
       >
         <Input.Password placeholder="Password" />
       </Form.Item>
-      <Button type="primary" htmlType="submit" block>
+      <Button disabled={fetching} type="primary" htmlType="submit" block>
         Register
       </Button>
     </Form>
