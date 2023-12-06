@@ -13,6 +13,7 @@ import { OAuth2Client } from 'google-auth-library'
 
 import * as dotenv from 'dotenv'
 import { AuthType, PrismaClient } from '@prisma/client'
+import { LoginDto, RegisterDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -34,7 +35,7 @@ const prisma = new PrismaClient()
 
 export const registerController = async (req: Request, res: Response) => {
   try {
-    const { email, nickname, password } = req.body
+    const { email, nickname, password } = req.body as RegisterDto
     const hash = await bcrypt.hash(password, +saltRound)
     const newUser = await createUser({ email, nickname, password: hash })
     const token = generateAccessToken(newUser)
@@ -46,7 +47,7 @@ export const registerController = async (req: Request, res: Response) => {
 
 export const loginController = async (req: Request, res: Response) => {
   try {
-    const { nickname, password } = req.body
+    const { nickname, password } = req.body as LoginDto
     const result = await verifyCredentials({ nickname, password })
     res.status(200).send(result)
   } catch (error) {

@@ -1,23 +1,5 @@
+import { JwtPayload, LoginDto, RegisterDto } from '@the-count-of-money/types'
 import { customFetch } from './customFetch'
-
-// TODO create a lib to store interfaces and types and share them among the apps (api and ui)
-export interface RegisterDto {
-  nickname: string
-  email: string
-  password: string
-}
-
-export interface LoginDto {
-  nickname: string
-  password: string
-}
-
-export interface JwtPayload {
-  id: number
-  email: string
-  nickname: string
-  role: 'ADMIN' | 'USER'
-}
 
 type Data =
   | { message: string }

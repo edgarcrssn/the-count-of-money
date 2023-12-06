@@ -1,10 +1,11 @@
-import { AuthType, Prisma, PrismaClient, Role, User } from '@prisma/client'
+import { AuthType, Prisma, PrismaClient, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
 import axios from 'axios'
 
 import * as dotenv from 'dotenv'
 import slugify from 'slugify'
+import { JwtPayload, LoginDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -19,16 +20,7 @@ interface ICreateUser {
   password?: string
   auth_type?: AuthType
 }
-interface IClassicLogin {
-  nickname: string
-  password: string
-}
-export interface JwtPayload {
-  id: number
-  email: string
-  nickname: string
-  role: Role
-}
+
 interface IGoogleUserData {
   sub: string
   name: string
@@ -71,7 +63,7 @@ export const createUser = async (user: ICreateUser): Promise<User> => {
   }
 }
 
-export const verifyCredentials = async ({ nickname, password }: IClassicLogin): Promise<{ token: string }> => {
+export const verifyCredentials = async ({ nickname, password }: LoginDto): Promise<{ token: string }> => {
   const user = await prisma.user.findUnique({
     where: { nickname, auth_type: AuthType.CLASSIC },
   })
