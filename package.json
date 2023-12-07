@@ -5,6 +5,7 @@
   "scripts": {
     "pretty-quick": "pretty-quick --staged"
   },
+  "private": true,
   "dependencies": {
     "@ant-design/icons": "^5.2.6",
     "@prisma/client": "^5.7.0",
