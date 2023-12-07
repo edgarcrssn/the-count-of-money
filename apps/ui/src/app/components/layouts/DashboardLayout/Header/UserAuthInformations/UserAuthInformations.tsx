@@ -1,11 +1,10 @@
-import { Dropdown, MenuProps, Modal, Space } from 'antd'
+import { Divider, Dropdown, MenuProps, Modal, Space } from 'antd'
 import { CurrentUserContext } from '../../../../../context/CurrentUserContext'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { manageToken } from '../../../../../../utils/manageToken'
 import GoogleAuthButton from '../../../../GoogleAuthButton/GoogleAuthButton'
-import { Separator } from '../../../../Separator/Separator'
 import LoginForm from '../../../../forms/LoginForm/LoginForm'
 import RegisterForm from '../../../../forms/RegisterForm/RegisterForm'
 
@@ -72,14 +71,14 @@ export const UserAuthInformations = () => {
         footer={null}
       >
         <GoogleAuthButton />
-        <Separator />
+        <Divider>or</Divider>
         <LoginForm
           onSuccess={() => {
             setIsModalOpen(false)
             loadCurrentUser()
           }}
         />
-        <Separator />
+        <Divider>or</Divider>
         <RegisterForm
           onSuccess={() => {
             setIsModalOpen(false)

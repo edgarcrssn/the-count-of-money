@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { LoadingOutlined } from '@ant-design/icons'
 import { CurrentUserContext } from '../../context/CurrentUserContext'
 
-const withoutAuth = <P extends object>(WrappedComponent: ComponentType<P>): React.FC<P> => {
-  const WithoutAuth: React.FC<P> = (props) => {
+const withAuth = <P extends object>(WrappedComponent: ComponentType<P>): React.FC<P> => {
+  const WithAuth: React.FC<P> = (props) => {
     const { currentUser, loadCurrentUser } = useContext(CurrentUserContext)
 
     const navigate = useNavigate()
@@ -12,7 +12,7 @@ const withoutAuth = <P extends object>(WrappedComponent: ComponentType<P>): Reac
 
     useEffect(() => {
       loadCurrentUser()
-      if (currentUser) return navigate('/')
+      if (!currentUser) return navigate('/')
       setLoading(false)
     }, [currentUser, loadCurrentUser, navigate])
 
@@ -28,7 +28,7 @@ const withoutAuth = <P extends object>(WrappedComponent: ComponentType<P>): Reac
     return <WrappedComponent {...props} />
   }
 
-  return WithoutAuth
+  return WithAuth
 }
 
-export default withoutAuth
+export default withAuth

@@ -1,6 +1,13 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from './Sidebar.module.scss'
-import { AreaChartOutlined, FileTextOutlined, HomeOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
+import {
+  AreaChartOutlined,
+  FileTextOutlined,
+  HomeOutlined,
+  QuestionCircleOutlined,
+  SettingOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
 import type { MenuProps, TourProps } from 'antd'
 import { Layout, Menu, Tour } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
@@ -32,7 +39,7 @@ export const Sidebar = () => {
   const myProfileLabel = useRef<HTMLAnchorElement>(null)
   const settingsLabel = useRef<HTMLAnchorElement>(null)
 
-  let tourSteps: TourProps['steps'] = [
+  const tourSteps: TourProps['steps'] = [
     {
       title: 'View the dashboard',
       description: 'Explore combined cryptocurrency and article dashboards for comprehensive insights at a glance.',
@@ -51,20 +58,17 @@ export const Sidebar = () => {
   ]
 
   if (currentUser) {
-    tourSteps = [
-      ...tourSteps,
-      {
-        title: 'View your profile',
-        description: 'Explore and manage your profile details for a personalized and tailored experience.',
-        target: () => myProfileLabel.current!.parentElement!.parentElement!,
-      },
-      {
-        title: 'Manage your settings',
-        description:
-          'Tailor your crypto experience by updating preferences. Choose favorite currencies, manage followed cryptocurrencies, and customize settings for a personalized crypto journey.',
-        target: () => settingsLabel.current!.parentElement!.parentElement!,
-      },
-    ]
+    tourSteps.push({
+      title: 'View your profile',
+      description: 'Explore and manage your profile details for a personalized and tailored experience.',
+      target: () => myProfileLabel.current!.parentElement!.parentElement!,
+    })
+    tourSteps.push({
+      title: 'Manage your settings',
+      description:
+        'Tailor your crypto experience by updating preferences. Choose favorite currencies, manage followed cryptocurrencies, and customize settings for a personalized crypto journey.',
+      target: () => settingsLabel.current!.parentElement!.parentElement!,
+    })
   }
 
   const menuItems: MenuItem[] = [
@@ -117,6 +121,12 @@ export const Sidebar = () => {
           ),
         }
       : null,
+    {
+      key: '6',
+      icon: <QuestionCircleOutlined />,
+      label: <span>Help</span>,
+      onClick: () => setIsTourOpen(true),
+    },
   ]
 
   useEffect(() => {
