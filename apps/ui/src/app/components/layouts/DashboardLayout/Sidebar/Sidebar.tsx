@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from './Sidebar.module.scss'
-import { AreaChartOutlined, FileTextOutlined, HomeOutlined, UserOutlined } from '@ant-design/icons'
+import { AreaChartOutlined, FileTextOutlined, HomeOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons'
 import type { MenuProps, TourProps } from 'antd'
 import { Layout, Menu, Tour } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
@@ -30,39 +30,42 @@ export const Sidebar = () => {
   const cryptocurrenciesLabel = useRef<HTMLAnchorElement>(null)
   const articlesLabel = useRef<HTMLAnchorElement>(null)
   const myProfileLabel = useRef<HTMLAnchorElement>(null)
+  const settingsLabel = useRef<HTMLAnchorElement>(null)
 
-  const findParent = (element: HTMLElement, levels: number): HTMLElement => {
-    let currentElement = element
-    for (let i = 0; i < levels; i++) {
-      currentElement = currentElement.parentNode as HTMLElement
-    }
-    return currentElement
-  }
-
-  const tourSteps: TourProps['steps'] = [
+  let tourSteps: TourProps['steps'] = [
     {
       title: 'View the dashboard',
       description: 'Explore combined cryptocurrency and article dashboards for comprehensive insights at a glance.',
-      target: () => findParent(homeLabel.current!, 2),
+      target: () => homeLabel.current!.parentElement!.parentElement!,
     },
     {
       title: 'View cryptocurrency prices',
       description: 'Track real-time cryptocurrency prices on a user-friendly page for informed market insights.',
-      target: () => findParent(cryptocurrenciesLabel.current!, 2),
+      target: () => cryptocurrenciesLabel.current!.parentElement!.parentElement!,
     },
     {
       title: 'View crypto related articles',
       description: 'Browse articles on cryptocurrency-related topics for valuable insights and updates.',
-      target: () => findParent(articlesLabel.current!, 2),
+      target: () => articlesLabel.current!.parentElement!.parentElement!,
     },
   ]
 
-  if (currentUser)
-    tourSteps.push({
-      title: 'View your profile',
-      description: 'Explore and manage your profile details for a personalized and tailored experience.',
-      target: () => findParent(myProfileLabel.current!, 2),
-    })
+  if (currentUser) {
+    tourSteps = [
+      ...tourSteps,
+      {
+        title: 'View your profile',
+        description: 'Explore and manage your profile details for a personalized and tailored experience.',
+        target: () => myProfileLabel.current!.parentElement!.parentElement!,
+      },
+      {
+        title: 'Manage your settings',
+        description:
+          'Tailor your crypto experience by updating preferences. Choose favorite currencies, manage followed cryptocurrencies, and customize settings for a personalized crypto journey.',
+        target: () => settingsLabel.current!.parentElement!.parentElement!,
+      },
+    ]
+  }
 
   const menuItems: MenuItem[] = [
     {
@@ -103,6 +106,17 @@ export const Sidebar = () => {
           ),
         }
       : null,
+    currentUser
+      ? {
+          key: '5',
+          icon: <SettingOutlined />,
+          label: (
+            <Link ref={settingsLabel} to="/settings">
+              Settings
+            </Link>
+          ),
+        }
+      : null,
   ]
 
   useEffect(() => {
@@ -111,6 +125,7 @@ export const Sidebar = () => {
       if (pathname.startsWith('/cryptocurrencies')) return ['2']
       if (pathname.startsWith('/articles')) return ['3']
       if (pathname.startsWith('/profile')) return ['4']
+      if (pathname.startsWith('/settings')) return ['5']
 
       return []
     }
