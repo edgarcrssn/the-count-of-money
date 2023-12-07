@@ -13,6 +13,7 @@ import Profile from './app/pages/profile/profile'
 import variables from './styles/variables.module.scss'
 import Cryptocurrencies from './app/pages/cryptocurrencies/cryptocurrencies'
 import Articles from './app/pages/articles/articles'
+import Settings from './app/pages/settings/settings'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -25,16 +26,20 @@ const App = () => {
           element: <Home />,
         },
         {
-          path: 'profile/:nickname',
-          element: <Profile />,
-        },
-        {
           path: 'cryptocurrencies',
           element: <Cryptocurrencies />,
         },
         {
           path: 'articles',
           element: <Articles />,
+        },
+        {
+          path: 'profile/:nickname',
+          element: <Profile />,
+        },
+        {
+          path: 'settings',
+          element: <Settings />,
         },
       ],
     },
