@@ -22,7 +22,7 @@ export const Sidebar = () => {
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false)
 
   const handleTourClose = () => {
-    localStorage.setItem('tourHasBeenViewed', 'true')
+    localStorage.setItem('tourHasBeenViewed', JSON.stringify(true))
     setIsTourOpen(false)
   }
 
@@ -138,8 +138,8 @@ export const Sidebar = () => {
   }, [collapsed])
 
   useEffect(() => {
-    const hasTourBeenViewed = localStorage.getItem('tourHasBeenViewed')
-    if (!hasTourBeenViewed || hasTourBeenViewed === 'false') setIsTourOpen(true)
+    const hasTourBeenViewed: boolean = JSON.parse(localStorage.getItem('tourHasBeenViewed') || JSON.stringify(false))
+    if (!hasTourBeenViewed) setIsTourOpen(true)
   }, [])
 
   return (
