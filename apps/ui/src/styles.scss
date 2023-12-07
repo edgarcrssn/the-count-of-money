@@ -1,17 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-
-// Colors
-$dark-navy: #0b0e11; // Ideal for backgrounds or dark elements
-$charcoal-gray: #1e2329; // Useful for less intense dark backgrounds or elements
-$bitcoin-orange: #f0b90b; // Vibrant, attention-grabbing orange, good for highlights or call-to-actions
-$sun-yellow: #fcd535; // Bright yellow, suitable for accents or vibrant elements
-$light-gray: #eaecef; // Light gray, perfect for subtle backgrounds or borders
-$off-white: #fafafa; // Almost white, great for light backgrounds where pure white is too stark
-$pure-white: #ffffff; // Pure white, versatile for text, backgrounds, and other elements
-
-// Typography
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-$raleway-font: 'Raleway', sans-serif; // Clean and modern sans-serif font, versatile for various text elements
+@import './styles/variables.module.scss';
 
 * {
   margin: 0;
@@ -20,5 +7,5 @@ $raleway-font: 'Raleway', sans-serif; // Clean and modern sans-serif font, versa
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  background-color: map-get($theme-colors, 'pureWhite');
 }

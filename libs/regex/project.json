@@ -1,0 +1,26 @@
+{
+  "name": "regex",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/regex/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/regex",
+        "main": "libs/regex/src/index.ts",
+        "tsConfig": "libs/regex/tsconfig.lib.json",
+        "assets": ["libs/regex/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/regex/**/*.ts", "libs/regex/package.json"]
+      }
+    }
+  },
+  "tags": []
+}

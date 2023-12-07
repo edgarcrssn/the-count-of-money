@@ -1,69 +1,8 @@
-/*import React, { useEffect, useState } from 'react'
-import DashboardLayout from '../../components/DashboardLayout/DashboardLayout'
-import { manageToken } from '../../../utils/manageToken'
-import withAuth from '../../components/hoc/withAuth'
-import { customFetch } from '../../../services/customFetch'
+import React from 'react'
 // import styles from './Home.module.scss'
 
-interface IUser {
-  nickname: string
-}
-
 export const Home = () => {
-  const [me, setMe] = useState<IUser | null>(null)
-
-  useEffect(() => {
-    const getMyProfile = async () => {
-      const response = await customFetch('/users/profile', {
-        headers: {
-          Authorization: `Bearer ${manageToken.get()}`,
-        },
-      })
-      const data = await response.json()
-
-      if (data.me) setMe(data.me)
-    }
-    getMyProfile()
-  }, [])
-
-  return <DashboardLayout>Hello{me?.nickname ? ` ${me.nickname}!` : ''}</DashboardLayout>
+  return <div>Home</div>
 }
 
-export default withAuth(Home)*/
-// home.tsx
-import React, { useEffect, useState } from 'react'
-import DashboardLayout from '../../components/DashboardLayout/DashboardLayout'
-import { manageToken } from '../../../utils/manageToken'
-import withAuth from '../../components/hoc/withAuth'
-import Breadcrumb from '../../components/Breadcrumb' // Ajoutez cette ligne
-
-interface IUser {
-  nickname: string
-}
-
-const Home = () => {
-  const [me, setMe] = useState<IUser | null>(null)
-
-  useEffect(() => {
-    const getMyProfile = async () => {
-      const response = await customFetch('/users/profile', {
-        headers: {
-          Authorization: `Bearer ${manageToken.get()}`,
-        },
-      })
-      const data = await response.json()
-
-      if (data.me) setMe(data.me)
-    }
-    getMyProfile()
-  }, [])
-
-  return (
-    <div>
-      <Breadcrumb /> {/* Ajoutez cette ligne */}
-      <DashboardLayout>Hello{me?.nickname ? ` ${me.nickname}!` : ''}</DashboardLayout>
-    </div>
-  )
-}
-
-export default withAuth(Home)
+export default Home

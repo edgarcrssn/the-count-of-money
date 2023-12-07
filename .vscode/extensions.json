@@ -3,6 +3,7 @@
     "nrwl.angular-console",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
+    "Prisma.prisma",
     "firsttris.vscode-jest-runner",
     "ms-playwright.playwright",
     "vivaxy.vscode-conventional-commits",

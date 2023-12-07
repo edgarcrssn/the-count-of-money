@@ -1,9 +1,9 @@
 import express from 'express'
 
-import articlesRouter from './routes/articles/articles.router'
-import cryptosRouter from './routes/cryptos/cryptos.router'
-import sourcesRouter from './routes/sources/sources.router'
 import usersRouter from './routes/users/users.router'
+import cryptosRouter from './routes/cryptos/cryptos.router'
+import articlesRouter from './routes/articles/articles.router'
+import sourcesRouter from './routes/sources/sources.router'
 
 import { apiKeyMiddleware } from './middleware/apiKeyMiddleware'
 import { corsMiddleware, corsWithOptions } from './middleware/corsMiddleware'
@@ -24,10 +24,10 @@ app.get('/', (req, res) => {
   res.send({ message: 'Welcome to "The count of money" API!' })
 })
 
-app.use('/articles', articlesRouter)
-app.use('/cryptos', cryptosRouter)
-app.use('/sources', sourcesRouter)
 app.use('/users', usersRouter)
+app.use('/cryptos', cryptosRouter)
+app.use('/articles', articlesRouter)
+app.use('/sources', sourcesRouter)
 
 app.listen(port, host, () => {
   // eslint-disable-next-line no-console

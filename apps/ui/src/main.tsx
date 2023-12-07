@@ -1,43 +1,78 @@
-import React from 'react'
-import { StrictMode } from 'react'
+import React, { StrictMode } from 'react'
 import * as ReactDOM from 'react-dom/client'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { Toaster } from 'sonner'
 import Home from './app/pages/home/home'
-import Login from './app/pages/login/login'
-import Register from './app/pages/register/register'
 import GoogleRedirect from './app/pages/google-redirect/google-redirect'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
+import DashboardLayout from './app/components/layouts/DashboardLayout/DashboardLayout'
+import { ConfigProvider } from 'antd'
+import Profile from './app/pages/profile/profile'
 
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Home />,
-  },
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
-  },
-  {
-    path: '/google-redirect',
-    element: <GoogleRedirect />,
-  },
-])
+import variables from './styles/variables.module.scss'
+import Cryptocurrencies from './app/pages/cryptocurrencies/cryptocurrencies'
+import Articles from './app/pages/articles/articles'
+import Settings from './app/pages/settings/settings'
 
-const queryClient = new QueryClient()
+const App = () => {
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <DashboardLayout />,
+      children: [
+        {
+          path: '',
+          element: <Home />,
+        },
+        {
+          path: 'cryptocurrencies',
+          element: <Cryptocurrencies />,
+        },
+        {
+          path: 'articles',
+          element: <Articles />,
+        },
+        {
+          path: 'profile/:nickname',
+          element: <Profile />,
+        },
+        {
+          path: 'settings',
+          element: <Settings />,
+        },
+      ],
+    },
+    {
+      path: '/google-redirect',
+      element: <GoogleRedirect />,
+    },
+  ])
+
+  const queryClient = new QueryClient()
+
+  const { bitcoinOrange, ralewayFont } = variables
+
+  return (
+    <StrictMode>
+      <ConfigProvider
+        theme={{
+          token: {
+            fontFamily: ralewayFont,
+            colorPrimary: bitcoinOrange,
+            colorLink: bitcoinOrange,
+          },
+        }}
+      >
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+          <Toaster richColors />
+          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+        </QueryClientProvider>
+      </ConfigProvider>
+    </StrictMode>
+  )
+}
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
-root.render(
-  <StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <Toaster richColors />
-      <ReactQueryDevtools initialIsOpen={true} />
-    </QueryClientProvider>
-  </StrictMode>,
-)
+root.render(<App />)

@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@the-count-of-money/types": ["types/src/index.ts"]
+      "@the-count-of-money/regex": ["libs/regex/src/index.ts"],
+      "@the-count-of-money/types": ["libs/types/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

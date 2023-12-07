@@ -1,22 +1,31 @@
-import React from 'react'
+import React, { useState } from 'react'
 // import styles from './LoginForm.module.scss'
 import { Button, Form, Input } from 'antd'
-import { LoginDto, authService } from '../../../../services/authService'
+import { authService } from '../../../../services/authService'
 import { toast } from 'sonner'
-import { Link, useNavigate } from 'react-router-dom'
 import { manageToken } from '../../../../utils/manageToken'
-import GoogleAuthButton from '../../GoogleAuthButton/GoogleAuthButton'
+import { LoginDto } from '@the-count-of-money/types'
 
-const LoginForm = () => {
-  const navigate = useNavigate()
+interface Props {
+  onSuccess: () => void
+}
+
+const LoginForm = ({ onSuccess }: Props) => {
+  const [fetching, setFetching] = useState(false)
+  const [form] = Form.useForm()
 
   const loginWithPassword = async (values: LoginDto) => {
+    setFetching(true)
     const response = await authService.login(values)
+    setFetching(false)
+
     if (response.status === 200 && response.data) {
       const { token } = response.data
       manageToken.set(token)
       toast.success('You logged in successfully')
-      return navigate('/')
+      form.resetFields()
+      onSuccess()
+      return
     }
 
     if (response.status === 401) {
@@ -30,24 +39,18 @@ const LoginForm = () => {
   }
 
   return (
-    <>
-      <GoogleAuthButton />
-      <div style={{ textAlign: 'center', margin: '.5rem 0' }}>or</div>
-      <Form name="normal_login" initialValues={{ remember: true }} onFinish={loginWithPassword}>
-        <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname.' }]}>
-          <Input placeholder="Nickname" />
-        </Form.Item>
-        <Form.Item name="password" rules={[{ required: true, message: 'Please input your password.' }]}>
-          <Input.Password placeholder="Password" />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit" block>
-            Log in
-          </Button>
-          Or <Link to="/register">register now!</Link>
-        </Form.Item>
-      </Form>
-    </>
+    <Form form={form} name="normal_login" initialValues={{ remember: true }} onFinish={loginWithPassword}>
+      <div style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '.5rem' }}>Login with password</div>
+      <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname' }]}>
+        <Input placeholder="Nickname" maxLength={255} />
+      </Form.Item>
+      <Form.Item name="password" rules={[{ required: true, message: 'Please input your password' }]}>
+        <Input.Password placeholder="Password" maxLength={255} />
+      </Form.Item>
+      <Button disabled={fetching} type="primary" htmlType="submit" block>
+        Log in
+      </Button>
+    </Form>
   )
 }
 

@@ -1,9 +1,11 @@
-import { AuthType, Prisma, PrismaClient, Role, User } from '@prisma/client'
+import { AuthType, Prisma, PrismaClient, User } from '@prisma/client'
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcrypt'
+import axios from 'axios'
 
 import * as dotenv from 'dotenv'
 import slugify from 'slugify'
+import { JwtPayload, LoginDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -13,19 +15,14 @@ if (!jwtSecret) throw new Error('JWT_SECRET env variable is not defined')
 const prisma = new PrismaClient()
 
 interface ICreateUser {
+  first_name: string
+  last_name: string
   email: string
   nickname: string
   password?: string
   auth_type?: AuthType
 }
-interface IClassicLogin {
-  nickname: string
-  password: string
-}
-export interface JwtPayload {
-  id: number
-  role: Role
-}
+
 interface IGoogleUserData {
   sub: string
   name: string
@@ -68,7 +65,7 @@ export const createUser = async (user: ICreateUser): Promise<User> => {
   }
 }
 
-export const verifyCredentials = async ({ nickname, password }: IClassicLogin): Promise<{ token: string }> => {
+export const verifyCredentials = async ({ nickname, password }: LoginDto): Promise<{ token: string }> => {
   const user = await prisma.user.findUnique({
     where: { nickname, auth_type: AuthType.CLASSIC },
   })
@@ -77,15 +74,13 @@ export const verifyCredentials = async ({ nickname, password }: IClassicLogin): 
   const isPasswordValid = await bcrypt.compare(password, user.password)
   if (!isPasswordValid) throw { code: 401, message: 'Invalid credentials' }
 
-  const token = generateAccessToken({ id: user.id, role: user.role })
+  const token = generateAccessToken(user)
   return { token }
 }
 
 export const getGoogleUserData = async (accessToken: string): Promise<IGoogleUserData> => {
-  // TODO: Utiliser axios une fois la pr #4 merged
-  const response = await fetch(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`)
-  const data: IGoogleUserData = await response.json()
-  return data
+  const response = await axios.get(`https://www.googleapis.com/oauth2/v3/userinfo?access_token=${accessToken}`)
+  return response.data
 }
 
 export const generateUniqueNickname = async (name: string) => {
@@ -116,6 +111,21 @@ export const getUserById = async (id: number) => {
     if (!user) throw { code: 404, message: 'Not Found' }
 
     return user
+  } catch (error) {
+    throw { code: 500, message: error }
+  }
+}
+
+export const updateUser = async (id: number, userData: Partial<User>): Promise<User> => {
+  try {
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: userData,
+    })
+
+    if (!updatedUser) throw { code: 404, message: 'User Not Found' }
+
+    return updatedUser
   } catch (error) {
     throw { code: 500, message: error }
   }

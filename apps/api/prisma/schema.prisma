@@ -9,6 +9,8 @@ datasource db {
 
 model User {
   id                  Int      @id @default(autoincrement())
+  first_name          String
+  last_name           String
   email               String   @unique
   nickname            String   @unique
   auth_type           AuthType @default(CLASSIC)
@@ -22,8 +24,8 @@ model User {
 }
 
 model RssSource {
-  id  Int     @id @default(autoincrement())
-  url String  @unique
+  id  Int    @id @default(autoincrement())
+  url String @unique
 }
 
 enum AuthType {
@@ -40,4 +42,8 @@ model Currency {
   id   Int    @id @default(autoincrement())
   name String @unique
   User User[]
+}
+
+model Cryptocurrency {
+  id String @id @unique
 }

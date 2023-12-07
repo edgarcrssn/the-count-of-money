@@ -1,15 +1,5 @@
+import { JwtPayload, LoginDto, RegisterDto } from '@the-count-of-money/types'
 import { customFetch } from './customFetch'
-
-export interface RegisterDto {
-  nickname: string
-  email: string
-  password: string
-}
-
-export interface LoginDto {
-  nickname: string
-  password: string
-}
 
 type Data =
   | { message: string }
@@ -99,6 +89,27 @@ export const authService = {
       .then((response) => {
         if (response.ok)
           return response.json().then((data: { token: string }) => ({
+            status: response.status,
+            data,
+          }))
+        return { status: response.status }
+      })
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error(error)
+        return { status: 500 }
+      })
+  },
+
+  async verifyAuthStatus(token: string): Promise<{ status: number; data?: { me: JwtPayload } }> {
+    return customFetch('/users/verify-auth-status', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (response.ok)
+          return response.json().then((data: { me: JwtPayload }) => ({
             status: response.status,
             data,
           }))
