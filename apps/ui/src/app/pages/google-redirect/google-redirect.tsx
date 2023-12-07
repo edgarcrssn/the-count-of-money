@@ -13,7 +13,7 @@ const GoogleRedirect = () => {
   useEffect(() => {
     const handleCallback = async () => {
       const code = searchParams.get('code')
-      if (!code) return navigate('/login')
+      if (!code) return navigate('/')
 
       const response = await authService.loginWithGoogle(code)
 
@@ -28,13 +28,13 @@ const GoogleRedirect = () => {
         toast.error('An already registered account is linked to this email address', {
           description: 'Try login in with password.',
         })
-        return navigate('/login')
+        return navigate('/')
       }
 
       toast.error(`An unknown error occurred while login in with Google (${response.status})`, {
         description: 'Please contact the support.',
       })
-      navigate('/login')
+      navigate('/')
     }
 
     handleCallback()
