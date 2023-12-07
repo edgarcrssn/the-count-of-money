@@ -145,11 +145,11 @@ export const Sidebar = () => {
   return (
     <>
       <Sider
-        theme="dark"
         collapsible
         collapsed={collapsed}
-        style={{ height: '100%' }}
         onCollapse={(value) => setCollapsed(value)}
+        theme="dark"
+        style={{ height: '100%' }}
       >
         <Link to="/">
           <h1 className={styles.logo}>
