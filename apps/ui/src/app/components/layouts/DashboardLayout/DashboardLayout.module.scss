@@ -20,18 +20,10 @@
     .header {
       min-height: 3rem;
       position: relative;
-
-      &::after {
-        pointer-events: none;
-        content: '';
-        position: absolute;
-        inset: 0;
-        box-shadow: 0px 5px 15px -15px black;
-      }
     }
     .main {
       flex-grow: 1;
-      padding: 1rem 0.75rem;
+      padding: 0.75rem 1rem;
       overflow-y: auto;
     }
   }

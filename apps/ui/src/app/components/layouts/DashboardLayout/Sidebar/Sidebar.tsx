@@ -10,7 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import type { MenuProps, TourProps } from 'antd'
-import { Layout, Menu, Tour, theme } from 'antd'
+import { Layout, Menu, Tour } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { CurrentUserContext } from '../../../../context/CurrentUser/CurrentUserContext'
 import { Theme, ThemeContext } from '../../../../context/Theme/ThemeContext'
@@ -22,8 +22,6 @@ const { Sider } = Layout
 type MenuItem = Required<MenuProps>['items'][number]
 
 export const Sidebar = () => {
-  const { token } = theme.useToken()
-
   const { pathname } = useLocation()
   const { currentUser } = useContext(CurrentUserContext)
   const { currentTheme, setCurrentTheme } = useContext(ThemeContext)
@@ -185,7 +183,7 @@ export const Sidebar = () => {
         trigger={null}
         theme={currentTheme}
         style={{
-          backgroundColor: token.colorBgLayout,
+          background: 'none',
         }}
       >
         <div className={styles.sideBarContent}>
@@ -196,7 +194,8 @@ export const Sidebar = () => {
             className={styles.menu}
             theme={currentTheme}
             style={{
-              backgroundColor: token.colorBgLayout,
+              background: 'none',
+              border: 'none',
             }}
           />
           <Menu
@@ -205,7 +204,8 @@ export const Sidebar = () => {
             mode="inline"
             theme={currentTheme}
             style={{
-              backgroundColor: token.colorBgLayout,
+              background: 'none',
+              border: 'none',
             }}
           />
         </div>

@@ -13,7 +13,13 @@ const DashboardLayout = () => {
   return (
     <CurrentUserProvider>
       <Layout className={styles.dashboardLayout}>
-        <div className={styles.aside}>
+        <div
+          className={styles.aside}
+          style={{
+            backgroundColor: token.colorBgLayout,
+            borderRight: `1px solid ${token.colorBorder}`,
+          }}
+        >
           <Sidebar />
         </div>
         <div className={styles.content}>
@@ -21,6 +27,7 @@ const DashboardLayout = () => {
             className={styles.header}
             style={{
               backgroundColor: token.colorBgLayout,
+              borderBottom: `1px solid ${token.colorBorder}`,
             }}
           >
             <Header />
