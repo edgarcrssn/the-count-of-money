@@ -18,7 +18,6 @@
     flex-direction: column;
 
     .header {
-      background-color: map-get($theme-colors, 'pureWhite');
       min-height: 3rem;
       position: relative;
 
@@ -34,13 +33,6 @@
       flex-grow: 1;
       padding: 1rem 0.75rem;
       overflow-y: auto;
-
-      .page {
-        min-height: 100%;
-        border-radius: 0.25rem;
-        background-color: map-get($theme-colors, 'pureWhite');
-        padding: 1rem;
-      }
     }
   }
 }

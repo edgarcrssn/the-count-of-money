@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 // import styles from './LoginForm.module.scss'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Typography } from 'antd'
 import { authService } from '../../../../services/authService'
 import { toast } from 'sonner'
 import { manageToken } from '../../../../utils/manageToken'
@@ -40,7 +40,9 @@ const LoginForm = ({ onSuccess }: Props) => {
 
   return (
     <Form form={form} name="normal_login" initialValues={{ remember: true }} onFinish={loginWithPassword}>
-      <div style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '.5rem' }}>Login with password</div>
+      <Typography style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '.5rem' }}>
+        Login with password
+      </Typography>
       <Form.Item name="nickname" rules={[{ required: true, message: 'Please input your nickname' }]}>
         <Input placeholder="Nickname" maxLength={255} />
       </Form.Item>

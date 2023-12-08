@@ -1,4 +1,4 @@
-import { Divider, Dropdown, MenuProps, Modal, Space } from 'antd'
+import { Divider, Dropdown, MenuProps, Modal, Space, Typography } from 'antd'
 import { CurrentUserContext } from '../../../../../context/CurrentUser/CurrentUserContext'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
@@ -7,6 +7,8 @@ import { manageToken } from '../../../../../../utils/manageToken'
 import GoogleAuthButton from '../../../../GoogleAuthButton/GoogleAuthButton'
 import LoginForm from '../../../../forms/LoginForm/LoginForm'
 import RegisterForm from '../../../../forms/RegisterForm/RegisterForm'
+
+const { Text, Link: AntdLink } = Typography
 
 export const UserAuthInformations = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -41,16 +43,16 @@ export const UserAuthInformations = () => {
   return (
     <>
       {currentUser ? (
-        <>
+        <Text>
           Hello,{' '}
           <Dropdown menu={{ items }}>
-            <a href="/" onClick={(e) => e.preventDefault()}>
+            <AntdLink href="/" onClick={(e) => e.preventDefault()}>
               <Space>{currentUser.first_name}</Space>
-            </a>
+            </AntdLink>
           </Dropdown>
-        </>
+        </Text>
       ) : (
-        <div>
+        <Text>
           You are not logged in.{' '}
           <Link
             to="/"
@@ -58,10 +60,13 @@ export const UserAuthInformations = () => {
               e.preventDefault()
               setIsModalOpen(true)
             }}
+            style={{
+              whiteSpace: 'nowrap',
+            }}
           >
             Log me in
           </Link>
-        </div>
+        </Text>
       )}
       <Modal
         title="Join the community!"

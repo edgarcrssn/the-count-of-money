@@ -4,6 +4,7 @@ import {
   AreaChartOutlined,
   FileTextOutlined,
   HomeOutlined,
+  LeftCircleOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
   UserOutlined,
@@ -12,6 +13,10 @@ import type { MenuProps, TourProps } from 'antd'
 import { Layout, Menu, Tour } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { CurrentUserContext } from '../../../../context/CurrentUser/CurrentUserContext'
+import { Theme, ThemeContext } from '../../../../context/Theme/ThemeContext'
+import { SunOutlined } from '../../../icons/SunOutlined'
+import { MoonOutlined } from '../../../icons/MoonOutlined'
+
 const { Sider } = Layout
 
 type MenuItem = Required<MenuProps>['items'][number]
@@ -19,6 +24,7 @@ type MenuItem = Required<MenuProps>['items'][number]
 export const Sidebar = () => {
   const { pathname } = useLocation()
   const { currentUser } = useContext(CurrentUserContext)
+  const { currentTheme, setCurrentTheme } = useContext(ThemeContext)
 
   const [collapsed, setCollapsed] = useState<boolean>(() => {
     const storedCollapsed = localStorage.getItem('sidebarIsCollapsed')
@@ -121,11 +127,26 @@ export const Sidebar = () => {
           ),
         }
       : null,
+  ]
+
+  const menuFooterItems: MenuItem[] = [
     {
       key: '6',
+      icon: currentTheme === Theme.LIGHT ? <MoonOutlined /> : <SunOutlined />,
+      label: `${currentTheme === Theme.LIGHT ? 'Dark' : 'Light'} theme`,
+      onClick: () => setCurrentTheme(currentTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT),
+    },
+    {
+      key: '7',
       icon: <QuestionCircleOutlined />,
-      label: <span>Help</span>,
+      label: 'Help',
       onClick: () => setIsTourOpen(true),
+    },
+    {
+      key: '8',
+      icon: <LeftCircleOutlined rotate={collapsed ? 180 : 0} />,
+      label: collapsed ? 'Expand' : 'Collapse',
+      onClick: () => setCollapsed(!collapsed),
     },
   ]
 
@@ -158,18 +179,13 @@ export const Sidebar = () => {
         collapsible
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}
-        theme="dark"
-        style={{ height: '100%' }}
+        className={styles.sideBar}
+        trigger={null}
       >
-        <Link to="/">
-          <h1 className={styles.logo}>
-            {collapsed ? null : <span>The count of money</span>}
-            <span role="img" aria-label="Money bag">
-              💰
-            </span>
-          </h1>
-        </Link>
-        <Menu theme="dark" selectedKeys={selectedKeys} mode="inline" items={menuItems} />
+        <div className={styles.sideBarContent}>
+          <Menu theme="dark" selectedKeys={selectedKeys} mode="inline" items={menuItems} className={styles.menu} />
+          <Menu theme="dark" mode="inline" selectedKeys={[]} items={menuFooterItems} />
+        </div>
       </Sider>
       <Tour
         open={isTourOpen}
