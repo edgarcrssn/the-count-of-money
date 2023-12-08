@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useEffect, useState } from 'react'
 import { CurrentUserContext } from './CurrentUserContext'
-import { authService } from '../../services/authService'
-import { manageToken } from '../../utils/manageToken'
+import { authService } from '../../../services/authService'
+import { manageToken } from '../../../utils/manageToken'
 import { JwtPayload } from '@the-count-of-money/types'
 import { toast } from 'sonner'
 

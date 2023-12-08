@@ -1,7 +1,7 @@
 import React, { ComponentType, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { LoadingOutlined } from '@ant-design/icons'
-import { CurrentUserContext } from '../../context/CurrentUserContext'
+import { CurrentUserContext } from '../../context/CurrentUser/CurrentUserContext'
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>): React.FC<P> => {
   const WithAuth: React.FC<P> = (props) => {

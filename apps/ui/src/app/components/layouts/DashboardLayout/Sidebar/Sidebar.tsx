@@ -11,7 +11,7 @@ import {
 import type { MenuProps, TourProps } from 'antd'
 import { Layout, Menu, Tour } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
-import { CurrentUserContext } from '../../../../context/CurrentUserContext'
+import { CurrentUserContext } from '../../../../context/CurrentUser/CurrentUserContext'
 const { Sider } = Layout
 
 type MenuItem = Required<MenuProps>['items'][number]

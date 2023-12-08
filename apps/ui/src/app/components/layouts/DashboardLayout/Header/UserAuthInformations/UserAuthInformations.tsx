@@ -1,5 +1,5 @@
 import { Divider, Dropdown, MenuProps, Modal, Space } from 'antd'
-import { CurrentUserContext } from '../../../../../context/CurrentUserContext'
+import { CurrentUserContext } from '../../../../../context/CurrentUser/CurrentUserContext'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'

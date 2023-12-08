@@ -5,7 +5,7 @@ import { Header } from './Header/Header'
 import { Layout } from 'antd'
 
 import { Outlet } from 'react-router-dom'
-import { CurrentUserProvider } from '../../../context/CurrentUserProvider'
+import { CurrentUserProvider } from '../../../context/CurrentUser/CurrentUserProvider'
 
 const DashboardLayout = () => {
   return (
