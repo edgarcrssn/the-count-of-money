@@ -10,7 +10,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons'
 import type { MenuProps, TourProps } from 'antd'
-import { Layout, Menu, Tour } from 'antd'
+import { Layout, Menu, Tour, theme } from 'antd'
 import { Link, useLocation } from 'react-router-dom'
 import { CurrentUserContext } from '../../../../context/CurrentUser/CurrentUserContext'
 import { Theme, ThemeContext } from '../../../../context/Theme/ThemeContext'
@@ -22,6 +22,8 @@ const { Sider } = Layout
 type MenuItem = Required<MenuProps>['items'][number]
 
 export const Sidebar = () => {
+  const { token } = theme.useToken()
+
   const { pathname } = useLocation()
   const { currentUser } = useContext(CurrentUserContext)
   const { currentTheme, setCurrentTheme } = useContext(ThemeContext)
@@ -181,10 +183,31 @@ export const Sidebar = () => {
         onCollapse={(value) => setCollapsed(value)}
         className={styles.sideBar}
         trigger={null}
+        theme={currentTheme}
+        style={{
+          backgroundColor: token.colorBgLayout,
+        }}
       >
         <div className={styles.sideBarContent}>
-          <Menu theme="dark" selectedKeys={selectedKeys} mode="inline" items={menuItems} className={styles.menu} />
-          <Menu theme="dark" mode="inline" selectedKeys={[]} items={menuFooterItems} />
+          <Menu
+            items={menuItems}
+            selectedKeys={selectedKeys}
+            mode="inline"
+            className={styles.menu}
+            theme={currentTheme}
+            style={{
+              backgroundColor: token.colorBgLayout,
+            }}
+          />
+          <Menu
+            items={menuFooterItems}
+            selectedKeys={[]}
+            mode="inline"
+            theme={currentTheme}
+            style={{
+              backgroundColor: token.colorBgLayout,
+            }}
+          />
         </div>
       </Sider>
       <Tour

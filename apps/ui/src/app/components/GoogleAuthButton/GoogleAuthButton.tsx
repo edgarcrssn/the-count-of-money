@@ -1,9 +1,12 @@
-import React, { useState } from 'react'
-import './GoogleAuthButton.css'
+import React, { useContext, useState } from 'react'
 import { toast } from 'sonner'
 import { authService } from '../../../services/authService'
+import { Theme, ThemeContext } from '../../context/Theme/ThemeContext'
+import './GoogleAuthButton.scss'
 
 const GoogleAuthButton = () => {
+  const { currentTheme } = useContext(ThemeContext)
+
   const [isFetching, setIsFetching] = useState(false)
 
   const loginWithGoogle = async () => {
@@ -22,7 +25,12 @@ const GoogleAuthButton = () => {
   }
 
   return (
-    <button disabled={isFetching} onClick={loginWithGoogle} className="gsi-material-button" style={{ width: '100%' }}>
+    <button
+      disabled={isFetching}
+      onClick={loginWithGoogle}
+      className={`${currentTheme === Theme.DARK ? 'dark ' : ''}gsi-material-button`}
+      style={{ width: '100%' }}
+    >
       <div className="gsi-material-button-state"></div>
       <div className="gsi-material-button-content-wrapper">
         <div className="gsi-material-button-icon">

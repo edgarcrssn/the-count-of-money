@@ -7,10 +7,8 @@ import { Layout, theme } from 'antd'
 import { Outlet } from 'react-router-dom'
 import { CurrentUserProvider } from '../../../context/CurrentUser/CurrentUserProvider'
 
-const { useToken } = theme
-
 const DashboardLayout = () => {
-  const { token } = useToken()
+  const { token } = theme.useToken()
 
   return (
     <CurrentUserProvider>
@@ -22,7 +20,7 @@ const DashboardLayout = () => {
           <div
             className={styles.header}
             style={{
-              backgroundColor: token.colorPrimaryBg,
+              backgroundColor: token.colorBgLayout,
             }}
           >
             <Header />
@@ -30,7 +28,8 @@ const DashboardLayout = () => {
           <main
             className={styles.main}
             style={{
-              backgroundColor: token.colorPrimaryBg,
+              backgroundColor: token.colorBgContainer,
+              color: token.colorTextBase,
             }}
           >
             <Outlet />
