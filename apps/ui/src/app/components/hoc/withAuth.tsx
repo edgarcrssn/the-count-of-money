@@ -11,9 +11,12 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>): React.F
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-      loadCurrentUser()
-      if (!currentUser) return navigate('/')
-      setLoading(false)
+      const checkAuth = async () => {
+        await loadCurrentUser()
+        if (!currentUser) return navigate('/')
+        setLoading(false)
+      }
+      checkAuth()
     }, [currentUser, loadCurrentUser, navigate])
 
     if (loading)

@@ -6,6 +6,7 @@ import { JwtPayload } from '@the-count-of-money/types'
 import { toast } from 'sonner'
 
 export const CurrentUserProvider = ({ children }: PropsWithChildren) => {
+  const [currentUserIsLoading, setCurrentUserIsLoading] = useState<boolean>(true)
   const [currentUser, setCurrentUser] = useState<JwtPayload | null>(null)
 
   const loadCurrentUser = async () => {
@@ -13,7 +14,9 @@ export const CurrentUserProvider = ({ children }: PropsWithChildren) => {
     if (!token) return setCurrentUser(null)
 
     try {
+      setCurrentUserIsLoading(true)
       const response = await authService.verifyAuthStatus(token)
+      setCurrentUserIsLoading(false)
       if (response.status === 200 && response.data) {
         setCurrentUser(response.data.me)
       } else {
@@ -41,6 +44,8 @@ export const CurrentUserProvider = ({ children }: PropsWithChildren) => {
     currentUser,
     setCurrentUser,
     loadCurrentUser,
+    currentUserIsLoading,
+    setCurrentUserIsLoading,
   }
 
   return <CurrentUserContext.Provider value={value}>{children}</CurrentUserContext.Provider>

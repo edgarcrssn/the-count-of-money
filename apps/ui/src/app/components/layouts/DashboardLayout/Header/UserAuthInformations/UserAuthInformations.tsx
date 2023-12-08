@@ -13,7 +13,7 @@ const { Text, Link: AntdLink } = Typography
 export const UserAuthInformations = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { currentUser, setCurrentUser, loadCurrentUser } = useContext(CurrentUserContext)
+  const { currentUser, setCurrentUser, loadCurrentUser, currentUserIsLoading } = useContext(CurrentUserContext)
 
   const logout = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault()
@@ -39,6 +39,8 @@ export const UserAuthInformations = () => {
       icon: <LogoutOutlined />,
     },
   ]
+
+  if (currentUserIsLoading) return null
 
   return (
     <>
