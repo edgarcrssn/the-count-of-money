@@ -1,7 +1,7 @@
 import { AliasToken } from 'antd/es/theme/interface'
 import variables from '../styles/variables.module.scss'
 
-const { bitcoinOrange, sunYellow, ralewayFont, pureWhite, offWhite, darkNavy, charcoalGray } = variables
+const { ralewayFont, bitcoinOrange, sunYellow, pureWhite, offWhite, darkNavy, charcoalGray } = variables
 
 const antdThemeToken: Partial<AliasToken> = {
   fontFamily: ralewayFont,

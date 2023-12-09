@@ -11,12 +11,17 @@ export const CurrentUserProvider = ({ children }: PropsWithChildren) => {
 
   const loadCurrentUser = async () => {
     const token = manageToken.get()
-    if (!token) return setCurrentUser(null)
+    if (!token) {
+      setCurrentUser(null)
+      setCurrentUserIsLoading(false)
+      return
+    }
 
     try {
       setCurrentUserIsLoading(true)
       const response = await authService.verifyAuthStatus(token)
       setCurrentUserIsLoading(false)
+
       if (response.status === 200 && response.data) {
         setCurrentUser(response.data.me)
       } else {
@@ -27,6 +32,8 @@ export const CurrentUserProvider = ({ children }: PropsWithChildren) => {
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error('An error occurred while fetching user auth state (loadCurrentUser): ', error)
+      manageToken.remove()
+      setCurrentUser(null)
     }
   }
 

@@ -18,6 +18,7 @@ const DashboardLayout = () => {
           style={{
             backgroundColor: token.colorBgLayout,
             borderRight: `1px solid ${token.colorBorder}`,
+            transition: `${token.motionDurationSlow} ease-out`,
           }}
         >
           <Sidebar />
@@ -28,6 +29,7 @@ const DashboardLayout = () => {
             style={{
               backgroundColor: token.colorBgLayout,
               borderBottom: `1px solid ${token.colorBorder}`,
+              transition: `${token.motionDurationSlow} ease-out`,
             }}
           >
             <Header />
@@ -37,6 +39,7 @@ const DashboardLayout = () => {
             style={{
               backgroundColor: token.colorBgContainer,
               color: token.colorTextBase,
+              transition: `${token.motionDurationSlow} ease-out`,
             }}
           >
             <Outlet />

@@ -30,7 +30,6 @@ export const Sidebar = () => {
     const storedCollapsed = localStorage.getItem('sidebarIsCollapsed')
     return storedCollapsed ? JSON.parse(storedCollapsed) : false
   })
-  const [selectedKeys, setSelectedKeys] = useState<string[]>([])
 
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false)
 
@@ -44,38 +43,6 @@ export const Sidebar = () => {
   const articlesLabel = useRef<HTMLAnchorElement>(null)
   const myProfileLabel = useRef<HTMLAnchorElement>(null)
   const settingsLabel = useRef<HTMLAnchorElement>(null)
-
-  const tourSteps: TourProps['steps'] = [
-    {
-      title: 'View the dashboard',
-      description: 'Explore combined cryptocurrency and article dashboards for comprehensive insights at a glance.',
-      target: () => homeLabel.current!.parentElement!.parentElement!,
-    },
-    {
-      title: 'View cryptocurrency prices',
-      description: 'Track real-time cryptocurrency prices on a user-friendly page for informed market insights.',
-      target: () => cryptocurrenciesLabel.current!.parentElement!.parentElement!,
-    },
-    {
-      title: 'View crypto related articles',
-      description: 'Browse articles on cryptocurrency-related topics for valuable insights and updates.',
-      target: () => articlesLabel.current!.parentElement!.parentElement!,
-    },
-  ]
-
-  if (currentUser) {
-    tourSteps.push({
-      title: 'View your profile',
-      description: 'Explore and manage your profile details for a personalized and tailored experience.',
-      target: () => myProfileLabel.current!.parentElement!.parentElement!,
-    })
-    tourSteps.push({
-      title: 'Manage your settings',
-      description:
-        'Tailor your crypto experience by updating preferences. Choose favorite currencies, manage followed cryptocurrencies, and customize settings for a personalized crypto journey.',
-      target: () => settingsLabel.current!.parentElement!.parentElement!,
-    })
-  }
 
   const menuItems: MenuItem[] = [
     {
@@ -105,28 +72,54 @@ export const Sidebar = () => {
         </Link>
       ),
     },
-    currentUser
-      ? {
-          key: '4',
-          icon: <UserOutlined />,
-          label: (
-            <Link ref={myProfileLabel} to={`/profile/${currentUser.nickname}`}>
-              My profile
-            </Link>
-          ),
-        }
-      : null,
-    currentUser
-      ? {
-          key: '5',
-          icon: <SettingOutlined />,
-          label: (
-            <Link ref={settingsLabel} to="/settings">
-              Settings
-            </Link>
-          ),
-        }
-      : null,
+    {
+      key: '4',
+      icon: <UserOutlined />,
+      label: (
+        <Link ref={myProfileLabel} to={`/profile/${currentUser?.nickname}`}>
+          My profile
+        </Link>
+      ),
+    },
+
+    {
+      key: '5',
+      icon: <SettingOutlined />,
+      label: (
+        <Link ref={settingsLabel} to="/settings">
+          Settings
+        </Link>
+      ),
+    },
+  ]
+
+  const tourSteps: TourProps['steps'] = [
+    {
+      title: 'View the dashboard',
+      description: 'Explore combined cryptocurrency and article dashboards for comprehensive insights at a glance.',
+      target: () => homeLabel.current!.parentElement!.parentElement!,
+    },
+    {
+      title: 'View cryptocurrency prices',
+      description: 'Track real-time cryptocurrency prices on a user-friendly page for informed market insights.',
+      target: () => cryptocurrenciesLabel.current!.parentElement!.parentElement!,
+    },
+    {
+      title: 'View crypto related articles',
+      description: 'Browse articles on cryptocurrency-related topics for valuable insights and updates.',
+      target: () => articlesLabel.current!.parentElement!.parentElement!,
+    },
+    {
+      title: 'View your profile',
+      description: 'Explore and manage your profile details for a personalized and tailored experience.',
+      target: () => myProfileLabel.current!.parentElement!.parentElement!,
+    },
+    {
+      title: 'Manage your settings',
+      description:
+        'Tailor your crypto experience by updating preferences. Choose favorite currencies, manage followed cryptocurrencies, and customize settings for a personalized crypto journey.',
+      target: () => settingsLabel.current!.parentElement!.parentElement!,
+    },
   ]
 
   const menuFooterItems: MenuItem[] = [
@@ -150,19 +143,15 @@ export const Sidebar = () => {
     },
   ]
 
-  useEffect(() => {
-    const getSelectedKeys = (): string[] => {
-      if (pathname === '/') return ['1']
-      if (pathname.startsWith('/cryptocurrencies')) return ['2']
-      if (pathname.startsWith('/articles')) return ['3']
-      if (pathname.startsWith('/profile')) return ['4']
-      if (pathname.startsWith('/settings')) return ['5']
+  const getSelectedKeys = (): string[] => {
+    if (pathname === '/') return ['1']
+    if (pathname.startsWith('/cryptocurrencies')) return ['2']
+    if (pathname.startsWith('/articles')) return ['3']
+    if (pathname.startsWith('/profile')) return ['4']
+    if (pathname.startsWith('/settings')) return ['5']
 
-      return []
-    }
-
-    setSelectedKeys(getSelectedKeys())
-  }, [pathname])
+    return []
+  }
 
   useEffect(() => {
     localStorage.setItem('sidebarIsCollapsed', JSON.stringify(collapsed))
@@ -188,8 +177,8 @@ export const Sidebar = () => {
       >
         <div className={styles.sideBarContent}>
           <Menu
-            items={menuItems}
-            selectedKeys={selectedKeys}
+            items={currentUser ? menuItems : menuItems.slice(0, 3)}
+            selectedKeys={getSelectedKeys()}
             mode="inline"
             className={styles.menu}
             theme={currentTheme}
@@ -214,7 +203,7 @@ export const Sidebar = () => {
         open={isTourOpen}
         onClose={handleTourClose}
         onFinish={handleTourClose}
-        steps={tourSteps}
+        steps={currentUser ? tourSteps : tourSteps.slice(0, 3)}
         placement="right"
       />
     </>
