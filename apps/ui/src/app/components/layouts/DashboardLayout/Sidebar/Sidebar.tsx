@@ -31,11 +31,11 @@ export const Sidebar = () => {
     return storedCollapsed ? JSON.parse(storedCollapsed) : false
   })
 
-  const homeLabel = useRef<HTMLAnchorElement>(null)
-  const cryptocurrenciesLabel = useRef<HTMLAnchorElement>(null)
-  const articlesLabel = useRef<HTMLAnchorElement>(null)
-  const myProfileLabel = useRef<HTMLAnchorElement>(null)
-  const settingsLabel = useRef<HTMLAnchorElement>(null)
+  const home = useRef<HTMLElement>(null)
+  const cryptocurrencies = useRef<HTMLElement>(null)
+  const articles = useRef<HTMLElement>(null)
+  const myProfile = useRef<HTMLElement>(null)
+  const settings = useRef<HTMLElement>(null)
 
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false)
 
@@ -43,31 +43,31 @@ export const Sidebar = () => {
     {
       title: 'View the dashboard',
       description: 'Explore combined cryptocurrency and article dashboards for comprehensive insights at a glance.',
-      target: () => homeLabel.current!.parentElement!.parentElement!,
+      target: () => home.current!.parentElement!,
     },
     {
       title: 'View cryptocurrency prices',
       description: 'Track real-time cryptocurrency prices on a user-friendly page for informed market insights.',
-      target: () => cryptocurrenciesLabel.current!.parentElement!.parentElement!,
+      target: () => cryptocurrencies.current!.parentElement!,
     },
     {
       title: 'View crypto related articles',
       description: 'Browse articles on cryptocurrency-related topics for valuable insights and updates.',
-      target: () => articlesLabel.current!.parentElement!.parentElement!,
+      target: () => articles.current!.parentElement!,
     },
     {
       title: `${currentUser ? '' : '🔒 '}View your profile`,
       description: `${
         currentUser ? '' : 'You must be logged in to access this page. '
       }Explore and manage your profile details for a personalized and tailored experience.`,
-      target: () => myProfileLabel.current!.parentElement!.parentElement!,
+      target: () => myProfile.current!.parentElement!,
     },
     {
       title: `${currentUser ? '' : '🔒 '}Manage your settings`,
       description: `${
         currentUser ? '' : 'You must be logged in to access this page. '
       }Tailor your crypto experience by updating preferences. Choose favorite currencies, manage followed cryptocurrencies, and customize settings for a personalized crypto journey.`,
-      target: () => settingsLabel.current!.parentElement!.parentElement!,
+      target: () => settings.current!.parentElement!,
     },
   ]
 
@@ -79,51 +79,35 @@ export const Sidebar = () => {
   const menuItems: MenuItem[] = [
     {
       key: '1',
-      icon: <HomeOutlined />,
-      label: (
-        <Link ref={homeLabel} to="/">
-          Home
-        </Link>
-      ),
+      icon: <HomeOutlined ref={home} />,
+      label: <Link to="/">Home</Link>,
     },
     {
       key: '2',
-      icon: <AreaChartOutlined />,
-      label: (
-        <Link ref={cryptocurrenciesLabel} to="/cryptocurrencies">
-          Cryptocurrencies
-        </Link>
-      ),
+      icon: <AreaChartOutlined ref={cryptocurrencies} />,
+      label: <Link to="/cryptocurrencies">Cryptocurrencies</Link>,
     },
     {
       key: '3',
-      icon: <FileTextOutlined />,
-      label: (
-        <Link ref={articlesLabel} to="/articles">
-          Articles
-        </Link>
-      ),
+      icon: <FileTextOutlined ref={articles} />,
+      label: <Link to="/articles">Articles</Link>,
     },
     {
       key: '4',
-      icon: <UserOutlined />,
+      icon: <UserOutlined ref={myProfile} />,
       disabled: !currentUser,
       label: (
-        <Link
-          ref={myProfileLabel}
-          to={`/profile/${currentUser?.nickname}`}
-          style={currentUser ? undefined : { pointerEvents: 'none' }}
-        >
+        <Link to={`/profile/${currentUser?.nickname}`} style={currentUser ? undefined : { pointerEvents: 'none' }}>
           My profile
         </Link>
       ),
     },
     {
       key: '5',
-      icon: <SettingOutlined />,
+      icon: <SettingOutlined ref={settings} />,
       disabled: !currentUser,
       label: (
-        <Link ref={settingsLabel} to="/settings" style={currentUser ? undefined : { pointerEvents: 'none' }}>
+        <Link to="/settings" style={currentUser ? undefined : { pointerEvents: 'none' }}>
           Settings
         </Link>
       ),
