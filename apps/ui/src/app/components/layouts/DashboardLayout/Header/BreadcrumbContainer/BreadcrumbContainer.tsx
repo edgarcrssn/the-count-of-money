@@ -28,11 +28,14 @@ export const BreadcrumbContainer = () => {
     <Breadcrumb
       items={[
         {
-          title: (
-            <Link to="/">
+          title:
+            pathname === '/' ? (
               <HomeOutlined />
-            </Link>
-          ),
+            ) : (
+              <Link to="/">
+                <HomeOutlined />
+              </Link>
+            ),
         },
         ...breadcrumbItems,
       ]}
