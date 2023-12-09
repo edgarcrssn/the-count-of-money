@@ -13,13 +13,12 @@ export const UserAuthInformations = () => {
 
   const { currentUser, setCurrentUser, currentUserIsLoading } = useContext(CurrentUserContext)
 
-  const logout = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    e.preventDefault()
+  const logout = () => {
     manageToken.remove()
     setCurrentUser(null)
   }
 
-  const items: MenuProps['items'] = [
+  const dropdownItems: MenuProps['items'] = [
     {
       key: '1',
       label: <Link to={`/profile/${currentUser?.nickname}`}>My profile</Link>,
@@ -29,12 +28,9 @@ export const UserAuthInformations = () => {
     {
       key: '2',
       danger: true,
-      label: (
-        <a href="/" onClick={logout}>
-          Logout
-        </a>
-      ),
+      label: 'Logout',
       icon: <LogoutOutlined />,
+      onClick: logout,
     },
   ]
 
@@ -45,8 +41,8 @@ export const UserAuthInformations = () => {
       {currentUser ? (
         <Text>
           Hello,{' '}
-          <Dropdown menu={{ items }}>
-            <AntdLink href="/" onClick={(e) => e.preventDefault()}>
+          <Dropdown menu={{ items: dropdownItems }}>
+            <AntdLink>
               <Space>{currentUser.first_name}</Space>
             </AntdLink>
           </Dropdown>
@@ -54,18 +50,14 @@ export const UserAuthInformations = () => {
       ) : (
         <Text>
           You are not logged in.{' '}
-          <Link
-            to="/"
-            onClick={(e) => {
-              e.preventDefault()
-              setIsModalOpen(true)
-            }}
+          <AntdLink
+            onClick={() => setIsModalOpen(true)}
             style={{
               whiteSpace: 'nowrap',
             }}
           >
             Log me in
-          </Link>
+          </AntdLink>
         </Text>
       )}
       <AuthModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />

@@ -8,7 +8,7 @@ import { capitalize } from '../../../../utils/capitalize'
 import { RegisterDto } from '@the-count-of-money/types'
 import { onlyLettersAndOrSpacesRegexObject, passwordRegexObject, slugRegexObject } from '@the-count-of-money/regex'
 
-interface Props {
+type Props = {
   onSuccess: () => void
 }
 

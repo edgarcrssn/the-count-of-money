@@ -6,7 +6,7 @@ import { toast } from 'sonner'
 import { manageToken } from '../../../../utils/manageToken'
 import { LoginDto } from '@the-count-of-money/types'
 
-interface Props {
+type Props = {
   onSuccess: () => void
 }
 
