@@ -1,6 +1,6 @@
 import { Divider, Modal } from 'antd'
 import React, { useContext } from 'react'
-import GoogleAuthButton from '../../GoogleAuthButton/GoogleAuthButton'
+import GoogleAuthButton from '../../forms/GoogleAuthButton/GoogleAuthButton'
 import LoginForm from '../../forms/LoginForm/LoginForm'
 import RegisterForm from '../../forms/RegisterForm/RegisterForm'
 import { CurrentUserContext } from '../../../context/CurrentUser/CurrentUserContext'

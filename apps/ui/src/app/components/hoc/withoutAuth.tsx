@@ -5,25 +5,22 @@ import { CurrentUserContext } from '../../context/CurrentUser/CurrentUserContext
 
 const withoutAuth = <P extends object>(WrappedComponent: ComponentType<P>): React.FC<P> => {
   const WithoutAuth: React.FC<P> = (props) => {
-    const { currentUser, loadCurrentUser } = useContext(CurrentUserContext)
+    const { currentUser } = useContext(CurrentUserContext)
 
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
       const checkAuth = async () => {
-        await loadCurrentUser()
         if (currentUser) return navigate('/')
         setLoading(false)
       }
       checkAuth()
-    }, [currentUser, loadCurrentUser, navigate])
+    }, [currentUser, navigate])
 
     if (loading)
       return (
-        <div
-          style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-        >
+        <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <LoadingOutlined />
         </div>
       )
