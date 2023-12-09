@@ -1,19 +1,17 @@
-import { Divider, Dropdown, MenuProps, Modal, Space, Typography } from 'antd'
+import { Dropdown, MenuProps, Space, Typography } from 'antd'
 import { CurrentUserContext } from '../../../../../context/CurrentUser/CurrentUserContext'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { manageToken } from '../../../../../../utils/manageToken'
-import GoogleAuthButton from '../../../../GoogleAuthButton/GoogleAuthButton'
-import LoginForm from '../../../../forms/LoginForm/LoginForm'
-import RegisterForm from '../../../../forms/RegisterForm/RegisterForm'
+import AuthModal from '../../../../modals/AuthModal/AuthModal'
 
 const { Text, Link: AntdLink } = Typography
 
 export const UserAuthInformations = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { currentUser, setCurrentUser, loadCurrentUser, currentUserIsLoading } = useContext(CurrentUserContext)
+  const { currentUser, setCurrentUser, currentUserIsLoading } = useContext(CurrentUserContext)
 
   const logout = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault()
@@ -40,7 +38,7 @@ export const UserAuthInformations = () => {
     },
   ]
 
-  if (currentUserIsLoading) return null
+  if (currentUserIsLoading && !currentUser) return null
 
   return (
     <>
@@ -70,29 +68,7 @@ export const UserAuthInformations = () => {
           </Link>
         </Text>
       )}
-      <Modal
-        title="Join the community!"
-        centered
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        footer={null}
-      >
-        <GoogleAuthButton />
-        <Divider>or</Divider>
-        <LoginForm
-          onSuccess={() => {
-            setIsModalOpen(false)
-            loadCurrentUser()
-          }}
-        />
-        <Divider>or</Divider>
-        <RegisterForm
-          onSuccess={() => {
-            setIsModalOpen(false)
-            loadCurrentUser()
-          }}
-        />
-      </Modal>
+      <AuthModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </>
   )
 }
