@@ -1,18 +1,17 @@
-import { Dropdown, MenuProps, Modal, Space } from 'antd'
-import { CurrentUserContext } from '../../../../../context/CurrentUserContext'
+import { Dropdown, MenuProps, Space, Typography } from 'antd'
+import { CurrentUserContext } from '../../../../../context/CurrentUser/CurrentUserContext'
 import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
 import { manageToken } from '../../../../../../utils/manageToken'
-import GoogleAuthButton from '../../../../GoogleAuthButton/GoogleAuthButton'
-import { Separator } from '../../../../Separator/Separator'
-import LoginForm from '../../../../forms/LoginForm/LoginForm'
-import RegisterForm from '../../../../forms/RegisterForm/RegisterForm'
+import AuthModal from '../../../../modals/AuthModal/AuthModal'
+
+const { Text, Link: AntdLink } = Typography
 
 export const UserAuthInformations = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const { currentUser, setCurrentUser, loadCurrentUser } = useContext(CurrentUserContext)
+  const { currentUser, setCurrentUser, currentUserIsLoading } = useContext(CurrentUserContext)
 
   const logout = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     e.preventDefault()
@@ -39,19 +38,21 @@ export const UserAuthInformations = () => {
     },
   ]
 
+  if (currentUserIsLoading && !currentUser) return null
+
   return (
     <>
       {currentUser ? (
-        <>
+        <Text>
           Hello,{' '}
           <Dropdown menu={{ items }}>
-            <a href="/" onClick={(e) => e.preventDefault()}>
+            <AntdLink href="/" onClick={(e) => e.preventDefault()}>
               <Space>{currentUser.first_name}</Space>
-            </a>
+            </AntdLink>
           </Dropdown>
-        </>
+        </Text>
       ) : (
-        <div>
+        <Text>
           You are not logged in.{' '}
           <Link
             to="/"
@@ -59,34 +60,15 @@ export const UserAuthInformations = () => {
               e.preventDefault()
               setIsModalOpen(true)
             }}
+            style={{
+              whiteSpace: 'nowrap',
+            }}
           >
             Log me in
           </Link>
-        </div>
+        </Text>
       )}
-      <Modal
-        title="Join the community!"
-        centered
-        open={isModalOpen}
-        onCancel={() => setIsModalOpen(false)}
-        footer={null}
-      >
-        <GoogleAuthButton />
-        <Separator />
-        <LoginForm
-          onSuccess={() => {
-            setIsModalOpen(false)
-            loadCurrentUser()
-          }}
-        />
-        <Separator />
-        <RegisterForm
-          onSuccess={() => {
-            setIsModalOpen(false)
-            loadCurrentUser()
-          }}
-        />
-      </Modal>
+      <AuthModal isOpen={isModalOpen} setIsOpen={setIsModalOpen} />
     </>
   )
 }

@@ -1,18 +1,23 @@
-import React, { ComponentType, useEffect, useState } from 'react'
+import React, { ComponentType, useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { manageToken } from '../../../utils/manageToken'
 import { LoadingOutlined } from '@ant-design/icons'
+import { CurrentUserContext } from '../../context/CurrentUser/CurrentUserContext'
 
 const withoutAuth = <P extends object>(WrappedComponent: ComponentType<P>): React.FC<P> => {
   const WithoutAuth: React.FC<P> = (props) => {
+    const { currentUser, loadCurrentUser } = useContext(CurrentUserContext)
+
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-      const token = manageToken.get()
-      if (token) navigate('/')
-      setLoading(false)
-    }, [navigate])
+      const checkAuth = async () => {
+        await loadCurrentUser()
+        if (currentUser) return navigate('/')
+        setLoading(false)
+      }
+      checkAuth()
+    }, [currentUser, loadCurrentUser, navigate])
 
     if (loading)
       return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 // import styles from './RegisterForm.module.scss'
-import { Button, Form, Input } from 'antd'
+import { Button, Form, Input, Typography } from 'antd'
 import { authService } from '../../../../services/authService'
 import { toast } from 'sonner'
 import { manageToken } from '../../../../utils/manageToken'
@@ -54,7 +54,9 @@ const RegisterForm = ({ onSuccess }: Props) => {
 
   return (
     <Form form={form} name="normal_register" initialValues={{ remember: true }} onFinish={registerWithPassword}>
-      <div style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '.5rem' }}>Register with password</div>
+      <Typography style={{ fontSize: '1rem', fontWeight: 'bold', marginBottom: '.5rem' }}>
+        Register with password
+      </Typography>
       <div
         style={{
           display: 'grid',

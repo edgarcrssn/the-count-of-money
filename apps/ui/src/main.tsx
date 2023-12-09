@@ -7,13 +7,13 @@ import GoogleRedirect from './app/pages/google-redirect/google-redirect'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import DashboardLayout from './app/components/layouts/DashboardLayout/DashboardLayout'
-import { ConfigProvider } from 'antd'
 import Profile from './app/pages/profile/profile'
 
-import variables from './styles/variables.module.scss'
 import Cryptocurrencies from './app/pages/cryptocurrencies/cryptocurrencies'
 import Articles from './app/pages/articles/articles'
 import Settings from './app/pages/settings/settings'
+import { ThemeProvider } from './app/context/Theme/ThemeProvider'
+import { ThemeConfig } from './app/components/layouts/ThemeConfig/ThemeConfig'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -51,25 +51,17 @@ const App = () => {
 
   const queryClient = new QueryClient()
 
-  const { bitcoinOrange, ralewayFont } = variables
-
   return (
     <StrictMode>
-      <ConfigProvider
-        theme={{
-          token: {
-            fontFamily: ralewayFont,
-            colorPrimary: bitcoinOrange,
-            colorLink: bitcoinOrange,
-          },
-        }}
-      >
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-          <Toaster richColors />
-          <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
-        </QueryClientProvider>
-      </ConfigProvider>
+      <ThemeProvider>
+        <ThemeConfig>
+          <QueryClientProvider client={queryClient}>
+            <RouterProvider router={router} />
+            <Toaster richColors />
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          </QueryClientProvider>
+        </ThemeConfig>
+      </ThemeProvider>
     </StrictMode>
   )
 }
