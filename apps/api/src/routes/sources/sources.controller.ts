@@ -22,6 +22,10 @@ export const postRssController = async (req: Request, res: Response) => {
 export const deleteRssController = async (req: Request, res: Response) => {
   const { id } = req.params
 
-  const deletedRssSource = await deleteRssSource(+id)
-  res.send({ deletedRssSource })
+  try {
+    const deletedRssSource = await deleteRssSource(+id)
+    res.send({ deletedRssSource })
+  } catch (error) {
+    res.status(500).json({ message: 'An error occurred while trying to delete the RSS source' })
+  }
 }
