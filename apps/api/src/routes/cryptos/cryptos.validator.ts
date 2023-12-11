@@ -1,5 +1,3 @@
-import { Cryptocurrency } from '@prisma/client'
+import { body } from 'express-validator'
 
-export const isValidCryptoId = (id: string, cryptoIds: Cryptocurrency[]) => {
-  return cryptoIds.some((crypto) => crypto.id === id)
-}
+export const postCryptoValidator = [body('name').notEmpty().isString().withMessage('must be a string')]

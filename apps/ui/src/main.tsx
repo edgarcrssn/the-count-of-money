@@ -14,9 +14,15 @@ import Articles from './app/pages/articles/articles'
 import Settings from './app/pages/settings/settings'
 import { ThemeProvider } from './app/context/Theme/ThemeProvider'
 import { ThemeConfig } from './app/components/layouts/ThemeConfig/ThemeConfig'
+import NotFound from './app/pages/not-found/not-found'
+import Admin from './app/pages/admin/admin'
 
 const App = () => {
   const router = createBrowserRouter([
+    {
+      path: '/google-redirect',
+      element: <GoogleRedirect />,
+    },
     {
       path: '/',
       element: <DashboardLayout />,
@@ -41,11 +47,15 @@ const App = () => {
           path: 'settings',
           element: <Settings />,
         },
+        {
+          path: 'admin',
+          element: <Admin />,
+        },
+        {
+          path: '*',
+          element: <NotFound />,
+        },
       ],
-    },
-    {
-      path: '/google-redirect',
-      element: <GoogleRedirect />,
     },
   ])
 

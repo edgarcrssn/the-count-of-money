@@ -122,22 +122,22 @@ const upsertRssSources = async () => {
 
 const upsertCryptoCurrencies = async () => {
   const cryptocurrencies = [
-    { id: 'matic-network' },
-    { id: 'polkadot' },
-    { id: 'wrapped-bitcoin' },
-    { id: 'litecoin' },
-    { id: 'shiba-inu' },
-    { id: 'dai' },
-    { id: 'bitcoin-cash' },
+    'matic-network',
+    'polkadot',
+    'wrapped-bitcoin',
+    'litecoin',
+    'shiba-inu',
+    'dai',
+    'bitcoin-cash',
   ]
 
   const cryptoCurrencies: Cryptocurrency[] = []
 
-  for (const crypto of cryptocurrencies) {
+  for (const name of cryptocurrencies) {
     const cryptoCurrency = await prisma.cryptocurrency.upsert({
-      where: { id: crypto.id },
-      update: crypto,
-      create: crypto,
+      where: { name },
+      update: {},
+      create: { name },
     })
     cryptoCurrencies.push(cryptoCurrency)
   }

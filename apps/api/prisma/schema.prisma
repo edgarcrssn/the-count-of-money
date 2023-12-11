@@ -8,28 +8,23 @@ datasource db {
 }
 
 model User {
-  id                  Int      @id @default(autoincrement())
+  id                  Int              @id @default(autoincrement())
   first_name          String
   last_name           String
-  email               String   @unique
-  nickname            String   @unique
-  auth_type           AuthType @default(CLASSIC)
+  email               String           @unique
+  nickname            String           @unique
+  auth_type           AuthType         @default(PASSWORD)
   password            String?
-  role                Role     @default(USER)
-  crypto_currencies   Json?
-  keywords            Json?
+  role                Role             @default(USER)
   default_currency_id Int
-  default_currency    Currency @relation(fields: [default_currency_id], references: [id])
-  created_at          DateTime @default(now())
-}
-
-model RssSource {
-  id  Int    @id @default(autoincrement())
-  url String @unique
+  default_currency    Currency         @relation(fields: [default_currency_id], references: [id])
+  crypto_currencies   Cryptocurrency[]
+  keywords            Json?
+  created_at          DateTime         @default(now())
 }
 
 enum AuthType {
-  CLASSIC
+  PASSWORD
   GOOGLE
 }
 
@@ -39,11 +34,18 @@ enum Role {
 }
 
 model Currency {
-  id   Int    @id @default(autoincrement())
-  name String @unique
-  User User[]
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
 }
 
 model Cryptocurrency {
-  id String @id @unique
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  users User[]
+}
+
+model RssSource {
+  id  Int    @id @default(autoincrement())
+  url String @unique
 }

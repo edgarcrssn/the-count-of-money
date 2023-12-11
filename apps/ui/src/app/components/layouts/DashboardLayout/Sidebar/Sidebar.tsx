@@ -5,6 +5,7 @@ import {
   FileTextOutlined,
   HomeOutlined,
   LeftCircleOutlined,
+  LockOutlined,
   QuestionCircleOutlined,
   SettingOutlined,
   UserOutlined,
@@ -112,23 +113,30 @@ export const Sidebar = () => {
         </Link>
       ),
     },
+    currentUser?.role === 'ADMIN'
+      ? {
+          key: '6',
+          icon: <LockOutlined />,
+          label: <Link to="/admin">Admin</Link>,
+        }
+      : null,
   ]
 
   const menuFooterItems: MenuItem[] = [
     {
-      key: '6',
+      key: '7',
       icon: currentTheme === Theme.LIGHT ? <MoonOutlined /> : <SunOutlined />,
       label: `${currentTheme === Theme.LIGHT ? 'Dark' : 'Light'} theme`,
       onClick: () => setCurrentTheme(currentTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT),
     },
     {
-      key: '7',
+      key: '8',
       icon: <QuestionCircleOutlined />,
       label: 'Help',
       onClick: () => setIsTourOpen(true),
     },
     {
-      key: '8',
+      key: '9',
       icon: <LeftCircleOutlined rotate={collapsed ? 180 : 0} />,
       label: collapsed ? 'Expand' : 'Collapse',
       onClick: () => setCollapsed(!collapsed),
@@ -141,6 +149,7 @@ export const Sidebar = () => {
     if (pathname.startsWith('/articles')) return ['3']
     if (pathname.startsWith('/profile')) return ['4']
     if (pathname.startsWith('/settings')) return ['5']
+    if (pathname.startsWith('/admin')) return ['6']
 
     return []
   }

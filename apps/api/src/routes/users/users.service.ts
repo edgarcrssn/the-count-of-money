@@ -67,7 +67,7 @@ export const createUser = async (user: ICreateUser): Promise<User> => {
 
 export const verifyCredentials = async ({ nickname, password }: LoginDto): Promise<{ token: string }> => {
   const user = await prisma.user.findUnique({
-    where: { nickname, auth_type: AuthType.CLASSIC },
+    where: { nickname, auth_type: AuthType.PASSWORD },
   })
   if (!user) throw { code: 401, message: 'Invalid credentials' }
 

@@ -1,21 +1,39 @@
-import { PrismaClient } from '@prisma/client'
+import { Prisma, PrismaClient } from '@prisma/client'
 import axios from 'axios'
 const prisma = new PrismaClient()
 
-export const createCrypto = async (id: string) => {
-  return await prisma.cryptocurrency.create({
-    data: {
-      id,
-    },
-  })
+export const createCrypto = async (name: string) => {
+  try {
+    const newCrypto = await prisma.cryptocurrency.create({
+      data: { name },
+    })
+    return newCrypto
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        const target = error.meta.target as string[]
+        throw { code: 409, message: `This ${target[0]} is already taken` }
+      }
+    }
+    throw error
+  }
 }
 
-export const deleteCrypto = async (id: string) => {
-  return await prisma.cryptocurrency.delete({
-    where: {
-      id,
-    },
-  })
+export const deleteCrypto = async (id: number) => {
+  try {
+    const deletedCrypto = await prisma.cryptocurrency.delete({
+      where: { id },
+    })
+
+    return deletedCrypto
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        throw { code: 404, message: 'This crypto does not exist' }
+      }
+    }
+    throw error
+  }
 }
 
 export const fetchCryptos = async (endpoint: string, currency?: string) => {
@@ -27,26 +45,31 @@ export const fetchCryptos = async (endpoint: string, currency?: string) => {
         x_cg_demo_api_key: process.env.COINGECKO_API_KEY,
       },
       params: {
-        vs_currency: currency || 'eur',
+        vs_currency: currency?.toLowerCase() || 'eur',
       },
     })
     return response.data
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.error('Error while fetching data from CoinGecko API: ', error)
+    console.error('An error occurred while fetching data from CoinGecko API: ', error)
     return []
   }
 }
 
 export const getUserCurrency = async (userId: number) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-    include: {
-      default_currency: true,
-    },
-  })
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: { default_currency: true },
+    })
 
-  return user?.default_currency?.name
+    return user?.default_currency.name
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        throw { code: 404, message: 'This user does not exist' }
+      }
+    }
+    throw error
+  }
 }
