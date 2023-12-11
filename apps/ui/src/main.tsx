@@ -13,9 +13,9 @@ import Cryptocurrencies from './app/pages/cryptocurrencies/cryptocurrencies'
 import Articles from './app/pages/articles/articles'
 import Settings from './app/pages/settings/settings'
 import { ThemeProvider } from './app/context/Theme/ThemeProvider'
-import { ThemeConfig } from './app/components/layouts/ThemeConfig/ThemeConfig'
 import NotFound from './app/pages/not-found/not-found'
 import Admin from './app/pages/admin/admin'
+import { CurrentUserProvider } from './app/context/CurrentUser/CurrentUserProvider'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -64,13 +64,13 @@ const App = () => {
   return (
     <StrictMode>
       <ThemeProvider>
-        <ThemeConfig>
+        <CurrentUserProvider>
           <QueryClientProvider client={queryClient}>
             <RouterProvider router={router} />
             <Toaster richColors />
             <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
           </QueryClientProvider>
-        </ThemeConfig>
+        </CurrentUserProvider>
       </ThemeProvider>
     </StrictMode>
   )
