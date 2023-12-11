@@ -31,9 +31,11 @@ CREATE TABLE "Currency" (
 
 -- CreateTable
 CREATE TABLE "Cryptocurrency" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "available" BOOLEAN NOT NULL DEFAULT true,
+    "symbol" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "available" BOOLEAN DEFAULT true,
 
     CONSTRAINT "Cryptocurrency_pkey" PRIMARY KEY ("id")
 );
@@ -48,7 +50,7 @@ CREATE TABLE "RssSource" (
 
 -- CreateTable
 CREATE TABLE "_CryptocurrencyToUser" (
-    "A" INTEGER NOT NULL,
+    "A" TEXT NOT NULL,
     "B" INTEGER NOT NULL
 );
 
@@ -62,7 +64,7 @@ CREATE UNIQUE INDEX "User_nickname_key" ON "User"("nickname");
 CREATE UNIQUE INDEX "Currency_name_key" ON "Currency"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Cryptocurrency_name_key" ON "Cryptocurrency"("name");
+CREATE UNIQUE INDEX "Cryptocurrency_id_key" ON "Cryptocurrency"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "RssSource_url_key" ON "RssSource"("url");

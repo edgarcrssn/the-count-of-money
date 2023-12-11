@@ -7,6 +7,7 @@ import {
   getCryptoByIdController,
   getCryptoPriceHistoryController,
   getCryptosController,
+  getNonStoredCryptosController,
   getStoredCryptosController,
   postStoredCryptoController,
 } from './cryptos.controller'
@@ -17,6 +18,7 @@ import { editCryptoValidator, createCryptoValidator } from './cryptos.validator'
 const router = express.Router()
 
 router.get('/stored', permissiveAuthMiddleware, getStoredCryptosController)
+router.get('/non-stored', adminMiddleware, getNonStoredCryptosController)
 router.post('/stored', adminMiddleware, createCryptoValidator, validatorMiddleware, postStoredCryptoController)
 router.patch('/stored/:id', adminMiddleware, editCryptoValidator, validatorMiddleware, editStoredCryptoByIdController)
 router.delete('/stored/:id', adminMiddleware, deleteStoredCryptoByIdController)

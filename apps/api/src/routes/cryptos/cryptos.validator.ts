@@ -1,19 +1,20 @@
 import { body } from 'express-validator'
 import { fetchCryptos } from './cryptos.service'
+import { CoinGeckoCryptoMarketData } from '@the-count-of-money/types'
 
 export const createCryptoValidator = [
-  body('name').notEmpty().isString().withMessage('must be a string'),
+  body('id').notEmpty().isString().withMessage('must be a string'),
   body('available').optional().isBoolean().withMessage('must be a boolean'),
 ]
 
 export const editCryptoValidator = [
-  body('name').optional().notEmpty().withMessage('must not be empty').isString().withMessage('must be a string'),
+  body('id').optional().notEmpty().withMessage('must not be empty').isString().withMessage('must be a string'),
   body('available').optional().isBoolean().withMessage('must be a boolean'),
 ]
 
-export const isCryptoAvailable = async (name: string, userCurrency?: string) => {
-  const cryptos = (await fetchCryptos('/coins/markets', userCurrency)) as { id: string }[]
+export const isCryptoAvailable = async (id: string, userCurrency?: string) => {
+  const cryptos: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets', userCurrency)
   const availableCryptos = cryptos.map((crypto) => crypto.id)
 
-  return availableCryptos.includes(name)
+  return availableCryptos.includes(id)
 }

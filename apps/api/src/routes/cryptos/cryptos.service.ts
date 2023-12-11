@@ -1,4 +1,4 @@
-import { Prisma, PrismaClient } from '@prisma/client'
+import { Cryptocurrency, Prisma, PrismaClient } from '@prisma/client'
 import { EditCryptoDto } from '@the-count-of-money/types'
 import axios from 'axios'
 const prisma = new PrismaClient()
@@ -17,10 +17,10 @@ export const getStoredCryptos = async (onlyAvailable: boolean = false) => {
   }
 }
 
-export const createCrypto = async (name: string) => {
+export const createCrypto = async (cryptocurrency: Cryptocurrency) => {
   try {
     const newCrypto = await prisma.cryptocurrency.create({
-      data: { name },
+      data: cryptocurrency,
     })
     return newCrypto
   } catch (error) {
@@ -34,7 +34,7 @@ export const createCrypto = async (name: string) => {
   }
 }
 
-export const editCrypto = async (id: number, editCryptoDto: EditCryptoDto) => {
+export const editCrypto = async (id: string, editCryptoDto: EditCryptoDto) => {
   try {
     const editedCrypto = await prisma.cryptocurrency.update({
       where: { id },
@@ -55,7 +55,7 @@ export const editCrypto = async (id: number, editCryptoDto: EditCryptoDto) => {
   }
 }
 
-export const deleteCrypto = async (id: number) => {
+export const deleteCrypto = async (id: string) => {
   try {
     const deletedCrypto = await prisma.cryptocurrency.delete({
       where: { id },
@@ -86,6 +86,7 @@ export const fetchCryptos = async (endpoint: string, currency?: string) => {
     })
     return response.data
   } catch (error) {
+    console.log(error.response.status)
     // eslint-disable-next-line no-console
     console.error('An error occurred while fetching data from CoinGecko API: ', error)
     return []
