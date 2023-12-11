@@ -1,7 +1,7 @@
 import { JwtPayload, LoginDto, RegisterDto } from '@the-count-of-money/types'
 import { customFetch } from './customFetch'
 
-type Data =
+export type RetrievedError =
   | { message: string }
   | {
       errors: {
@@ -16,7 +16,7 @@ type Data =
 export const authService = {
   async register(registerDto: RegisterDto): Promise<{
     status: number
-    data?: { token: string } | Data
+    data?: { token: string } | RetrievedError
   }> {
     return customFetch('/users/register', {
       method: 'POST',
@@ -26,7 +26,7 @@ export const authService = {
       body: JSON.stringify(registerDto),
     })
       .then((response) => {
-        return response.json().then((data: { token: string } | Data) => ({
+        return response.json().then((data: { token: string } | RetrievedError) => ({
           status: response.status,
           data,
         }))
@@ -101,12 +101,8 @@ export const authService = {
       })
   },
 
-  async verifyAuthStatus(token: string): Promise<{ status: number; data?: { me: JwtPayload } }> {
-    return customFetch('/users/verify-auth-status', {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
+  async verifyAuthStatus(): Promise<{ status: number; data?: { me: JwtPayload } }> {
+    return customFetch('/users/verify-auth-status')
       .then((response) => {
         if (response.ok)
           return response.json().then((data: { me: JwtPayload }) => ({

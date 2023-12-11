@@ -1,6 +1,21 @@
 import { Prisma, PrismaClient } from '@prisma/client'
+import { EditCryptoDto } from '@the-count-of-money/types'
 import axios from 'axios'
 const prisma = new PrismaClient()
+
+export const getStoredCryptos = async (onlyAvailable: boolean = false) => {
+  try {
+    const storedCryptos = await prisma.cryptocurrency.findMany({
+      where: onlyAvailable ? { available: true } : undefined,
+    })
+
+    return storedCryptos
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error)
+    throw error
+  }
+}
 
 export const createCrypto = async (name: string) => {
   try {
@@ -11,6 +26,27 @@ export const createCrypto = async (name: string) => {
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
+        const target = error.meta.target as string[]
+        throw { code: 409, message: `This ${target[0]} is already taken` }
+      }
+    }
+    throw error
+  }
+}
+
+export const editCrypto = async (id: number, editCryptoDto: EditCryptoDto) => {
+  try {
+    const editedCrypto = await prisma.cryptocurrency.update({
+      where: { id },
+      data: editCryptoDto,
+    })
+
+    return editedCrypto
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        throw { code: 404, message: 'This crypto does not exist' }
+      } else if (error.code === 'P2002') {
         const target = error.meta.target as string[]
         throw { code: 409, message: `This ${target[0]} is already taken` }
       }

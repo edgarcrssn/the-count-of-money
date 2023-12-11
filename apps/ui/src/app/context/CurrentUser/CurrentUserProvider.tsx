@@ -19,7 +19,7 @@ export const CurrentUserProvider = ({ children }: PropsWithChildren) => {
 
     try {
       setCurrentUserIsLoading(true)
-      const response = await authService.verifyAuthStatus(token)
+      const response = await authService.verifyAuthStatus()
       setCurrentUserIsLoading(false)
 
       if (response.status === 200 && response.data) {

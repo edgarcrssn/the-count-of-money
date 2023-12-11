@@ -40,9 +40,10 @@ model Currency {
 }
 
 model Cryptocurrency {
-  id    Int    @id @default(autoincrement())
-  name  String @unique
-  users User[]
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  available Boolean @default(true)
+  users     User[]
 }
 
 model RssSource {

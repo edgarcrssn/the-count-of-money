@@ -33,6 +33,7 @@ CREATE TABLE "Currency" (
 CREATE TABLE "Cryptocurrency" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
+    "available" BOOLEAN NOT NULL DEFAULT true,
 
     CONSTRAINT "Cryptocurrency_pkey" PRIMARY KEY ("id")
 );
