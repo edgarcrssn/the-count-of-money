@@ -1,10 +1,10 @@
 import React from 'react'
-import { Switch, Table, Typography } from 'antd'
+import { Button, Popconfirm, Switch, Table, Typography } from 'antd'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { cryptoService } from '../../../../services/cryptoServices'
 import { ColumnsType } from 'antd/es/table'
 import { toast } from 'sonner'
-import { TableInput } from './TableInput/TableInput'
+import { DeleteOutlined } from '@ant-design/icons'
 
 type DataType = {
   key: number
@@ -17,9 +17,20 @@ export const CryptocurrenciesTable = () => {
 
   const { data, isLoading } = useQuery('cryptocurrencies', cryptoService.getStoredCryptos)
 
-  const editMutation = useMutation(cryptoService.editStoredCrypto, {
+  const editCrypto = useMutation(cryptoService.editStoredCrypto, {
     onSuccess: ({ editedCrypto }) => {
-      toast.success(`The "${editedCrypto.name}" crypto has been edited successfully`)
+      toast.success(`The "${editedCrypto.name}" crypto is now ${editedCrypto.available ? 'available' : 'unavailable'}`)
+      queryClient.invalidateQueries('cryptocurrencies')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+      queryClient.invalidateQueries('cryptocurrencies')
+    },
+  })
+
+  const deleteCrypto = useMutation(cryptoService.deletedStoredCrypto, {
+    onSuccess: ({ deletedCrypto }) => {
+      toast.success(`The "${deletedCrypto.name}" crypto has been successfully deleted`)
       queryClient.invalidateQueries('cryptocurrencies')
     },
     onError: (error: Error) => {
@@ -40,17 +51,6 @@ export const CryptocurrenciesTable = () => {
     {
       title: 'Name',
       dataIndex: 'name',
-      render: (_, record) => {
-        return (
-          <TableInput
-            defaultValue={record.name}
-            onBlur={(value) => {
-              if (value.trim() === record.name) return
-              editMutation.mutate({ cryptoId: record.key, editCryptoDto: { name: value.trim() } })
-            }}
-          />
-        )
-      },
     },
     {
       title: 'Available',
@@ -59,8 +59,26 @@ export const CryptocurrenciesTable = () => {
         return (
           <Switch
             checked={record.available}
-            onChange={(checked) => editMutation.mutate({ cryptoId: record.key, editCryptoDto: { available: checked } })}
+            onChange={(checked) => editCrypto.mutate({ cryptoId: record.key, editCryptoDto: { available: checked } })}
           />
+        )
+      },
+    },
+    {
+      title: 'Actions',
+      render: (_, record) => {
+        return (
+          <Popconfirm
+            title="Delete crypto"
+            description={`Are you sure to delete the ${record.name} crypto?`}
+            onConfirm={() => {
+              deleteCrypto.mutate(record.key)
+            }}
+          >
+            <Button icon={<DeleteOutlined />} danger>
+              Delete
+            </Button>
+          </Popconfirm>
         )
       },
     },

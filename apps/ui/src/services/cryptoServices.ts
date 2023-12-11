@@ -38,4 +38,18 @@ export const cryptoService = {
     }
     return await response.json()
   },
+
+  async deletedStoredCrypto(cryptoId: number): Promise<{ deletedCrypto: Cryptocurrency }> {
+    const response = await customFetch(`/cryptos/stored/${cryptoId}`, {
+      method: 'DELETE',
+    })
+    if (!response.ok) {
+      const retrievedError: RetrievedError = await response.json()
+
+      if ('errors' in retrievedError)
+        throw new Error(`${capitalize(retrievedError.errors[0].path)} ${retrievedError.errors[0].msg}`)
+      else throw new Error(retrievedError.message)
+    }
+    return await response.json()
+  },
 }
