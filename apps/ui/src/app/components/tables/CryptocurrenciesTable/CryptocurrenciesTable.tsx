@@ -131,6 +131,7 @@ export const CryptocurrenciesTable = () => {
               icon={<PlusOutlined />}
               onClick={() => addCrypto.mutate(newCrypto)}
               disabled={newCrypto.id === ''}
+              loading={addCrypto.isLoading}
             >
               Add new coin
             </Button>
@@ -153,7 +154,7 @@ export const CryptocurrenciesTable = () => {
 
   return (
     <section>
-      <Typography.Title level={2}>Cryptocurrencies management</Typography.Title>
+      <Typography.Title level={2}>Cryptocurrencies</Typography.Title>
       <Table columns={columns} dataSource={dataSource} loading={storedCryptos.isLoading} bordered pagination={false} />
     </section>
   )

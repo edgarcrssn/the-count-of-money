@@ -7,6 +7,11 @@ const antdThemeToken: Partial<AliasToken> = {
   fontFamily: ralewayFont,
   colorPrimary: bitcoinOrange,
   colorLink: bitcoinOrange,
+  fontSizeHeading1: 24,
+  fontSizeHeading2: 20,
+  fontSizeHeading3: 18,
+  fontSizeHeading4: 16,
+  fontSizeHeading5: 14,
 }
 
 export const antdLightThemeToken: Partial<AliasToken> = {

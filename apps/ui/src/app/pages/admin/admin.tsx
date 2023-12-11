@@ -1,14 +1,18 @@
 import React from 'react'
 import withAdminRole from '../../components/hoc/withAdminRole'
 import { CryptocurrenciesTable } from '../../components/tables/CryptocurrenciesTable/CryptocurrenciesTable'
-import { Typography } from 'antd'
+import { Divider, Typography } from 'antd'
+import { RssSourcesTable } from '../../components/tables/RssSourcesTable/RssSourcesTable'
 
 const Admin = () => {
   return (
-    <div>
+    <>
       <Typography.Title level={1}>Administration</Typography.Title>
+      <Divider />
       <CryptocurrenciesTable />
-    </div>
+      <Divider />
+      <RssSourcesTable />
+    </>
   )
 }
 
