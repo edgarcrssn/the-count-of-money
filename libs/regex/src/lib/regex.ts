@@ -26,3 +26,12 @@ export const passwordRegexObject: RegexObject = {
   regex: /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d).*$/,
   message: 'must contain at least one uppercase letter, one lowercase letter, and one digit',
 }
+
+/**
+ * Must be an URL
+ */
+export const urlRegexObject: RegexObject = {
+  regex:
+    /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?(\/[a-zA-Z0-9]{2,}){0,}$/,
+  message: 'must be an URL',
+}

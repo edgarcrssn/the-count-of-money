@@ -23,8 +23,15 @@
     }
     .main {
       flex-grow: 1;
-      padding: 1rem 1.5rem;
       overflow-y: auto;
+
+      display: flex;
+      flex-direction: column;
+
+      .content {
+        flex-grow: 1;
+        padding: 1rem 1.5rem;
+      }
     }
   }
 }

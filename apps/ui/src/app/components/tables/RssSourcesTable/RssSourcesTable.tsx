@@ -1,29 +1,30 @@
-import { Button, Popconfirm, Typography } from 'antd'
+import { Button, Input, Popconfirm, Typography } from 'antd'
 import { rssSourceService } from '../../../../services/rssSourceService'
-import React from 'react'
+import React, { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import Table, { ColumnsType } from 'antd/es/table'
 import { RssSource } from '@prisma/client'
-import { DeleteOutlined } from '@ant-design/icons'
+import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
 import { toast } from 'sonner'
+import { urlRegexObject } from '@the-count-of-money/regex'
 
 type DataType = RssSource & {
   key: number | string
 }
 
 export const RssSourcesTable = () => {
-  // const defaultRssSource: RssSource = {
-  //   id: -1,
-  //   url: '',
-  // }
+  const defaultRssSource: RssSource = {
+    id: -1,
+    url: '',
+  }
 
-  // const [newRssSource, setNewRssSource] = useState<RssSource>(defaultRssSource)
+  const [newRssSource, setNewRssSource] = useState<RssSource>(defaultRssSource)
 
   const queryClient = useQueryClient()
 
   const storedRssSources = useQuery('storedRssSources', rssSourceService.getStoredRssSources)
 
-  const deleteCrypto = useMutation(rssSourceService.deleteStoredRssSource, {
+  const deleteRssSource = useMutation(rssSourceService.deleteStoredRssSource, {
     onSuccess: ({ deletedRssSource }) => {
       toast.success(`The source has been deleted successfully`)
       queryClient.invalidateQueries('storedRssSources')
@@ -33,17 +34,16 @@ export const RssSourcesTable = () => {
     },
   })
 
-  // const addCrypto = useMutation(cryptoService.addStoredCrypto, {
-  //   onSuccess: ({ newCrypto }) => {
-  //     setNewCrypto(defaultCrypto)
-  //     toast.success(`${newCrypto.name} has been added successfully`)
-  //     queryClient.invalidateQueries('storedCryptos')
-  //     queryClient.invalidateQueries('nonStoredCryptos')
-  //   },
-  //   onError: (error: Error) => {
-  //     toast.error(error.message)
-  //   },
-  // })
+  const addRssSource = useMutation(rssSourceService.addStoredRssSource, {
+    onSuccess: ({ newRssSource }) => {
+      setNewRssSource(defaultRssSource)
+      toast.success(`The source has been added successfully`)
+      queryClient.invalidateQueries('storedRssSources')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
 
   let dataSource: DataType[] | undefined = storedRssSources.data
     ?.sort((a, b) => a.id - b.id)
@@ -58,32 +58,48 @@ export const RssSourcesTable = () => {
     {
       title: 'Source',
       dataIndex: 'source',
-      render: (_, record) => (
-        <a href={record.url} target="_blank" rel="noreferrer">
-          {record.url}
-        </a>
-      ),
+      render: (_, record) => {
+        if (record.key === 'add-new')
+          return (
+            <div style={{ width: '24rem' }}>
+              <Input
+                type="text"
+                placeholder="https://www.example.com/rss"
+                value={newRssSource.url}
+                onChange={(e) => setNewRssSource({ ...newRssSource, url: e.target.value.trim() })}
+              />
+            </div>
+          )
+
+        return (
+          <a href={record.url} target="_blank" rel="noreferrer">
+            {record.url}
+          </a>
+        )
+      },
     },
     {
       title: 'Actions',
       width: '0',
       render: (_, record) => {
-        if (record.key === 'add-new') return 'OK'
-        // <Button
-        //   type="primary"
-        //   icon={<PlusOutlined />}
-        //   onClick={() => addCrypto.mutate(newRssSource)}
-        //   disabled={newRssSource.url === ''}
-        //   loading={addCrypto.isLoading}
-        // >
-        //   Add new coin
-        // </Button>
+        if (record.key === 'add-new')
+          return (
+            <Button
+              type="primary"
+              icon={<PlusOutlined />}
+              onClick={() => addRssSource.mutate(newRssSource)}
+              disabled={!newRssSource.url || !urlRegexObject.regex.test(newRssSource.url)}
+              loading={addRssSource.isLoading}
+            >
+              Add new source
+            </Button>
+          )
         return (
           <Popconfirm
             title="Delete source"
             description="Are you sure to delete this source?"
             okText="Yes"
-            onConfirm={() => deleteCrypto.mutate(record.id)}
+            onConfirm={() => deleteRssSource.mutate(record.id)}
           >
             <Button icon={<DeleteOutlined />} danger>
               Delete

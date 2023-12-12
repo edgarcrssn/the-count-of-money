@@ -1,10 +1,11 @@
+import { urlRegexObject } from '@the-count-of-money/regex'
 import axios from 'axios'
 import dotenv from 'dotenv'
 import { body } from 'express-validator'
 
 dotenv.config()
 
-export const postRssValidator = [body('url').isURL().withMessage('must be an URL')]
+export const postRssValidator = [body('url').matches(urlRegexObject.regex).withMessage(urlRegexObject.message)]
 
 export const isValidRssSource = async (url: string): Promise<boolean> => {
   const params = new URLSearchParams({
