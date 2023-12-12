@@ -42,6 +42,7 @@ export const CryptocurrenciesTable = () => {
     onSuccess: ({ deletedCrypto }) => {
       toast.success(`${deletedCrypto.name} has been deleted successfully`)
       queryClient.invalidateQueries('storedCryptos')
+      queryClient.invalidateQueries('nonStoredCryptos')
     },
     onError: (error: Error) => {
       toast.error(error.message)
@@ -81,7 +82,12 @@ export const CryptocurrenciesTable = () => {
           return (
             <Select
               style={{ width: '16rem' }}
+              placeholder="New coin to add"
+              showSearch
               allowClear
+              filterOption={(input: string, option?: { label: string; value: string }) =>
+                (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
+              }
               loading={nonStoredCryptos.isLoading}
               value={newCrypto.id}
               options={nonStoredCryptos.data?.map((nonStoredCrypto) => ({
