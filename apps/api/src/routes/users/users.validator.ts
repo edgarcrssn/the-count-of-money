@@ -1,4 +1,9 @@
-import { onlyLettersAndOrSpacesRegexObject, passwordRegexObject, slugRegexObject } from '@the-count-of-money/regex'
+import {
+  emailRegexObject,
+  onlyLettersAndOrSpacesRegexObject,
+  passwordRegexObject,
+  slugRegexObject,
+} from '@the-count-of-money/regex'
 import { body } from 'express-validator'
 
 export const registerValidator = [
@@ -10,7 +15,7 @@ export const registerValidator = [
     .notEmpty()
     .matches(onlyLettersAndOrSpacesRegexObject.regex)
     .withMessage(onlyLettersAndOrSpacesRegexObject.message),
-  body('email').notEmpty().isEmail().withMessage('please provide a valid email address'),
+  body('email').notEmpty().matches(emailRegexObject.regex).withMessage(emailRegexObject.message),
   body('nickname')
     .notEmpty()
     .isLength({ min: 3, max: 18 })

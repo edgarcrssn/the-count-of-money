@@ -6,7 +6,12 @@ import { toast } from 'sonner'
 import { manageToken } from '../../../../utils/manageToken'
 import { capitalize } from '../../../../utils/capitalize'
 import { RegisterDto } from '@the-count-of-money/types'
-import { onlyLettersAndOrSpacesRegexObject, passwordRegexObject, slugRegexObject } from '@the-count-of-money/regex'
+import {
+  emailRegexObject,
+  onlyLettersAndOrSpacesRegexObject,
+  passwordRegexObject,
+  slugRegexObject,
+} from '@the-count-of-money/regex'
 
 type Props = {
   onSuccess: () => void
@@ -121,8 +126,20 @@ const RegisterForm = ({ onSuccess }: Props) => {
       >
         <Input placeholder="Nickname" minLength={3} maxLength={18} showCount />
       </Form.Item>
-      {/* TODO verify email format */}
-      <Form.Item name="email" rules={[{ required: true, message: 'Please input your email' }]}>
+      <Form.Item
+        name="email"
+        rules={[
+          { required: true, message: 'Please input your email' },
+          () => ({
+            validator(_, value) {
+              if (!value || emailRegexObject.regex.test(value)) {
+                return Promise.resolve()
+              }
+              return Promise.reject(new Error(capitalize(emailRegexObject.message)))
+            },
+          }),
+        ]}
+      >
         <Input type="email" placeholder="Email" maxLength={255} />
       </Form.Item>
       <Form.Item

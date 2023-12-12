@@ -35,3 +35,11 @@ export const urlRegexObject: RegexObject = {
     /^(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})(\.[a-zA-Z0-9]{2,})?(\/[a-zA-Z0-9]{2,}){0,}$/,
   message: 'must be an URL',
 }
+
+/**
+ * Must be an email
+ */
+export const emailRegexObject: RegexObject = {
+  regex: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
+  message: 'must be an email',
+}
