@@ -40,7 +40,7 @@ export const getNonStoredCryptosController = async (req: Request, res: Response)
     res.send({ nonStoredCryptos })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
-    else res.status(500).send({ message: 'Error while retrieving stored cryptos: ', error })
+    else res.status(500).send({ message: 'Error while retrieving non-stored cryptos: ', error })
   }
 }
 
