@@ -1,4 +1,4 @@
-import { Button, Input, Popconfirm, Typography } from 'antd'
+import { Button, Divider, Input, Popconfirm } from 'antd'
 import { rssSourceService } from '../../../../services/rssSourceService'
 import React, { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -112,7 +112,9 @@ export const RssSourcesTable = () => {
 
   return (
     <section>
-      <Typography.Title level={2}>RSS sources</Typography.Title>
+      <Divider orientation="left" style={{ fontWeight: 'bold' }}>
+        RSS sources
+      </Divider>
       <Table
         columns={columns}
         dataSource={dataSource}

@@ -1,10 +1,10 @@
-import { LoadingOutlined } from '@ant-design/icons'
 import React, { useEffect } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { authService } from '../../../services/authService'
 import { manageToken } from '../../../utils/manageToken'
 import withoutAuth from '../../components/hoc/withoutAuth'
+import { Spin } from 'antd'
 
 const GoogleRedirect = () => {
   const [searchParams] = useSearchParams()
@@ -42,7 +42,7 @@ const GoogleRedirect = () => {
 
   return (
     <div style={{ width: '100vw', height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <LoadingOutlined />
+      <Spin size="large" />
     </div>
   )
 }

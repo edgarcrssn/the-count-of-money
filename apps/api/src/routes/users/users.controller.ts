@@ -3,7 +3,7 @@ import {
   generateAccessToken,
   generateUniqueNickname,
   getGoogleUserData,
-  getUserById,
+  getUserByNickname,
   updateUser,
   verifyCredentials,
 } from './users.service'
@@ -125,11 +125,30 @@ export const verifyAuthStatusController = async (req: Request, res: Response) =>
 }
 
 export const getMyProfileController = async (req: Request, res: Response) => {
-  const { id } = req.user
-  const myData = await getUserById(id)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, ...nonSensitiveData } = myData
-  res.status(200).send({ me: nonSensitiveData })
+  const { nickname } = req.user
+  try {
+    const myData = await getUserByNickname(nickname)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, auth_type, ...nonSensitiveData } = myData
+    res.status(200).send({ me: nonSensitiveData })
+  } catch (error) {
+    if (error.code && error.message) return res.status(error.code).send({ message: error.message })
+    res.status(error.code).send({ message: 'An error occurred while fetching the user profile: ', error })
+  }
+}
+
+export const getUserProfileController = async (req: Request, res: Response) => {
+  const { nickname } = req.params
+  try {
+    const userData = await getUserByNickname(nickname)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, auth_type, ...nonSensitiveData } = userData
+
+    res.status(200).send({ userData: nonSensitiveData })
+  } catch (error) {
+    if (error.code && error.message) return res.status(error.code).send({ message: error.message })
+    res.status(error.code).send({ message: 'An error occurred while fetching the user profile: ', error })
+  }
 }
 
 export const editMyProfileController = async (req: Request, res: Response) => {

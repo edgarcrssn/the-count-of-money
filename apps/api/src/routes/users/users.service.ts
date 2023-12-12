@@ -102,17 +102,23 @@ export const generateUniqueNickname = async (name: string) => {
   return nickname
 }
 
-export const getUserById = async (id: number) => {
+export const getUserByNickname = async (nickname: string) => {
   try {
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: { nickname },
+      include: {
+        default_currency: true,
+        crypto_currencies: true,
+      },
     })
 
     if (!user) throw { code: 404, message: 'Not Found' }
 
     return user
   } catch (error) {
-    throw { code: 500, message: error }
+    // eslint-disable-next-line no-console
+    console.log(error)
+    throw error
   }
 }
 

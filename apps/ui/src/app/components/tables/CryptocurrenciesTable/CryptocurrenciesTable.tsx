@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Button, Popconfirm, Select, Switch, Table, Typography } from 'antd'
+import { Button, Divider, Popconfirm, Select, Switch, Table } from 'antd'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { cryptoService } from '../../../../services/cryptoServices'
 import { ColumnsType } from 'antd/es/table'
@@ -160,7 +160,9 @@ export const CryptocurrenciesTable = () => {
 
   return (
     <section>
-      <Typography.Title level={2}>Cryptocurrencies</Typography.Title>
+      <Divider orientation="left" style={{ fontWeight: 'bold' }}>
+        Cryptocurrencies
+      </Divider>
       <Table columns={columns} dataSource={dataSource} loading={storedCryptos.isLoading} bordered pagination={false} />
     </section>
   )
