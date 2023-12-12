@@ -92,8 +92,80 @@ const upsertUsers = async () => {
       },
     },
   })
+
+  const johnDoe = await prisma.user.upsert({
+    where: { nickname: 'john-doe' },
+    update: {},
+    create: {
+      first_name: 'John',
+      last_name: 'DOE',
+      email: 'jogn@doe.com',
+      nickname: 'john-doe',
+      password: hash,
+      default_currency: {
+        connectOrCreate: {
+          where: {
+            name: 'USD',
+          },
+          create: {
+            name: 'USD',
+          },
+        },
+      },
+      crypto_currencies: {
+        connectOrCreate: {
+          where: {
+            id: 'bitcoin',
+          },
+          create: {
+            id: 'bitcoin',
+            name: 'Bitcoin',
+            symbol: 'BTC',
+            image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579',
+            available: true,
+          },
+        },
+      },
+    },
+  })
+
+  const jojo = await prisma.user.upsert({
+    where: { nickname: 'jojo' },
+    update: {},
+    create: {
+      first_name: 'Geoffrey',
+      last_name: 'VERCAEMER',
+      email: 'geoffrey@gmail.com',
+      nickname: 'jojo',
+      password: hash,
+      default_currency: {
+        connectOrCreate: {
+          where: {
+            name: 'EUR',
+          },
+          create: {
+            name: 'EUR',
+          },
+        },
+      },
+      crypto_currencies: {
+        connectOrCreate: {
+          where: {
+            id: 'ethereum',
+          },
+          create: {
+            id: 'ethereum',
+            name: 'Ethereum',
+            symbol: 'ETH',
+            image: 'https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880',
+            available: true,
+          },
+        },
+      },
+    },
+  })
   // eslint-disable-next-line no-console
-  console.log({ admin })
+  console.log({ admin, johnDoe, jojo })
 }
 
 const upsertRssSources = async () => {
