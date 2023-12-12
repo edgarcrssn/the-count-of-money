@@ -12,7 +12,7 @@ export const getRssSourcesController = async (req: Request, res: Response) => {
     res.status(200).send({ storedRssSources })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
-    else res.status(500).send({ message: 'An error occurred while trying to add the RSS source' })
+    else res.status(500).send({ message: 'An error occurred while trying to get the RSS source' })
   }
 }
 

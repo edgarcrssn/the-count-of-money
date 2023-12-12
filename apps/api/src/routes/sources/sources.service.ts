@@ -22,7 +22,7 @@ export const createRssSource = async (url: string) => {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       if (error.code === 'P2002') {
         const target = error.meta.target as string[]
-        throw { code: 409, message: `This ${target[0]} is already taken` }
+        throw { code: 409, message: `This ${target[0]} is already exists` }
       }
     }
     throw error
