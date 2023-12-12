@@ -1,12 +1,13 @@
 import express from 'express'
 import { adminMiddleware } from '../../middleware/adminMiddleware'
-import { deleteRssController, postRssController } from './sources.controller'
+import { deleteRssSourceByIdController, getRssSourcesController, postRssSourceController } from './sources.controller'
 import { validatorMiddleware } from '../../middleware/validatorMiddleware'
 import { postRssValidator } from './sources.validator'
 
 const router = express.Router()
 
-router.post('/', adminMiddleware, postRssValidator, validatorMiddleware, postRssController)
-router.delete('/:id', adminMiddleware, deleteRssController)
+router.get('/', adminMiddleware, getRssSourcesController)
+router.post('/', adminMiddleware, postRssValidator, validatorMiddleware, postRssSourceController)
+router.delete('/:id', adminMiddleware, deleteRssSourceByIdController)
 
 export default router
