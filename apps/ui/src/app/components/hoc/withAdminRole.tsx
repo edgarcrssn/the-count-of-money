@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom'
 import { CurrentUserContext } from '../../context/CurrentUser/CurrentUserContext'
 import { Skeleton } from 'antd'
 
-const withoutAuth = <P extends object>(WrappedComponent: ComponentType<P>): React.FC<P> => {
-  const WithoutAuth: React.FC<P> = (props) => {
+const withAdminRole = <P extends object>(WrappedComponent: ComponentType<P>): React.FC<P> => {
+  const WithAdminRole: React.FC<P> = (props) => {
     const { currentUser } = useContext(CurrentUserContext)
 
     const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
 
     useEffect(() => {
-      if (currentUser) navigate('/')
+      if (currentUser?.role !== 'ADMIN') navigate('/')
       else setLoading(false)
     }, [currentUser, navigate])
 
@@ -20,7 +20,7 @@ const withoutAuth = <P extends object>(WrappedComponent: ComponentType<P>): Reac
     return <WrappedComponent {...props} />
   }
 
-  return WithoutAuth
+  return WithAdminRole
 }
 
-export default withoutAuth
+export default withAdminRole

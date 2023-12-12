@@ -1,0 +1,15 @@
+.cryptoLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  line-height: 1em;
+
+  .icon {
+    height: 1rem;
+  }
+  .symbol {
+    font-size: 0.8rem;
+    font-weight: 600;
+    opacity: 0.5;
+  }
+}

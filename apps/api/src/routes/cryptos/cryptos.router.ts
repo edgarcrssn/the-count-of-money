@@ -2,21 +2,29 @@ import express from 'express'
 import { adminMiddleware } from '../../middleware/adminMiddleware'
 
 import {
-  deleteCryptoController,
+  deleteStoredCryptoByIdController,
+  editStoredCryptoByIdController,
   getCryptoByIdController,
   getCryptoPriceHistoryController,
   getCryptosController,
-  postCryptoController,
+  getNonStoredCryptosController,
+  getStoredCryptosController,
+  postStoredCryptoController,
 } from './cryptos.controller'
-import { authMiddleware } from '../../middleware/authMiddleware'
+import { authMiddleware, permissiveAuthMiddleware } from '../../middleware/authMiddleware'
+import { validatorMiddleware } from '../../middleware/validatorMiddleware'
+import { editCryptoValidator, createCryptoValidator } from './cryptos.validator'
 
 const router = express.Router()
+
+router.get('/stored', permissiveAuthMiddleware, getStoredCryptosController)
+router.get('/non-stored', adminMiddleware, getNonStoredCryptosController)
+router.post('/stored', adminMiddleware, createCryptoValidator, validatorMiddleware, postStoredCryptoController)
+router.patch('/stored/:id', adminMiddleware, editCryptoValidator, validatorMiddleware, editStoredCryptoByIdController)
+router.delete('/stored/:id', adminMiddleware, deleteStoredCryptoByIdController)
 
 router.get('/', getCryptosController)
 router.get('/:id', authMiddleware, getCryptoByIdController)
 router.get('/:id/history/:period', authMiddleware, getCryptoPriceHistoryController)
-
-router.post('/', adminMiddleware, postCryptoController)
-router.delete('/:id', adminMiddleware, deleteCryptoController)
 
 export default router

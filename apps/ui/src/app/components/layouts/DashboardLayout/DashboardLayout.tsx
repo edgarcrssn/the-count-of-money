@@ -5,48 +5,45 @@ import { Header } from './Header/Header'
 import { Layout, theme } from 'antd'
 
 import { Outlet } from 'react-router-dom'
-import { CurrentUserProvider } from '../../../context/CurrentUser/CurrentUserProvider'
 
 const DashboardLayout = () => {
   const { token } = theme.useToken()
 
   return (
-    <CurrentUserProvider>
-      <Layout className={styles.dashboardLayout}>
+    <Layout className={styles.dashboardLayout}>
+      <div
+        className={styles.aside}
+        style={{
+          backgroundColor: token.colorBgLayout,
+          borderRight: `1px solid ${token.colorBorder}`,
+          transition: `${token.motionDurationSlow} ease-out`,
+        }}
+      >
+        <Sidebar />
+      </div>
+      <div className={styles.content}>
         <div
-          className={styles.aside}
+          className={styles.header}
           style={{
             backgroundColor: token.colorBgLayout,
-            borderRight: `1px solid ${token.colorBorder}`,
+            borderBottom: `1px solid ${token.colorBorder}`,
             transition: `${token.motionDurationSlow} ease-out`,
           }}
         >
-          <Sidebar />
+          <Header />
         </div>
-        <div className={styles.content}>
-          <div
-            className={styles.header}
-            style={{
-              backgroundColor: token.colorBgLayout,
-              borderBottom: `1px solid ${token.colorBorder}`,
-              transition: `${token.motionDurationSlow} ease-out`,
-            }}
-          >
-            <Header />
-          </div>
-          <main
-            className={styles.main}
-            style={{
-              backgroundColor: token.colorBgContainer,
-              color: token.colorTextBase,
-              transition: `${token.motionDurationSlow} ease-out`,
-            }}
-          >
-            <Outlet />
-          </main>
-        </div>
-      </Layout>
-    </CurrentUserProvider>
+        <main
+          className={styles.main}
+          style={{
+            backgroundColor: token.colorBgContainer,
+            color: token.colorTextBase,
+            transition: `${token.motionDurationSlow} ease-out`,
+          }}
+        >
+          <Outlet />
+        </main>
+      </div>
+    </Layout>
   )
 }
 

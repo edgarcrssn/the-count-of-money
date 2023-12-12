@@ -29,3 +29,16 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     next()
   })
 }
+
+export const permissiveAuthMiddleware = (req: Request, res: Response, next: NextFunction) => {
+  const authHeader = req.headers.authorization
+  const token = authHeader && authHeader.split(' ')[1]
+
+  if (!token) return next()
+
+  jwt.verify(token, jwtSecret, (error, payload: JwtPayload) => {
+    if (error) return next()
+    req.user = payload
+    next()
+  })
+}

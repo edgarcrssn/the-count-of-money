@@ -1,63 +1,126 @@
 import { Request, Response } from 'express'
-import { createCrypto, deleteCrypto, fetchCryptos, getUserCurrency } from './cryptos.service'
-import { isValidCryptoId } from './cryptos.validator'
+import {
+  createCrypto,
+  deleteCrypto,
+  editCrypto,
+  fetchCryptos,
+  getStoredCryptos,
+  getUserCurrency,
+} from './cryptos.service'
+import { Cryptocurrency, Role } from '@prisma/client'
+import { CoinGeckoCryptoMarketData, EditCryptoDto } from '@the-count-of-money/types'
+import { isCryptoAvailable } from './cryptos.validator'
+
+export const getStoredCryptosController = async (req: Request, res: Response) => {
+  try {
+    const isAdmin = req.user?.role === Role.ADMIN
+    const storedCryptos = await getStoredCryptos(!isAdmin)
+    res.send({ storedCryptos })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while retrieving stored cryptos: ', error })
+  }
+}
+
+export const getNonStoredCryptosController = async (req: Request, res: Response) => {
+  try {
+    const storedCryptos = await getStoredCryptos()
+    const allAvailableCryptos: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets')
+
+    const nonStoredCryptos: Cryptocurrency[] = allAvailableCryptos
+      .filter((crypto) => !storedCryptos.some((storedCrypto) => storedCrypto.id === crypto.id))
+      .map((crypto) => ({
+        id: crypto.id,
+        name: crypto.name,
+        symbol: crypto.symbol,
+        image: crypto.image,
+        available: true,
+      }))
+
+    res.send({ nonStoredCryptos })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while retrieving stored cryptos: ', error })
+  }
+}
+
+export const editStoredCryptoByIdController = async (req: Request, res: Response) => {
+  const { id } = req.params
+  const editCryptoDto = req.body as EditCryptoDto
+
+  if (!(await isCryptoAvailable(id))) return res.status(400).send({ message: 'This crypto is not valid' })
+
+  try {
+    const editedCrypto = await editCrypto(id, editCryptoDto)
+    res.status(200).send({ editedCrypto })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while retrieving stored cryptos: ', error })
+  }
+}
+
+export const postStoredCryptoController = async (req: Request, res: Response) => {
+  const createCryptoDto = req.body as Cryptocurrency
+
+  if (!(await isCryptoAvailable(createCryptoDto.id)))
+    return res.status(400).send({ message: 'This crypto is not valid' })
+
+  try {
+    const newCrypto = await createCrypto(req.body)
+    res.status(200).json({ newCrypto })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send(error)
+  }
+}
+
+export const deleteStoredCryptoByIdController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const deletedCrypto = await deleteCrypto(id)
+    res.send({ deletedCrypto })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ error: 'An error occurred while deleting the cryptocurrency' })
+  }
+}
 
 // TODO: Push allCryptos + EnableCryptos for Admin, and only EnableCryptos for User
 export const getCryptosController = async (req: Request, res: Response) => {
-  const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
-  const cryptocurrencies = await fetchCryptos('/coins/markets', userCurrency)
-  res.send({ cryptocurrencies })
+  try {
+    const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
+    const cryptocurrencies: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets', userCurrency)
+    res.send({ cryptocurrencies })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while fetching data from CoinGecko API: ', error })
+  }
 }
 
 export const getCryptoByIdController = async (req: Request, res: Response) => {
   try {
     const id = req.params.id
     const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
+    // TODO type this
     const cryptocurrency = await fetchCryptos(`/coins/${id}`, userCurrency)
     res.send({ cryptocurrency })
   } catch (error) {
-    res.status(500).send({ message: 'Error while fetching data from CoinGecko API: ', error })
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while fetching data from CoinGecko API: ', error })
   }
 }
 
 export const getCryptoPriceHistoryController = async (req: Request, res: Response) => {
   try {
-    const id = req.params.id
-    const period = req.query.period
+    const { id } = req.params
+    const period = req.query?.period
     const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
+    // TODO type this
     const cryptoHistory = await fetchCryptos(`/coins/${id}/market_chart?&days=${period}`, userCurrency)
     res.send({ cryptoHistory })
   } catch (error) {
-    res.status(500).send({ message: 'Error while fetching data from CoinGecko API: ', error })
-  }
-}
-
-export const postCryptoController = async (req: Request, res: Response) => {
-  const { id } = req.body
-  const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
-  const cryptos = await fetchCryptos('/coins/markets', userCurrency)
-  const cryptoIds = cryptos.map((crypto) => ({ id: crypto.id }))
-
-  try {
-    let status = 200
-    const cryptocurrency = isValidCryptoId(id, cryptoIds)
-      ? await createCrypto(id)
-      : ((status = 400), { message: 'Invalid crypto name' })
-
-    res.status(cryptocurrency instanceof Error ? 500 : status).json({ createdCrypto: cryptocurrency })
-  } catch (error) {
-    res.status(500).send(error)
-  }
-}
-
-export const deleteCryptoController = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params
-
-    const deletedCrypto = await deleteCrypto(id)
-    res.send({ deletedCrypto })
-  } catch (error) {
-    res.status(500).send({ error: 'An error occurred while deleting the cryptocurrency' })
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while fetching data from CoinGecko API: ', error })
   }
 }
 
