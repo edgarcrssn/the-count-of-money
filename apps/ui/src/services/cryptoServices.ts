@@ -48,7 +48,7 @@ export const cryptoService = {
     return await response.json()
   },
 
-  async deletedStoredCrypto(cryptoId: string): Promise<{ deletedCrypto: Cryptocurrency }> {
+  async deleteStoredCrypto(cryptoId: string): Promise<{ deletedCrypto: Cryptocurrency }> {
     const response = await customFetch(`/cryptos/stored/${cryptoId}`, {
       method: 'DELETE',
     })

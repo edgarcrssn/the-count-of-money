@@ -72,6 +72,33 @@ export const deleteCrypto = async (id: string) => {
   }
 }
 
+export const manageCryptoTracking = async (userId: number, cryptoId: string, untrack: boolean = false) => {
+  const action = untrack ? 'disconnect' : 'connect'
+
+  try {
+    const managedCrypto = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        crypto_currencies: {
+          [action]: {
+            id: cryptoId,
+          },
+        },
+      },
+    })
+
+    return managedCrypto
+  } catch (error) {
+    console.log(error)
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        throw { code: 404, message: 'This user does not exist' }
+      }
+    }
+    throw error
+  }
+}
+
 export const fetchCryptos = async (endpoint: string, currency?: string) => {
   try {
     const response = await axios.get(`${process.env.COINGECKO_API_URL}${endpoint}`, {

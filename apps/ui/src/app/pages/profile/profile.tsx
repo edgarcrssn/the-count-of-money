@@ -11,9 +11,10 @@ import { TrackedCryptocurrenciesCard } from '../../components/general/User/Track
 import { DefinedKeywordsCard } from '../../components/general/User/DefinedKeywordsCard/DefinedKeywordsCard'
 
 const Profile = () => {
-  const navigate = useNavigate()
-  const { currentUser } = useContext(CurrentUserContext)
   const { nickname } = useParams()
+
+  const { currentUser } = useContext(CurrentUserContext)
+  const navigate = useNavigate()
 
   const isMyProfile = nickname === currentUser?.nickname
   console.log(isMyProfile)

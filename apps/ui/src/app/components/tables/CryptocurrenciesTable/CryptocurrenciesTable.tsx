@@ -38,7 +38,7 @@ export const CryptocurrenciesTable = () => {
     },
   })
 
-  const deleteCrypto = useMutation(cryptoService.deletedStoredCrypto, {
+  const deleteCrypto = useMutation(cryptoService.deleteStoredCrypto, {
     onSuccess: ({ deletedCrypto }) => {
       toast.success(`${deletedCrypto.name} has been deleted successfully`)
       queryClient.invalidateQueries('storedCryptos')

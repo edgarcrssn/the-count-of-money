@@ -10,6 +10,7 @@ import {
   getNonStoredCryptosController,
   getStoredCryptosController,
   postStoredCryptoController,
+  trackCryptoController,
 } from './cryptos.controller'
 import { authMiddleware, permissiveAuthMiddleware } from '../../middleware/authMiddleware'
 import { validatorMiddleware } from '../../middleware/validatorMiddleware'
@@ -22,6 +23,9 @@ router.get('/non-stored', adminMiddleware, getNonStoredCryptosController)
 router.post('/stored', adminMiddleware, createCryptoValidator, validatorMiddleware, postStoredCryptoController)
 router.patch('/stored/:id', adminMiddleware, editCryptoValidator, validatorMiddleware, editStoredCryptoByIdController)
 router.delete('/stored/:id', adminMiddleware, deleteStoredCryptoByIdController)
+
+router.post('/:id/track', authMiddleware, trackCryptoController)
+router.delete('/:id/track', authMiddleware, untrackCryptoController)
 
 router.get('/', getCryptosController)
 router.get('/:id', authMiddleware, getCryptoByIdController)
