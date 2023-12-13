@@ -6,8 +6,8 @@ import {
   fetchCryptos,
   getStoredCryptos,
   getUserCurrency,
+  getUserTrackedCryptos,
   manageCryptoTracking,
-  trackCrypto,
 } from './cryptos.service'
 import { Cryptocurrency, Role } from '@prisma/client'
 import { CoinGeckoCryptoMarketData, EditCryptoDto } from '@the-count-of-money/types'
@@ -87,15 +87,28 @@ export const deleteStoredCryptoByIdController = async (req: Request, res: Respon
   }
 }
 
+export const getUserTrackedCryptosController = async (req: Request, res: Response) => {
+  try {
+    const { nickname } = req.params
+    const trackedCryptos = await getUserTrackedCryptos(nickname)
+    console.log(trackedCryptos)
+
+    res.send({ trackedCryptos })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ error: 'An error occurred while retrieving the tracked cryptocurrencies' })
+  }
+}
+
 export const trackCryptoController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params
     const userId = req.user?.id
     const trackedCrypto = await manageCryptoTracking(userId, id)
-    res.send({ trackedCrypto })
+    res.status(201).send({ trackedCrypto })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
-    else res.status(500).send({ error: 'An error occurred while tracking the cryptocurrency' })
+    else res.status(500).send({ error: 'An unknown error occurred while tracking the cryptocurrency' })
   }
 }
 

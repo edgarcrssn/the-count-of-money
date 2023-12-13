@@ -1,11 +1,11 @@
-import { UserInformations } from '@the-count-of-money/types'
 import { customFetch } from './customFetch'
 import { RetrievedError } from './authService'
 import { capitalize } from '../utils/capitalize'
+import { User } from '@prisma/client'
 
 export const userService = {
-  async getProfile(nickname?: string): Promise<UserInformations> {
-    const response = await customFetch(`/users/profile${nickname ? `/${nickname}` : ''}`)
+  async getProfile(nickname: string): Promise<User> {
+    const response = await customFetch(`/users/profile/${nickname}`)
 
     if (!response.ok) {
       const retrievedError: RetrievedError = await response.json()

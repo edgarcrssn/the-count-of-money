@@ -13,11 +13,12 @@ import { DefinedKeywordsCard } from '../../components/general/User/DefinedKeywor
 const Profile = () => {
   const { nickname } = useParams()
 
+  if (!nickname) throw new Error('Nickname is required')
+
   const { currentUser } = useContext(CurrentUserContext)
   const navigate = useNavigate()
 
   const isMyProfile = nickname === currentUser?.nickname
-  console.log(isMyProfile)
 
   const {
     isLoading,
@@ -48,7 +49,7 @@ const Profile = () => {
       <div className={styles.profile}>
         <UserProfileHeader user={user} />
         <div className={styles.grid}>
-          <TrackedCryptocurrenciesCard cryptocurrencies={user.crypto_currencies} editable={isMyProfile} />
+          <TrackedCryptocurrenciesCard nickname={nickname} editable={isMyProfile} />
           <DefinedKeywordsCard keywords={['keyword 1', 'keyword 2']} />
         </div>
       </div>

@@ -7,7 +7,6 @@ import {
 } from './users.validator'
 import {
   editMyProfileController,
-  getMyProfileController,
   googleOAuthCallbackController,
   googleOAuthController,
   loginController,
@@ -28,7 +27,6 @@ router.post('/auth/google/callback', googleOAuthCallbackValidator, validatorMidd
 
 router.get('/verify-auth-status', authMiddleware, verifyAuthStatusController)
 
-router.get('/profile', authMiddleware, getMyProfileController)
 router.get('/profile/:nickname', getUserProfileController)
 router.patch('/profile', editMyProfileValidator, validatorMiddleware, authMiddleware, editMyProfileController)
 

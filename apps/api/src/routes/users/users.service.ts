@@ -102,14 +102,10 @@ export const generateUniqueNickname = async (name: string) => {
   return nickname
 }
 
-export const getUserByNickname = async (nickname: string) => {
+export const getUserByNickname = async (nickname: string): Promise<User> => {
   try {
     const user = await prisma.user.findUnique({
       where: { nickname },
-      include: {
-        default_currency: true,
-        crypto_currencies: true,
-      },
     })
 
     if (!user) throw { code: 404, message: 'Not Found' }

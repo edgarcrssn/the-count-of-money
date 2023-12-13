@@ -1,9 +1,21 @@
+.editIcon {
+  opacity: 0.5;
+  transition: opacity 0.2s ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
 .tagsContainer {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 
   .tag {
+    margin: 0;
+    height: 2rem;
     padding: 0.25rem 0.5rem;
     display: flex;
     align-items: center;

@@ -79,4 +79,43 @@ export const cryptoService = {
     }
     return await response.json()
   },
+
+  async getUserTrackedCryptos(nickname: string): Promise<Cryptocurrency[]> {
+    const response = await customFetch(`/cryptos/tracked/${nickname}`)
+
+    if (response.ok) {
+      const data = await response.json()
+      return data.trackedCryptos
+    }
+
+    throw new Error()
+  },
+
+  async trackCrypto(cryptoId: string): Promise<{ trackedCrypto: Cryptocurrency }> {
+    const response = await customFetch(`/cryptos/${cryptoId}/track`, {
+      method: 'POST',
+    })
+    if (!response.ok) {
+      const retrievedError: RetrievedError = await response.json()
+
+      if ('errors' in retrievedError)
+        throw new Error(`${capitalize(retrievedError.errors[0].path)} ${retrievedError.errors[0].msg}`)
+      else throw new Error(retrievedError.message)
+    }
+    return await response.json()
+  },
+
+  async untrackCrypto(cryptoId: string): Promise<{ untrackedCrypto: Cryptocurrency }> {
+    const response = await customFetch(`/cryptos/${cryptoId}/track`, {
+      method: 'DELETE',
+    })
+    if (!response.ok) {
+      const retrievedError: RetrievedError = await response.json()
+
+      if ('errors' in retrievedError)
+        throw new Error(`${capitalize(retrievedError.errors[0].path)} ${retrievedError.errors[0].msg}`)
+      else throw new Error(retrievedError.message)
+    }
+    return await response.json()
+  },
 }

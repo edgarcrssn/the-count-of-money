@@ -72,11 +72,46 @@ export const deleteCrypto = async (id: string) => {
   }
 }
 
+export const getUserTrackedCryptos = async (nickname: string): Promise<Cryptocurrency[]> => {
+  try {
+    const trackedCryptos = await prisma.user.findUnique({
+      where: { nickname },
+      select: {
+        crypto_currencies: {
+          where: { available: true },
+          select: {
+            id: true,
+            name: true,
+            symbol: true,
+            image: true,
+            available: true,
+          },
+        },
+      },
+    })
+
+    return trackedCryptos?.crypto_currencies || []
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2025') {
+        throw { code: 404, message: 'User Not Found' }
+      }
+    }
+    throw error
+  }
+}
+
 export const manageCryptoTracking = async (userId: number, cryptoId: string, untrack: boolean = false) => {
   const action = untrack ? 'disconnect' : 'connect'
 
   try {
-    const managedCrypto = await prisma.user.update({
+    const cryptoToManage = await prisma.cryptocurrency.findUnique({
+      where: { id: cryptoId },
+    })
+
+    if (!cryptoToManage) throw { code: 404, message: 'Crypto Not Found' }
+
+    await prisma.user.update({
       where: { id: userId },
       data: {
         crypto_currencies: {
@@ -87,13 +122,10 @@ export const manageCryptoTracking = async (userId: number, cryptoId: string, unt
       },
     })
 
-    return managedCrypto
+    return cryptoToManage
   } catch (error) {
-    console.log(error)
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      if (error.code === 'P2025') {
-        throw { code: 404, message: 'This user does not exist' }
-      }
+      if (error.code === 'P2025') throw { code: 404, message: 'User Not Found' }
     }
     throw error
   }
@@ -113,7 +145,6 @@ export const fetchCryptos = async (endpoint: string, currency?: string) => {
     })
     return response.data
   } catch (error) {
-    console.log(error.response.status)
     // eslint-disable-next-line no-console
     console.error('An error occurred while fetching data from CoinGecko API: ', error)
     return []

@@ -124,19 +124,6 @@ export const verifyAuthStatusController = async (req: Request, res: Response) =>
   res.send({ me: req.user })
 }
 
-export const getMyProfileController = async (req: Request, res: Response) => {
-  const { nickname } = req.user
-  try {
-    const myData = await getUserByNickname(nickname)
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { password, auth_type, ...nonSensitiveData } = myData
-    res.status(200).send({ me: nonSensitiveData })
-  } catch (error) {
-    if (error.code && error.message) return res.status(error.code).send({ message: error.message })
-    res.status(error.code).send({ message: 'An error occurred while fetching the user profile: ', error })
-  }
-}
-
 export const getUserProfileController = async (req: Request, res: Response) => {
   const { nickname } = req.params
   try {

@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from './DefinedKeywordsCard.module.scss'
+import styles from '../TrackedCryptocurrenciesCard/TrackedCryptocurrenciesCard.module.scss'
 import { Card, Tag } from 'antd'
 
 type Props = {

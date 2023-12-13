@@ -1,86 +1,141 @@
 import React, { useState } from 'react'
-import { Button, Card, Empty, Popconfirm, Tag } from 'antd'
+import { Badge, Card, Divider, Empty, Skeleton, Tag } from 'antd'
 import { CryptoLabel } from '../../CryptoLabel/CryptoLabel'
 import styles from './TrackedCryptocurrenciesCard.module.scss'
-import { useQuery } from 'react-query'
+import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { cryptoService } from '../../../../../services/cryptoServices'
-import { CloseOutlined, PlusOutlined } from '@ant-design/icons'
-import { TrackCryptocurrencyModal } from '../../../modals/TrackCryptocurrencyModal/TrackCryptocurrencyModal'
-import { Cryptocurrency } from '@prisma/client'
+import { EditOutlined, MinusCircleFilled, PlusCircleFilled } from '@ant-design/icons'
+import { toast } from 'sonner'
 
 type Props = {
-  cryptocurrencies: Cryptocurrency[]
+  nickname: string
   editable?: boolean
 }
 
-export const TrackedCryptocurrenciesCard = ({ cryptocurrencies, editable = false }: Props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+export const TrackedCryptocurrenciesCard = ({ nickname, editable = false }: Props) => {
+  const [editing, setEditing] = useState(false)
+
+  const queryClient = useQueryClient()
+
+  const trackedCryptocurrencies = useQuery({
+    queryKey: 'trackedCryptocurrencies',
+    queryFn: () => cryptoService.getUserTrackedCryptos(nickname),
+  })
+
+  const availableCryptocurrencies = useQuery({
+    queryKey: 'availableCryptocurrencies',
+    queryFn: cryptoService.getStoredCryptos,
+    enabled: editing,
+  })
+
+  const trackCrypto = useMutation(cryptoService.trackCrypto, {
+    onSuccess: ({ trackedCrypto }) => {
+      toast.success(`${trackedCrypto.name} has been tracked successfully`)
+      queryClient.invalidateQueries('trackedCryptocurrencies')
+      queryClient.invalidateQueries('availableCryptocurrencies')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
+
+  const untrackCrypto = useMutation(cryptoService.untrackCrypto, {
+    onSuccess: ({ untrackedCrypto }) => {
+      toast.success(`${untrackedCrypto.name} has been untracked successfully`)
+      queryClient.invalidateQueries('trackedCryptocurrencies')
+      queryClient.invalidateQueries('availableCryptocurrencies')
+    },
+    onError: (error: Error) => {
+      toast.error(error.message)
+    },
+  })
 
   const untrackCryptocurrency = (cryptoId: string) => {
     if (!editable) return
-    console.log(cryptoId)
+    untrackCrypto.mutate(cryptoId)
   }
 
-  const {
-    data: availableCryptocurrencies,
-    isLoading,
-    isSuccess,
-  } = useQuery({
-    queryKey: 'availableCryptocurrencies',
-    queryFn: cryptoService.getStoredCryptos,
-  })
+  const trackCryptocurrency = (cryptoId: string) => {
+    if (!editable) return
+    trackCrypto.mutate(cryptoId)
+  }
 
-  const trackedCryptocurrenciesIds = cryptocurrencies.map((crypto) => crypto.id)
+  const renderUntrackedCryptocurrencies = (): React.ReactNode => {
+    if (!trackedCryptocurrencies.isSuccess) return null
+
+    if (availableCryptocurrencies.isLoading) return <Skeleton active />
+
+    if (availableCryptocurrencies.isSuccess) {
+      const trackedCryptocurrenciesIds = trackedCryptocurrencies.data.map((crypto) => crypto.id)
+
+      const untrackedCryptocurrencies = availableCryptocurrencies.data
+        ?.filter((crypto) => !trackedCryptocurrenciesIds.includes(crypto.id))
+        .filter((crypto) => crypto.available)
+
+      if (!untrackedCryptocurrencies.length) return <Empty />
+
+      return (
+        <div className={styles.tagsContainer}>
+          {untrackedCryptocurrencies.map((cryptocurrency) => {
+            if (!cryptocurrency.available) return null
+            return (
+              <Badge
+                key={cryptocurrency.id}
+                count={editing ? <PlusCircleFilled onClick={() => trackCryptocurrency(cryptocurrency.id)} /> : null}
+              >
+                <Tag className={styles.tag}>
+                  <CryptoLabel crypto={cryptocurrency} />
+                </Tag>
+              </Badge>
+            )
+          })}
+        </div>
+      )
+    }
+  }
 
   return (
-    <>
-      <Card
-        title="Tracked cryptocurrencies"
-        actions={
-          editable
-            ? [
-                <Button key={1} icon={<PlusOutlined />} disabled={isLoading}>
-                  Track new cryptocurrency
-                </Button>,
-              ]
-            : undefined
-        }
-      >
-        {cryptocurrencies.length <= 0 ? (
-          <Empty />
-        ) : (
-          <div className={styles.tagsContainer}>
-            {cryptocurrencies.map((cryptocurrency) => (
-              <Tag
-                key={cryptocurrency.id}
-                className={styles.tag}
-                closable={editable}
-                closeIcon={
-                  <Popconfirm
-                    title={`Untrack ${cryptocurrency.name}`}
-                    description={`Are you sure to untrack ${cryptocurrency.name}?`}
-                    okText="Yes"
-                    onConfirm={() => untrackCryptocurrency(cryptocurrency.id)}
+    <Card
+      title={
+        <>
+          {editable ? <EditOutlined className={styles.editIcon} onClick={() => setEditing(!editing)} /> : null} Tracked
+          cryptocurrencies
+        </>
+      }
+    >
+      {trackedCryptocurrencies.isLoading ? <Skeleton active /> : null}
+      {trackedCryptocurrencies.isError ? <Empty /> : null}
+      {trackedCryptocurrencies.isSuccess ? (
+        <div>
+          {trackedCryptocurrencies.data.length <= 0 ? (
+            <Empty />
+          ) : (
+            <div className={styles.tagsContainer}>
+              {trackedCryptocurrencies.data.map((cryptocurrency) => {
+                if (!cryptocurrency.available) return null
+                return (
+                  <Badge
+                    key={cryptocurrency.id}
+                    count={
+                      editing ? <MinusCircleFilled onClick={() => untrackCryptocurrency(cryptocurrency.id)} /> : null
+                    }
                   >
-                    <CloseOutlined />
-                  </Popconfirm>
-                }
-              >
-                <CryptoLabel crypto={cryptocurrency} />
-              </Tag>
-            ))}
-          </div>
-        )}
-      </Card>
-      {isSuccess ? (
-        <TrackCryptocurrencyModal
-          isOpen={isModalOpen}
-          setIsOpen={setIsModalOpen}
-          cryptocurrencies={availableCryptocurrencies.filter(
-            (crypto) => !trackedCryptocurrenciesIds.includes(crypto.id),
+                    <Tag className={styles.tag}>
+                      <CryptoLabel crypto={cryptocurrency} />
+                    </Tag>
+                  </Badge>
+                )
+              })}
+            </div>
           )}
-        />
+          {editing ? (
+            <>
+              <Divider orientation="left">Untracked cryptos</Divider>
+              {renderUntrackedCryptocurrencies()}
+            </>
+          ) : null}
+        </div>
       ) : null}
-    </>
+    </Card>
   )
 }
