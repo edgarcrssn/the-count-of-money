@@ -130,7 +130,9 @@ export const TrackedCryptocurrenciesCard = ({ nickname, editable = false }: Prop
           )}
           {editing ? (
             <>
-              <Divider orientation="left">Untracked cryptos</Divider>
+              <Divider orientation="left" dashed>
+                Untracked cryptos
+              </Divider>
               {renderUntrackedCryptocurrencies()}
             </>
           ) : null}

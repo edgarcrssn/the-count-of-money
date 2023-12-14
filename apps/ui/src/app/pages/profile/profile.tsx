@@ -37,9 +37,6 @@ const Profile = () => {
         toast.error('An unknown error occurred')
       }
     },
-    retry() {
-      return false
-    },
   })
 
   if (isLoading) return <Skeleton active />

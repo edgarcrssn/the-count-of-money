@@ -89,7 +89,7 @@ export const CryptocurrenciesTable = () => {
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
               loading={nonStoredCryptos.isLoading}
-              value={newCrypto.id}
+              value={newCrypto.id || null}
               options={nonStoredCryptos.data?.map((nonStoredCrypto) => ({
                 label: nonStoredCrypto.name,
                 value: nonStoredCrypto.id,
