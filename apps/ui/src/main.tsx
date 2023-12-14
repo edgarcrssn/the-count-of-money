@@ -8,7 +8,6 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from 'react-query/devtools'
 import DashboardLayout from './app/components/layouts/DashboardLayout/DashboardLayout'
 import Profile from './app/pages/profile/profile'
-
 import Cryptocurrencies from './app/pages/cryptocurrencies/cryptocurrencies'
 import Articles from './app/pages/articles/articles'
 import Settings from './app/pages/settings/settings'

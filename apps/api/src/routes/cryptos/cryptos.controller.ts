@@ -96,7 +96,7 @@ export const getUserTrackedCryptosController = async (req: Request, res: Respons
     res.send({ trackedCryptos })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
-    else res.status(500).send({ error: 'An error occurred while retrieving the tracked cryptocurrencies' })
+    else res.status(500).send({ message: 'An error occurred while retrieving the tracked cryptocurrencies' })
   }
 }
 
@@ -108,7 +108,7 @@ export const trackCryptoController = async (req: Request, res: Response) => {
     res.status(201).send({ trackedCrypto })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
-    else res.status(500).send({ error: 'An unknown error occurred while tracking the cryptocurrency' })
+    else res.status(500).send({ message: 'An error occurred while tracking the cryptocurrency' })
   }
 }
 
@@ -120,7 +120,7 @@ export const untrackCryptoController = async (req: Request, res: Response) => {
     res.send({ untrackedCrypto })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
-    else res.status(500).send({ error: 'An error occurred while un-tracking the cryptocurrency' })
+    else res.status(500).send({ message: 'An error occurred while un-tracking the cryptocurrency' })
   }
 }
 

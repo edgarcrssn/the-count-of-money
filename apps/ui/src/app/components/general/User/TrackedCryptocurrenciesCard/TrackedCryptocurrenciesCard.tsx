@@ -3,7 +3,7 @@ import { Badge, Card, Divider, Empty, Skeleton, Tag } from 'antd'
 import { CryptoLabel } from '../../CryptoLabel/CryptoLabel'
 import styles from './TrackedCryptocurrenciesCard.module.scss'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { cryptoService } from '../../../../../services/cryptoServices'
+import { cryptoService } from '../../../../../services/cryptoService'
 import { EditOutlined, MinusCircleFilled, PlusCircleFilled } from '@ant-design/icons'
 import { toast } from 'sonner'
 
