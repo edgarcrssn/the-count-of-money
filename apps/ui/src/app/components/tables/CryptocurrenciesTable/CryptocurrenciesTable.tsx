@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Divider, Popconfirm, Select, Switch, Table } from 'antd'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { cryptoService } from '../../../../services/cryptoServices'
+import { cryptoService } from '../../../../services/cryptoService'
 import { ColumnsType } from 'antd/es/table'
 import { toast } from 'sonner'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
