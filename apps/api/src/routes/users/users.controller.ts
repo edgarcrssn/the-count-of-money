@@ -13,7 +13,7 @@ import { OAuth2Client } from 'google-auth-library'
 
 import * as dotenv from 'dotenv'
 import { AuthType, PrismaClient } from '@prisma/client'
-import { LoginDto, RegisterDto } from '@the-count-of-money/types'
+import { EditProfileDto, LoginDto, RegisterDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -134,18 +134,18 @@ export const getUserProfileController = async (req: Request, res: Response) => {
     res.status(200).send({ userData: nonSensitiveData })
   } catch (error) {
     if (error.code && error.message) return res.status(error.code).send({ message: error.message })
-    res.status(error.code).send({ message: 'An error occurred while fetching the user profile: ', error })
+    else res.status(500).send({ message: 'An error occurred while fetching the user profile: ', error })
   }
 }
 
 export const editMyProfileController = async (req: Request, res: Response) => {
   try {
     const { id } = req.user
-    // TODO Create UserDataDto type in libs/types
-    const userData = req.body
+    const userData = req.body as EditProfileDto
     const updatedUser = await updateUser(id, userData)
     res.status(200).json({ updatedUser })
   } catch (error) {
-    res.status(error.code).json({ message: 'An error occurred while updating the user profile: ', error })
+    if (error.code && error.message) return res.status(error.code).send({ message: error.message })
+    else res.status(500).json({ message: 'An error occurred while updating the user profile: ', error })
   }
 }

@@ -1,4 +1,4 @@
-import { PrismaClient, Role, RssSource, Cryptocurrency } from '@prisma/client'
+import { PrismaClient, Role, RssSource, Cryptocurrency, Keyword } from '@prisma/client'
 import bcrypt from 'bcrypt'
 import * as dotenv from 'dotenv'
 
@@ -90,6 +90,16 @@ const upsertUsers = async () => {
           },
         },
       },
+      keywords: {
+        connectOrCreate: {
+          where: {
+            id: 'DeFi',
+          },
+          create: {
+            id: 'DeFi',
+          },
+        },
+      },
     },
   })
 
@@ -123,6 +133,16 @@ const upsertUsers = async () => {
             symbol: 'BTC',
             image: 'https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579',
             available: true,
+          },
+        },
+      },
+      keywords: {
+        connectOrCreate: {
+          where: {
+            id: 'Token',
+          },
+          create: {
+            id: 'Token',
           },
         },
       },
@@ -162,6 +182,16 @@ const upsertUsers = async () => {
           },
         },
       },
+      keywords: {
+        connectOrCreate: {
+          where: {
+            id: 'Blockchain',
+          },
+          create: {
+            id: 'Blockchain',
+          },
+        },
+      },
     },
   })
   // eslint-disable-next-line no-console
@@ -192,7 +222,7 @@ const upsertRssSources = async () => {
   console.log({ rssSources })
 }
 
-const upsertCryptoCurrencies = async () => {
+const upsertCryptocurrencies = async () => {
   const cryptocurrencies = [
     {
       id: 'bitcoin',
@@ -225,11 +255,41 @@ const upsertCryptoCurrencies = async () => {
   console.log({ cryptoCurrencies })
 }
 
+const upsertKeywords = async () => {
+  const keywordsList = [
+    'Blockchain',
+    'Altcoins',
+    'Digital wallet',
+    'Decentralized technology',
+    'Token',
+    'Transaction security',
+    'DeFi',
+    'Technical analysis',
+    'Adoption of digital assets',
+    'Scalability',
+  ]
+
+  const keywords: Keyword[] = []
+
+  for (const keyword of keywordsList) {
+    const upsertKeyword = await prisma.keyword.upsert({
+      where: { id: keyword },
+      update: {},
+      create: { id: keyword },
+    })
+    keywords.push(upsertKeyword)
+  }
+
+  // eslint-disable-next-line no-console
+  console.log({ keywords })
+}
+
 const main = async () => {
   await upsertCurrencies()
+  await upsertCryptocurrencies()
+  await upsertKeywords()
   await upsertUsers()
   await upsertRssSources()
-  await upsertCryptoCurrencies()
 }
 
 main()

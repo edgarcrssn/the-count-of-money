@@ -45,7 +45,7 @@ export const editMyProfileValidator = [
     .notEmpty()
     .matches(onlyLettersAndOrSpacesRegexObject.regex)
     .withMessage(onlyLettersAndOrSpacesRegexObject.message),
-  body('email').notEmpty().matches(emailRegexObject.regex).withMessage(emailRegexObject.message),
+  body('email').optional().notEmpty().matches(emailRegexObject.regex).withMessage(emailRegexObject.message),
   body('nickname')
     .optional()
     .notEmpty()
@@ -53,11 +53,4 @@ export const editMyProfileValidator = [
     .withMessage('must be between 3 and 18 characters long')
     .matches(slugRegexObject.regex)
     .withMessage(slugRegexObject.message),
-  body('password')
-    .optional()
-    .notEmpty()
-    .isLength({ min: 8, max: 32 })
-    .withMessage('must be between 8 and 32 characters long')
-    .matches(passwordRegexObject.regex)
-    .withMessage(passwordRegexObject.message),
 ]

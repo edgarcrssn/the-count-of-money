@@ -25,7 +25,7 @@ const Profile = () => {
     isSuccess,
     data: user,
   } = useQuery({
-    queryKey: 'user',
+    queryKey: 'userProfile',
     queryFn: () => userService.getProfile(nickname),
     onError: (err: Error) => {
       if (err.message === 'Not Found') {
@@ -44,10 +44,10 @@ const Profile = () => {
   if (isSuccess)
     return (
       <div className={styles.profile}>
-        <UserProfileHeader user={user} />
+        <UserProfileHeader user={user} editable={isMyProfile} />
         <div className={styles.grid}>
           <TrackedCryptocurrenciesCard nickname={nickname} editable={isMyProfile} />
-          <DefinedKeywordsCard keywords={['keyword 1', 'keyword 2']} />
+          <DefinedKeywordsCard nickname={nickname} editable={isMyProfile} />
         </div>
       </div>
     )

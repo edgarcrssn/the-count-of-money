@@ -1,10 +1,13 @@
+@import '../../../../../styles/variables.module.scss';
+
 .editIcon {
-  opacity: 0.5;
-  transition: opacity 0.2s ease-in-out;
   cursor: pointer;
 
+  color: map-get($theme-colors, 'bitcoinOrange');
+  transition: color 0.2s ease-in-out;
+
   &:hover {
-    opacity: 1;
+    color: map-get($theme-colors, 'sunYellow');
   }
 }
 

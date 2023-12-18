@@ -91,7 +91,6 @@ export const getUserTrackedCryptosController = async (req: Request, res: Respons
   try {
     const { nickname } = req.params
     const trackedCryptos = await getUserTrackedCryptos(nickname)
-    console.log(trackedCryptos)
 
     res.send({ trackedCryptos })
   } catch (error) {
