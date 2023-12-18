@@ -33,12 +33,14 @@ export const userService = {
       const retrievedError: RetrievedError = await response.json()
 
       if ('errors' in retrievedError)
-        throw new Error(`${capitalize(retrievedError.errors[0].path)} ${retrievedError.errors[0].msg}`)
+        throw new Error(
+          `${capitalize(retrievedError.errors[0].path.replace('_', ' '))} ${retrievedError.errors[0].msg}`,
+        )
       else throw new Error(retrievedError.message)
     }
 
     const data = await response.json()
-    return data.updatedUser
+    return data
   },
 
   async deleteUser() {},

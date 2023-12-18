@@ -3,7 +3,7 @@ import styles from './UserProfileHeader.module.scss'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Avatar, Typography } from 'antd'
 import { User } from '@prisma/client'
-import { useMutation, useQueryClient } from 'react-query'
+import { useMutation } from 'react-query'
 import { userService } from '../../../../../services/userService'
 import { toast } from 'sonner'
 
@@ -18,12 +18,11 @@ export const UserProfileHeader = ({ user, editable }: Props) => {
 
   const createdAt = new Date(user.created_at)
 
-  const queryClient = useQueryClient()
-
   const editMyProfile = useMutation(userService.updateMyProfile, {
     onSuccess: ({ updatedUser }) => {
       toast.success(`Your profile has been updated successfully`)
-      queryClient.invalidateQueries('userProfile')
+      setFirstName(updatedUser.first_name)
+      setLastName(updatedUser.last_name)
     },
     onError: (error: Error) => {
       toast.error(error.message)
@@ -46,9 +45,10 @@ export const UserProfileHeader = ({ user, editable }: Props) => {
             editable={
               editable
                 ? {
-                    onChange: setFirstName,
+                    onChange: (value) => {
+                      editMyProfile.mutate({ first_name: value.trim() })
+                    },
                     onCancel: () => setFirstName(user.first_name),
-                    onEnd: () => editMyProfile.mutate({ first_name: firstName }),
                   }
                 : undefined
             }
@@ -61,9 +61,10 @@ export const UserProfileHeader = ({ user, editable }: Props) => {
             editable={
               editable
                 ? {
-                    onChange: setLastName,
-                    onCancel: () => setLastName(user.first_name),
-                    onEnd: () => editMyProfile.mutate({ last_name: lastName }),
+                    onChange: (value) => {
+                      editMyProfile.mutate({ last_name: value.trim() })
+                    },
+                    onCancel: () => setLastName(user.last_name),
                   }
                 : undefined
             }
