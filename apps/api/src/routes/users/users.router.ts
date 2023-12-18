@@ -8,6 +8,8 @@ import {
   loginController,
   verifyAuthStatusController,
   registerController,
+  postCryptoCurrencyController,
+  deleteCryptoCurrencyController,
 } from './users.controller'
 import { validatorMiddleware } from '../../middleware/validatorMiddleware'
 import { authMiddleware } from '../../middleware/authMiddleware'
@@ -25,5 +27,8 @@ router.get('/verify-auth-status', authMiddleware, verifyAuthStatusController)
 router.get('/profile', authMiddleware, getMyProfileController)
 // TODO Create express-validator validator
 router.patch('/profile', authMiddleware, editMyProfileController)
+
+router.post('/crypto', authMiddleware, postCryptoCurrencyController)
+router.delete('/crypto', authMiddleware, deleteCryptoCurrencyController)
 
 export default router

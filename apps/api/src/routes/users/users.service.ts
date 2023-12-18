@@ -5,6 +5,7 @@ import axios from 'axios'
 
 import * as dotenv from 'dotenv'
 import slugify from 'slugify'
+
 import { JwtPayload, LoginDto } from '@the-count-of-money/types'
 
 dotenv.config()
@@ -124,6 +125,60 @@ export const updateUser = async (id: number, userData: Partial<User>): Promise<U
     })
 
     if (!updatedUser) throw { code: 404, message: 'User Not Found' }
+
+    return updatedUser
+  } catch (error) {
+    throw { code: 500, message: error }
+  }
+}
+
+export const addCryptoCurrency = async (id: number, cryptoCurrencyId: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: { crypto_currencies: true },
+    })
+
+    if (!user) throw { code: 404, message: 'Not Found' }
+
+    const updatedUser = await prisma.user.update({
+      where: { id },
+      data: {
+        crypto_currencies: {
+          connect: {
+            id: cryptoCurrencyId,
+          },
+        },
+      },
+      include: { crypto_currencies: true },
+    })
+
+    return updatedUser
+  } catch (error) {
+    throw { code: 500, message: error }
+  }
+}
+
+export const removeCryptoCurrency = async (userId: number, cryptoCurrencyId: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { crypto_currencies: true },
+    })
+
+    if (!user) throw { code: 404, message: 'Not Found' }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        crypto_currencies: {
+          disconnect: {
+            id: cryptoCurrencyId,
+          },
+        },
+      },
+      include: { crypto_currencies: true },
+    })
 
     return updatedUser
   } catch (error) {

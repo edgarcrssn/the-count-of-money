@@ -6,14 +6,17 @@ import {
   getUserById,
   updateUser,
   verifyCredentials,
+  addCryptoCurrency,
+  removeCryptoCurrency,
 } from './users.service'
+
 import { Request, Response } from 'express'
 import bcrypt from 'bcrypt'
 import { OAuth2Client } from 'google-auth-library'
+import { LoginDto, RegisterDto } from '@the-count-of-money/types'
 
 import * as dotenv from 'dotenv'
 import { AuthType, PrismaClient } from '@prisma/client'
-import { LoginDto, RegisterDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -141,5 +144,29 @@ export const editMyProfileController = async (req: Request, res: Response) => {
     res.status(200).json({ updatedUser })
   } catch (error) {
     res.status(error.code).json({ message: 'An error occurred while updating the user profile: ', error })
+  }
+}
+
+export const postCryptoCurrencyController = async (req: Request, res: Response) => {
+  const { id } = req.user
+  const cryptoCurrencyId = req.body.id
+  try {
+    const updatedUser = await addCryptoCurrency(id, cryptoCurrencyId)
+    res.status(200).json({ updatedUser })
+  } catch (error) {
+    res.status(error.code).json({ message: 'An error occurred while adding a cryptocurrency to your profile', error })
+  }
+}
+
+export const deleteCryptoCurrencyController = async (req: Request, res: Response) => {
+  const { id } = req.user
+  const cryptoCurrencyId = req.body.id
+  try {
+    const updatedUser = await removeCryptoCurrency(id, cryptoCurrencyId)
+    res.status(200).json({ updatedUser })
+  } catch (error) {
+    res
+      .status(error.code)
+      .json({ message: 'An error occurred while removing a cryptocurrency from your profile', error })
   }
 }
