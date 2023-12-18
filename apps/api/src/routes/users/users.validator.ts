@@ -33,3 +33,24 @@ export const registerValidator = [
 export const loginValidator = [body('nickname').notEmpty(), body('password').notEmpty()]
 
 export const googleOAuthCallbackValidator = [body('code').isString().notEmpty()]
+
+export const editMyProfileValidator = [
+  body('first_name')
+    .optional()
+    .notEmpty()
+    .matches(onlyLettersAndOrSpacesRegexObject.regex)
+    .withMessage(onlyLettersAndOrSpacesRegexObject.message),
+  body('last_name')
+    .optional()
+    .notEmpty()
+    .matches(onlyLettersAndOrSpacesRegexObject.regex)
+    .withMessage(onlyLettersAndOrSpacesRegexObject.message),
+  body('email').optional().notEmpty().matches(emailRegexObject.regex).withMessage(emailRegexObject.message),
+  body('nickname')
+    .optional()
+    .notEmpty()
+    .isLength({ min: 3, max: 18 })
+    .withMessage('must be between 3 and 18 characters long')
+    .matches(slugRegexObject.regex)
+    .withMessage(slugRegexObject.message),
+]

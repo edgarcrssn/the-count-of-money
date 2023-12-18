@@ -3,7 +3,7 @@ import {
   generateAccessToken,
   generateUniqueNickname,
   getGoogleUserData,
-  getUserById,
+  getUserByNickname,
   updateUser,
   verifyCredentials,
 } from './users.service'
@@ -13,7 +13,7 @@ import { OAuth2Client } from 'google-auth-library'
 
 import * as dotenv from 'dotenv'
 import { AuthType, PrismaClient } from '@prisma/client'
-import { LoginDto, RegisterDto } from '@the-count-of-money/types'
+import { EditProfileDto, LoginDto, RegisterDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -124,22 +124,28 @@ export const verifyAuthStatusController = async (req: Request, res: Response) =>
   res.send({ me: req.user })
 }
 
-export const getMyProfileController = async (req: Request, res: Response) => {
-  const { id } = req.user
-  const myData = await getUserById(id)
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { password, ...nonSensitiveData } = myData
-  res.status(200).send({ me: nonSensitiveData })
+export const getUserProfileController = async (req: Request, res: Response) => {
+  const { nickname } = req.params
+  try {
+    const userData = await getUserByNickname(nickname)
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { password, auth_type, ...nonSensitiveData } = userData
+
+    res.status(200).send({ userData: nonSensitiveData })
+  } catch (error) {
+    if (error.code && error.message) return res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'An error occurred while fetching the user profile: ', error })
+  }
 }
 
 export const editMyProfileController = async (req: Request, res: Response) => {
   try {
     const { id } = req.user
-    // TODO Create UserDataDto type in libs/types
-    const userData = req.body
+    const userData = req.body as EditProfileDto
     const updatedUser = await updateUser(id, userData)
     res.status(200).json({ updatedUser })
   } catch (error) {
-    res.status(error.code).json({ message: 'An error occurred while updating the user profile: ', error })
+    if (error.code && error.message) return res.status(error.code).send({ message: error.message })
+    else res.status(500).json({ message: 'An error occurred while updating the user profile: ', error })
   }
 }

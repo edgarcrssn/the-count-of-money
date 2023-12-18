@@ -19,7 +19,7 @@ model User {
   default_currency_id Int
   default_currency    Currency         @relation(fields: [default_currency_id], references: [id])
   crypto_currencies   Cryptocurrency[]
-  keywords            Json?
+  keywords            Keyword[]
   created_at          DateTime         @default(now())
 }
 
@@ -44,6 +44,12 @@ model Cryptocurrency {
   name      String
   symbol    String
   image     String
+  available Boolean? @default(true)
+  users     User[]
+}
+
+model Keyword {
+  id        String   @id @unique
   available Boolean? @default(true)
   users     User[]
 }

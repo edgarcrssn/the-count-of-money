@@ -15,7 +15,6 @@ CREATE TABLE "User" (
     "password" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "default_currency_id" INTEGER NOT NULL,
-    "keywords" JSONB,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
@@ -41,6 +40,14 @@ CREATE TABLE "Cryptocurrency" (
 );
 
 -- CreateTable
+CREATE TABLE "Keyword" (
+    "id" TEXT NOT NULL,
+    "available" BOOLEAN DEFAULT true,
+
+    CONSTRAINT "Keyword_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "RssSource" (
     "id" SERIAL NOT NULL,
     "url" TEXT NOT NULL,
@@ -50,6 +57,12 @@ CREATE TABLE "RssSource" (
 
 -- CreateTable
 CREATE TABLE "_CryptocurrencyToUser" (
+    "A" TEXT NOT NULL,
+    "B" INTEGER NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "_KeywordToUser" (
     "A" TEXT NOT NULL,
     "B" INTEGER NOT NULL
 );
@@ -67,6 +80,9 @@ CREATE UNIQUE INDEX "Currency_name_key" ON "Currency"("name");
 CREATE UNIQUE INDEX "Cryptocurrency_id_key" ON "Cryptocurrency"("id");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Keyword_id_key" ON "Keyword"("id");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "RssSource_url_key" ON "RssSource"("url");
 
 -- CreateIndex
@@ -74,6 +90,12 @@ CREATE UNIQUE INDEX "_CryptocurrencyToUser_AB_unique" ON "_CryptocurrencyToUser"
 
 -- CreateIndex
 CREATE INDEX "_CryptocurrencyToUser_B_index" ON "_CryptocurrencyToUser"("B");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "_KeywordToUser_AB_unique" ON "_KeywordToUser"("A", "B");
+
+-- CreateIndex
+CREATE INDEX "_KeywordToUser_B_index" ON "_KeywordToUser"("B");
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_default_currency_id_fkey" FOREIGN KEY ("default_currency_id") REFERENCES "Currency"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -83,3 +105,9 @@ ALTER TABLE "_CryptocurrencyToUser" ADD CONSTRAINT "_CryptocurrencyToUser_A_fkey
 
 -- AddForeignKey
 ALTER TABLE "_CryptocurrencyToUser" ADD CONSTRAINT "_CryptocurrencyToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_KeywordToUser" ADD CONSTRAINT "_KeywordToUser_A_fkey" FOREIGN KEY ("A") REFERENCES "Keyword"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "_KeywordToUser" ADD CONSTRAINT "_KeywordToUser_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

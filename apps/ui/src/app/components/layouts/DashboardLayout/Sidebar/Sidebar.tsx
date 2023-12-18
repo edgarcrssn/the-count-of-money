@@ -7,7 +7,6 @@ import {
   LeftCircleOutlined,
   LockOutlined,
   QuestionCircleOutlined,
-  SettingOutlined,
   UserOutlined,
 } from '@ant-design/icons'
 import type { MenuProps, TourProps } from 'antd'
@@ -36,7 +35,6 @@ export const Sidebar = () => {
   const cryptocurrencies = useRef<HTMLElement>(null)
   const articles = useRef<HTMLElement>(null)
   const myProfile = useRef<HTMLElement>(null)
-  const settings = useRef<HTMLElement>(null)
 
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false)
 
@@ -62,13 +60,6 @@ export const Sidebar = () => {
         currentUser ? '' : 'You must be logged in to access this page. '
       }Explore and manage your profile details for a personalized and tailored experience.`,
       target: () => myProfile.current!.parentElement!,
-    },
-    {
-      title: `${currentUser ? '' : '🔒 '}Manage your settings`,
-      description: `${
-        currentUser ? '' : 'You must be logged in to access this page. '
-      }Tailor your crypto experience by updating preferences. Choose favorite currencies, manage followed cryptocurrencies, and customize settings for a personalized crypto journey.`,
-      target: () => settings.current!.parentElement!,
     },
   ]
 
@@ -103,19 +94,9 @@ export const Sidebar = () => {
         </Link>
       ),
     },
-    {
-      key: '5',
-      icon: <SettingOutlined ref={settings} />,
-      disabled: !currentUser,
-      label: (
-        <Link to="/settings" style={currentUser ? undefined : { pointerEvents: 'none' }}>
-          Settings
-        </Link>
-      ),
-    },
     currentUser?.role === 'ADMIN'
       ? {
-          key: '6',
+          key: '5',
           icon: <LockOutlined />,
           label: <Link to="/admin">Admin</Link>,
         }
@@ -124,19 +105,19 @@ export const Sidebar = () => {
 
   const menuFooterItems: MenuItem[] = [
     {
-      key: '7',
+      key: '6',
       icon: currentTheme === Theme.LIGHT ? <MoonOutlined /> : <SunOutlined />,
       label: `${currentTheme === Theme.LIGHT ? 'Dark' : 'Light'} theme`,
       onClick: () => setCurrentTheme(currentTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT),
     },
     {
-      key: '8',
+      key: '7',
       icon: <QuestionCircleOutlined />,
       label: 'Help',
       onClick: () => setIsTourOpen(true),
     },
     {
-      key: '9',
+      key: '8',
       icon: <LeftCircleOutlined rotate={collapsed ? 180 : 0} />,
       label: collapsed ? 'Expand' : 'Collapse',
       onClick: () => setCollapsed(!collapsed),
@@ -147,9 +128,8 @@ export const Sidebar = () => {
     if (pathname === '/') return ['1']
     if (pathname.startsWith('/cryptocurrencies')) return ['2']
     if (pathname.startsWith('/articles')) return ['3']
-    if (pathname.startsWith('/profile')) return ['4']
-    if (pathname.startsWith('/settings')) return ['5']
-    if (pathname.startsWith('/admin')) return ['6']
+    if (pathname.startsWith(`/profile/${currentUser?.nickname}`)) return ['4']
+    if (pathname.startsWith('/admin')) return ['5']
 
     return []
   }

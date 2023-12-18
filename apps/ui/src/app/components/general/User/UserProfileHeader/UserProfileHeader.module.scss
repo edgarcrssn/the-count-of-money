@@ -1,0 +1,17 @@
+.userProfileHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  .userInfosContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    .fullName {
+      display: flex;
+      align-items: center;
+      gap: 0.35em;
+    }
+  }
+}

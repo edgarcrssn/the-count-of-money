@@ -5,7 +5,7 @@ import axios from 'axios'
 
 import * as dotenv from 'dotenv'
 import slugify from 'slugify'
-import { JwtPayload, LoginDto } from '@the-count-of-money/types'
+import { EditProfileDto, JwtPayload, LoginDto } from '@the-count-of-money/types'
 
 dotenv.config()
 
@@ -102,21 +102,23 @@ export const generateUniqueNickname = async (name: string) => {
   return nickname
 }
 
-export const getUserById = async (id: number) => {
+export const getUserByNickname = async (nickname: string): Promise<User> => {
   try {
     const user = await prisma.user.findUnique({
-      where: { id },
+      where: { nickname },
     })
 
     if (!user) throw { code: 404, message: 'Not Found' }
 
     return user
   } catch (error) {
-    throw { code: 500, message: error }
+    // eslint-disable-next-line no-console
+    console.log(error)
+    throw error
   }
 }
 
-export const updateUser = async (id: number, userData: Partial<User>): Promise<User> => {
+export const updateUser = async (id: number, userData: EditProfileDto): Promise<User> => {
   try {
     const updatedUser = await prisma.user.update({
       where: { id },
@@ -127,6 +129,12 @@ export const updateUser = async (id: number, userData: Partial<User>): Promise<U
 
     return updatedUser
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === 'P2002') {
+        const target = error.meta.target as string[]
+        throw { code: 409, message: `This ${target[0]} is already taken` }
+      }
+    }
     throw { code: 500, message: error }
   }
 }

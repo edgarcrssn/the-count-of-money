@@ -1,0 +1,27 @@
+@import '../../../../../styles/variables.module.scss';
+
+.editIcon {
+  cursor: pointer;
+
+  color: map-get($theme-colors, 'bitcoinOrange');
+  transition: color 0.2s ease-in-out;
+
+  &:hover {
+    color: map-get($theme-colors, 'sunYellow');
+  }
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+
+  .tag {
+    margin: 0;
+    height: 2rem;
+    padding: 0.25rem 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+}

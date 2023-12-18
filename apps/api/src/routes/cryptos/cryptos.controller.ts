@@ -6,6 +6,8 @@ import {
   fetchCryptos,
   getStoredCryptos,
   getUserCurrency,
+  getUserTrackedCryptos,
+  manageCryptoTracking,
 } from './cryptos.service'
 import { Cryptocurrency, Role } from '@prisma/client'
 import { CoinGeckoCryptoMarketData, EditCryptoDto } from '@the-count-of-money/types'
@@ -82,6 +84,42 @@ export const deleteStoredCryptoByIdController = async (req: Request, res: Respon
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
     else res.status(500).send({ error: 'An error occurred while deleting the cryptocurrency' })
+  }
+}
+
+export const getUserTrackedCryptosController = async (req: Request, res: Response) => {
+  try {
+    const { nickname } = req.params
+    const trackedCryptos = await getUserTrackedCryptos(nickname)
+
+    res.send({ trackedCryptos })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'An error occurred while retrieving the tracked cryptocurrencies' })
+  }
+}
+
+export const trackCryptoController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const userId = req.user?.id
+    const trackedCrypto = await manageCryptoTracking(userId, id)
+    res.status(201).send({ trackedCrypto })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'An error occurred while tracking the cryptocurrency' })
+  }
+}
+
+export const untrackCryptoController = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params
+    const userId = req.user?.id
+    const untrackedCrypto = await manageCryptoTracking(userId, id, true)
+    res.send({ untrackedCrypto })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'An error occurred while un-tracking the cryptocurrency' })
   }
 }
 

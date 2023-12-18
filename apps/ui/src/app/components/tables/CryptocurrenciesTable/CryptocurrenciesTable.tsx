@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
-import { Button, Popconfirm, Select, Switch, Table, Typography } from 'antd'
+import { Button, Divider, Popconfirm, Select, Switch, Table } from 'antd'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
-import { cryptoService } from '../../../../services/cryptoServices'
+import { cryptoService } from '../../../../services/cryptoService'
 import { ColumnsType } from 'antd/es/table'
 import { toast } from 'sonner'
 import { DeleteOutlined, PlusOutlined } from '@ant-design/icons'
@@ -38,7 +38,7 @@ export const CryptocurrenciesTable = () => {
     },
   })
 
-  const deleteCrypto = useMutation(cryptoService.deletedStoredCrypto, {
+  const deleteCrypto = useMutation(cryptoService.deleteStoredCrypto, {
     onSuccess: ({ deletedCrypto }) => {
       toast.success(`${deletedCrypto.name} has been deleted successfully`)
       queryClient.invalidateQueries('storedCryptos')
@@ -89,7 +89,7 @@ export const CryptocurrenciesTable = () => {
                 (option?.label ?? '').toLowerCase().includes(input.toLowerCase())
               }
               loading={nonStoredCryptos.isLoading}
-              value={newCrypto.id}
+              value={newCrypto.id || null}
               options={nonStoredCryptos.data?.map((nonStoredCrypto) => ({
                 label: nonStoredCrypto.name,
                 value: nonStoredCrypto.id,
@@ -160,7 +160,9 @@ export const CryptocurrenciesTable = () => {
 
   return (
     <section>
-      <Typography.Title level={2}>Cryptocurrencies</Typography.Title>
+      <Divider orientation="left" style={{ fontWeight: 'bold' }}>
+        Cryptocurrencies
+      </Divider>
       <Table columns={columns} dataSource={dataSource} loading={storedCryptos.isLoading} bordered pagination={false} />
     </section>
   )

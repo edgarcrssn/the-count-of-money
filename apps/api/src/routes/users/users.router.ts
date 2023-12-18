@@ -1,13 +1,18 @@
 import express from 'express'
-import { googleOAuthCallbackValidator, loginValidator, registerValidator } from './users.validator'
+import {
+  editMyProfileValidator,
+  googleOAuthCallbackValidator,
+  loginValidator,
+  registerValidator,
+} from './users.validator'
 import {
   editMyProfileController,
-  getMyProfileController,
   googleOAuthCallbackController,
   googleOAuthController,
   loginController,
   verifyAuthStatusController,
   registerController,
+  getUserProfileController,
 } from './users.controller'
 import { validatorMiddleware } from '../../middleware/validatorMiddleware'
 import { authMiddleware } from '../../middleware/authMiddleware'
@@ -22,8 +27,7 @@ router.post('/auth/google/callback', googleOAuthCallbackValidator, validatorMidd
 
 router.get('/verify-auth-status', authMiddleware, verifyAuthStatusController)
 
-router.get('/profile', authMiddleware, getMyProfileController)
-// TODO Create express-validator validator
-router.patch('/profile', authMiddleware, editMyProfileController)
+router.get('/profile/:nickname', getUserProfileController)
+router.patch('/profile', editMyProfileValidator, validatorMiddleware, authMiddleware, editMyProfileController)
 
 export default router
