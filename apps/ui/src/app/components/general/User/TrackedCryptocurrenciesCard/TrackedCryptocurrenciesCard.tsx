@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Badge, Card, Divider, Empty, Skeleton, Tag } from 'antd'
 import { CryptoLabel } from '../../CryptoLabel/CryptoLabel'
 import styles from './TrackedCryptocurrenciesCard.module.scss'
@@ -21,6 +21,10 @@ export const TrackedCryptocurrenciesCard = ({ nickname, editable = false }: Prop
     queryKey: 'trackedCryptocurrencies',
     queryFn: () => cryptoService.getUserTrackedCryptos(nickname),
   })
+
+  useEffect(() => {
+    trackedCryptocurrencies.refetch()
+  }, [nickname, trackedCryptocurrencies])
 
   const availableCryptocurrencies = useQuery({
     queryKey: 'availableCryptocurrencies',

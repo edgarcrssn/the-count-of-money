@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { CurrentUserContext } from '../../context/CurrentUser/CurrentUserContext'
 import { UserProfileHeader } from '../../components/general/User/UserProfileHeader/UserProfileHeader'
@@ -24,6 +24,7 @@ const Profile = () => {
     isLoading,
     isSuccess,
     data: user,
+    refetch,
   } = useQuery({
     queryKey: 'userProfile',
     queryFn: () => userService.getProfile(nickname),
@@ -38,6 +39,10 @@ const Profile = () => {
       }
     },
   })
+
+  useEffect(() => {
+    refetch()
+  }, [nickname, refetch])
 
   if (isLoading) return <Skeleton active />
 

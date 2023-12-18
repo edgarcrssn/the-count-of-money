@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './UserProfileHeader.module.scss'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Avatar, Typography } from 'antd'
@@ -15,6 +15,11 @@ type Props = {
 export const UserProfileHeader = ({ user, editable }: Props) => {
   const [firstName, setFirstName] = useState(user.first_name)
   const [lastName, setLastName] = useState(user.last_name)
+
+  useEffect(() => {
+    setFirstName(user.first_name)
+    setLastName(user.last_name)
+  }, [user])
 
   const createdAt = new Date(user.created_at)
 
@@ -45,9 +50,7 @@ export const UserProfileHeader = ({ user, editable }: Props) => {
             editable={
               editable
                 ? {
-                    onChange: (value) => {
-                      editMyProfile.mutate({ first_name: value.trim() })
-                    },
+                    onChange: (value) => editMyProfile.mutate({ first_name: value.trim() }),
                     onCancel: () => setFirstName(user.first_name),
                   }
                 : undefined
@@ -61,9 +64,7 @@ export const UserProfileHeader = ({ user, editable }: Props) => {
             editable={
               editable
                 ? {
-                    onChange: (value) => {
-                      editMyProfile.mutate({ last_name: value.trim() })
-                    },
+                    onChange: (value) => editMyProfile.mutate({ last_name: value.trim() }),
                     onCancel: () => setLastName(user.last_name),
                   }
                 : undefined

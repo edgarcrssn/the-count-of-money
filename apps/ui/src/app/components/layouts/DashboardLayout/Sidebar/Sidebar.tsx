@@ -128,7 +128,7 @@ export const Sidebar = () => {
     if (pathname === '/') return ['1']
     if (pathname.startsWith('/cryptocurrencies')) return ['2']
     if (pathname.startsWith('/articles')) return ['3']
-    if (pathname.startsWith('/profile')) return ['4']
+    if (pathname.startsWith(`/profile/${currentUser?.nickname}`)) return ['4']
     if (pathname.startsWith('/admin')) return ['5']
 
     return []
