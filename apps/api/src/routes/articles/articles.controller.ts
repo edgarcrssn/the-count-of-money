@@ -1,14 +1,32 @@
 import { Role } from '@prisma/client'
 import { Request, Response } from 'express'
 import { getKeywords, getUserFollowedKeywords, manageKeywordsFollow } from './articles.service'
+import { getAllArticles } from './articles.service'
+import { GetArticleDto } from '@the-count-of-money/types'
 
-// TODO
-export const getArticlesController = (req: Request, res: Response) => {
-  res.send('getArticlesController')
+export const getArticlesController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const page = Number(req.query.page) || 1
+    const pageSize = Number(req.query.pageSize) || 24
+    const { data, totalArticles } = await getAllArticles(page, pageSize)
+    res.status(200).send({ data, totalArticles, currentPage: page, pageSize })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while retrieving articles: ', error })
+  }
 }
 
-export const getArticleByIdController = (req: Request, res: Response) => {
-  res.send('getArticleByIdController')
+export const getArticleByIdController = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const articleId = req.params.id
+    const jsonResponse = await getAllArticles()
+    const allArticles = jsonResponse.data as GetArticleDto[]
+    const article = allArticles.flat().find((article) => article.id === articleId)
+    res.send({ article })
+  } catch (error) {
+    if (error.code && error.message) res.status(error.code).send({ message: error.message })
+    else res.status(500).send({ message: 'Error while retrieving this article: ', error })
+  }
 }
 
 export const getKeywordsController = async (req: Request, res: Response) => {

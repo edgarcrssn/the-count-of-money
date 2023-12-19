@@ -1,3 +1,6 @@
+import axios from 'axios'
+import { getStoredRssSources } from '../sources/sources.service'
+import slugify from 'slugify'
 import { Keyword, Prisma, PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
@@ -70,4 +73,52 @@ export const manageKeywordsFollow = async (userId: number, keywordId: string, un
     }
     throw error
   }
+}
+
+export const fetchRssSources = async (url: string) => {
+  const params = new URLSearchParams({
+    api_key: process.env.RSS_TO_JSON_API_KEY,
+    rss_url: url,
+  })
+
+  try {
+    const response = await axios.get(`${process.env.RSS_TO_JSON_API_URL}?${params.toString()}`)
+
+    return response.data
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.error(error)
+    throw error
+  }
+}
+
+export const getAllArticles = async (page?: number, pageSize?: number) => {
+  const storedRssSources = await getStoredRssSources()
+  const rssSourceUrls = storedRssSources.map((source) => source.url)
+  const articlePromises = await Promise.all(rssSourceUrls.map((url) => fetchRssSources(url)))
+
+  const allArticles = articlePromises.flat().flatMap((promise) =>
+    promise.items.map((item) => ({
+      ...item,
+      id: slugify(item.title, { lower: true }),
+    })),
+  )
+  const uniqueArticles = Object.values(
+    allArticles.reduce((acc, article) => {
+      acc[article.id] = article
+      return acc
+    }, {}),
+  )
+
+  const totalArticles = uniqueArticles.length
+
+  if (page !== undefined && pageSize !== undefined) {
+    const start = (page - 1) * pageSize
+    const end = start + pageSize
+    const articles = uniqueArticles.slice(start, end)
+
+    return { data: articles, totalArticles }
+  }
+
+  return { data: uniqueArticles, totalArticles }
 }
