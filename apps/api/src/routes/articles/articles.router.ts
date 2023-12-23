@@ -20,4 +20,9 @@ router.delete('/keywords/:id/following', authMiddleware, unfollowKeywordControll
 
 router.get('/:id', getArticleByIdController)
 
+router.get('/keywords', permissiveAuthMiddleware, getKeywordsController)
+router.get('/keywords/:nickname', getUserFollowedKeywordsController)
+router.post('/keywords/:id/following', authMiddleware, followKeywordController)
+router.delete('/keywords/:id/following', authMiddleware, unfollowKeywordController)
+
 export default router

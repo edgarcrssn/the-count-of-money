@@ -1,0 +1,43 @@
+@import '../../../../../../ui/src/styles/variables.module.scss';
+
+.articleImage {
+  height: 12.5rem;
+  width: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.articlesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+
+  .content {
+    .description {
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      padding-top: 0.5rem;
+    }
+  }
+
+  .tagContainer {
+    display: flex;
+    overflow-x: scroll;
+    flex-wrap: nowrap;
+  }
+
+  .tag {
+    color: map-get($theme-colors, 'bitcoinOrange');
+    background-color: map-get($theme-colors, 'darkNavy');
+  }
+}
+
+// Pagination
+.paginationContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 1.25rem;
+}

@@ -1,7 +1,12 @@
 import React from 'react'
+import ArticlesList from '../../components/articles/list/ArticlesList'
 
 const Articles = () => {
-  return <div>Articles</div>
+  return (
+    <div>
+      <ArticlesList />
+    </div>
+  )
 }
 
 export default Articles

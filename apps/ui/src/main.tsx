@@ -10,6 +10,7 @@ import DashboardLayout from './app/components/layouts/DashboardLayout/DashboardL
 import Profile from './app/pages/profile/profile'
 import Cryptocurrencies from './app/pages/cryptocurrencies/cryptocurrencies'
 import Articles from './app/pages/articles/articles'
+import Article from './app/pages/articles/article'
 import { ThemeProvider } from './app/context/Theme/ThemeProvider'
 import NotFound from './app/pages/not-found/not-found'
 import Admin from './app/pages/admin/admin'
@@ -36,6 +37,10 @@ const App = () => {
         {
           path: 'articles',
           element: <Articles />,
+        },
+        {
+          path: 'article/:id',
+          element: <Article />,
         },
         {
           path: 'profile/:nickname',

@@ -1,0 +1,50 @@
+@import '../../../../../ui/src/styles/variables.module.scss';
+
+.article {
+  display: flex;
+  flex-direction: row;
+
+  .imageContainer {
+    height: 100%;
+
+    .image {
+      object-fit: cover;
+      object-position: center;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .content {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+
+    .categories {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      overflow-x: scroll;
+    }
+
+    .tag {
+      color: map-get($theme-colors, 'bitcoinOrange');
+      background-color: map-get($theme-colors, 'darkNavy');
+    }
+  }
+}
+
+.author {
+  margin-bottom: 1rem;
+}
+
+.description {
+  margin-top: 0.5rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  padding-top: 1rem;
+}
