@@ -1,0 +1,9 @@
+node_modules
+.github
+.vscode
+.editorconfig
+.eslintignore
+.eslintrc.js
+.gitignore
+.prettierrc.js
+README.md

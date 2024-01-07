@@ -1,0 +1,167 @@
+name: Docker Compose Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    name: Build and push to Docker Hub
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Create .env file
+        run: |
+          touch .env
+          echo "PGUSER=$PGUSER" >> .env
+          echo "PGPASSWORD=$PGPASSWORD" >> .env
+          echo "PGDATABASE=$PGDATABASE" >> .env
+
+          echo 'ENV=\"prod\"' >> .env
+          echo "HOST=$HOST" >> .env
+          echo "PORT=$PORT" >> .env
+          echo "FRONT_URL=$FRONT_URL" >> .env
+          echo "API_KEY=$API_KEY" >> .env
+          echo "JWT_SECRET=$JWT_SECRET" >> .env
+          echo "SALT_ROUND=$SALT_ROUND" >> .env
+          echo "ADMIN_PWD=$ADMIN_PWD" >> .env
+          echo "COINGECKO_API_KEY=$COINGECKO_API_KEY" >> .env
+          echo "COINGECKO_API_URL=$COINGECKO_API_URL" >> .env
+          echo "GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID" >> .env
+          echo "GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET" >> .env
+          echo "GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL" >> .env
+          echo "RSS_TO_JSON_API_URL=$RSS_TO_JSON_API_URL" >> .env
+          echo "RSS_TO_JSON_API_KEY=$RSS_TO_JSON_API_KEY" >> .env
+
+          echo "VITE_API_URL=$VITE_API_URL" >> .env
+          echo "VITE_API_KEY=$VITE_API_KEY" >> .env
+          cat .env
+        env:
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+
+          HOST: ${{ secrets.HOST }}
+          PORT: ${{ secrets.PORT }}
+          FRONT_URL: ${{ secrets.FRONT_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          SALT_ROUND: ${{ secrets.SALT_ROUND }}
+          ADMIN_PWD: ${{ secrets.ADMIN_PWD }}
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+          COINGECKO_API_URL: ${{ secrets.COINGECKO_API_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
+          RSS_TO_JSON_API_URL: ${{ secrets.RSS_TO_JSON_API_URL }}
+          RSS_TO_JSON_API_KEY: ${{ secrets.RSS_TO_JSON_API_KEY }}
+
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+
+      - name: Build and push Docker images
+        run: |
+          docker-compose build
+          docker-compose push
+
+      - name: Log out from Docker Hub
+        run: docker logout
+
+  deploy:
+    name: Deploy to GCP VM
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Log in to Docker Hub
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up SSH key
+        run: |
+          mkdir -p $HOME/.ssh
+          echo "$PRIVATE_KEY" | tr -d '\r' > $HOME/.ssh/id_rsa
+          chmod 600 $HOME/.ssh/id_rsa
+          ssh-keyscan -t rsa $GCP_VM_IP >> $HOME/.ssh/known_hosts
+        env:
+          PRIVATE_KEY: ${{ secrets.GCP_PRIVATE_KEY }}
+          GCP_VM_IP: ${{ secrets.GCP_VM_IP }}
+
+      - name: Deploy to GCP VM
+        run: |
+          SSH_OPTIONS="-o StrictHostKeyChecking=no -i $HOME/.ssh/id_rsa"
+          SSH_COMMAND="ssh $SSH_OPTIONS $GCP_USER@$GCP_VM_IP"
+          SCP_COMMAND="scp $SSH_OPTIONS ./docker-compose.yml $GCP_USER@$GCP_VM_IP:/home/$GCP_USER/app/docker-compose.yml"
+
+          $SSH_COMMAND "mkdir -p /home/$GCP_USER/app"
+          $SCP_COMMAND
+
+          ENV_COMMAND+="echo 'PGUSER=$PGUSER' > .env"
+          ENV_COMMAND+=" && echo 'PGPASSWORD=$PGPASSWORD' >> .env"
+          ENV_COMMAND+=" && echo 'PGDATABASE=$PGDATABASE' >> .env"
+
+          ENV_COMMAND+=" && echo 'ENV=\"prod\"' >> .env"
+          ENV_COMMAND+=" && echo 'HOST=$HOST' >> .env"
+          ENV_COMMAND+=" && echo 'PORT=$PORT' >> .env"
+          ENV_COMMAND+=" && echo 'FRONT_URL=$FRONT_URL' >> .env"
+          ENV_COMMAND+=" && echo 'API_KEY=$API_KEY' >> .env"
+          ENV_COMMAND+=" && echo 'JWT_SECRET=$JWT_SECRET' >> .env"
+          ENV_COMMAND+=" && echo 'SALT_ROUND=$SALT_ROUND' >> .env"
+          ENV_COMMAND+=" && echo 'ADMIN_PWD=$ADMIN_PWD' >> .env"
+          ENV_COMMAND+=" && echo 'COINGECKO_API_KEY=$COINGECKO_API_KEY' >> .env"
+          ENV_COMMAND+=" && echo 'COINGECKO_API_URL=$COINGECKO_API_URL' >> .env"
+          ENV_COMMAND+=" && echo 'GOOGLE_CLIENT_ID=$GOOGLE_CLIENT_ID' >> .env"
+          ENV_COMMAND+=" && echo 'GOOGLE_CLIENT_SECRET=$GOOGLE_CLIENT_SECRET' >> .env"
+          ENV_COMMAND+=" && echo 'GOOGLE_CALLBACK_URL=$GOOGLE_CALLBACK_URL' >> .env"
+          ENV_COMMAND+=" && echo 'RSS_TO_JSON_API_URL=$RSS_TO_JSON_API_URL' >> .env"
+          ENV_COMMAND+=" && echo 'RSS_TO_JSON_API_KEY=$RSS_TO_JSON_API_KEY' >> .env"
+
+          ENV_COMMAND+=" && echo 'VITE_API_URL=$VITE_API_URL' >> .env"
+          ENV_COMMAND+=" && echo 'VITE_API_KEY=$VITE_API_KEY' >> .env"
+
+          $SSH_COMMAND "cd /home/$GCP_USER/app && $ENV_COMMAND"
+
+          DOCKER_COMMAND="cd /home/$GCP_USER/app && docker-compose down"
+          DOCKER_COMMAND+=" && docker rm -f tcom-db-container tcom-api-container tcom-ui-container"
+          DOCKER_COMMAND+=" && docker image rm -f edgarcrssn/tcom-ui edgarcrssn/tcom-api"
+          DOCKER_COMMAND+=" && docker-compose pull"
+          DOCKER_COMMAND+=" && docker-compose up -d"
+          $SSH_COMMAND "$DOCKER_COMMAND"
+        env:
+          GCP_USER: ${{ secrets.GCP_USER }}
+          GCP_VM_IP: ${{ secrets.GCP_VM_IP }}
+
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASSWORD: ${{ secrets.PGPASSWORD }}
+          PGDATABASE: ${{ secrets.PGDATABASE }}
+
+          HOST: ${{ secrets.HOST }}
+          PORT: ${{ secrets.PORT }}
+          FRONT_URL: ${{ secrets.FRONT_URL }}
+          API_KEY: ${{ secrets.API_KEY }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          SALT_ROUND: ${{ secrets.SALT_ROUND }}
+          ADMIN_PWD: ${{ secrets.ADMIN_PWD }}
+          COINGECKO_API_KEY: ${{ secrets.COINGECKO_API_KEY }}
+          COINGECKO_API_URL: ${{ secrets.COINGECKO_API_URL }}
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CALLBACK_URL: ${{ secrets.GOOGLE_CALLBACK_URL }}
+          RSS_TO_JSON_API_URL: ${{ secrets.RSS_TO_JSON_API_URL }}
+          RSS_TO_JSON_API_KEY: ${{ secrets.RSS_TO_JSON_API_KEY }}
+
+          VITE_API_KEY: ${{ secrets.VITE_API_KEY }}
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}

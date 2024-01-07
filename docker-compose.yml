@@ -1,0 +1,65 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14
+    container_name: tcom-db-container
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: $PGUSER
+      POSTGRES_PASSWORD: $PGPASSWORD
+      POSTGRES_DB: $PGDATABASE
+    healthcheck:
+      test: ['CMD', 'pg_isready', '-q', '-d', 'postgres', '-U', '$PGUSER']
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    restart: always
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  api:
+    image: edgarcrssn/tcom-api
+    container_name: tcom-api-container
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    environment:
+      ENV: $ENV
+      HOST: $HOST
+      PORT: $PORT
+      FRONT_URL: $FRONT_URL
+      API_KEY: $API_KEY
+      DATABASE_URL: 'postgresql://$PGUSER:$PGPASSWORD@localhost:5432/$PGDATABASE?schema=public'
+      JWT_SECRET: $JWT_SECRET
+      SALT_ROUND: $SALT_ROUND
+      ADMIN_PWD: $ADMIN_PWD
+      COINGECKO_API_KEY: $COINGECKO_API_KEY
+      COINGECKO_API_URL: $COINGECKO_API_URL
+      GOOGLE_CLIENT_ID: $GOOGLE_CLIENT_ID
+      GOOGLE_CLIENT_SECRET: $GOOGLE_CLIENT_SECRET
+      GOOGLE_CALLBACK_URL: $GOOGLE_CALLBACK_URL
+      RSS_TO_JSON_API_URL: $RSS_TO_JSON_API_URL
+      RSS_TO_JSON_API_KEY: $RSS_TO_JSON_API_KEY
+    ports:
+      - '$PORT:$PORT'
+    depends_on:
+      - db
+
+  ui:
+    image: edgarcrssn/tcom-ui
+    container_name: tcom-ui-container
+    build:
+      context: .
+      dockerfile: ./apps/ui/Dockerfile
+    environment:
+      VITE_API_URL: $VITE_API_URL
+      VITE_API_KEY: $VITE_API_KEY
+    ports:
+      - '80:80'
+    depends_on:
+      - api
+
+volumes:
+  dbdata:
