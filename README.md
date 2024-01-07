@@ -1,4 +1,4 @@
-# TODO Courte description
+The count of money is a web platform about crypto-currencies.
 
 ## Installation
 1. Installer les dépendances (*à exécuter à la racine*)
