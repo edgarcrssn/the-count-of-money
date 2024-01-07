@@ -10,7 +10,11 @@ export const createCryptoValidator = [
 export const editCryptoValidator = [body('available').isBoolean().withMessage('must be a boolean')]
 
 export const isCryptoAvailable = async (id: string, userCurrency?: string) => {
-  const cryptos: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets', userCurrency)
+  const params = new URLSearchParams({
+    vs_currency: userCurrency || 'usd',
+  })
+
+  const cryptos: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets', params)
   const availableCryptos = cryptos.map((crypto) => crypto.id)
 
   return availableCryptos.includes(id)

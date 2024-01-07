@@ -27,7 +27,12 @@ export const getStoredCryptosController = async (req: Request, res: Response) =>
 export const getNonStoredCryptosController = async (req: Request, res: Response) => {
   try {
     const storedCryptos = await getStoredCryptos()
-    const allAvailableCryptos: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets')
+
+    const allAvailableCryptos: {
+      id: string
+      symbol: string
+      name: string
+    }[] = await fetchCryptos('/coins/list')
 
     const nonStoredCryptos: Cryptocurrency[] = allAvailableCryptos
       .filter((crypto) => !storedCryptos.some((storedCrypto) => storedCrypto.id === crypto.id))
@@ -35,7 +40,7 @@ export const getNonStoredCryptosController = async (req: Request, res: Response)
         id: crypto.id,
         name: crypto.name,
         symbol: crypto.symbol,
-        image: crypto.image,
+        image: null,
         available: true,
       }))
 
@@ -126,8 +131,7 @@ export const untrackCryptoController = async (req: Request, res: Response) => {
 // TODO: Push allCryptos + EnableCryptos for Admin, and only EnableCryptos for User
 export const getCryptosController = async (req: Request, res: Response) => {
   try {
-    const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
-    const cryptocurrencies: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets', userCurrency)
+    const cryptocurrencies: CoinGeckoCryptoMarketData[] = await fetchCryptos('/coins/markets')
     res.send({ cryptocurrencies })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
@@ -139,8 +143,19 @@ export const getCryptoByIdController = async (req: Request, res: Response) => {
   try {
     const id = req.params.id
     const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
+
+    const params = new URLSearchParams({
+      localization: 'false',
+      tickers: 'false',
+      market_data: 'true',
+      community_data: 'false',
+      developer_data: 'false',
+      sparkline: 'true',
+      vs_currency: userCurrency || 'usd',
+    })
+
     // TODO type this
-    const cryptocurrency = await fetchCryptos(`/coins/${id}`, userCurrency)
+    const cryptocurrency = await fetchCryptos(`/coins/${id}`, params)
     res.send({ cryptocurrency })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })
@@ -153,8 +168,13 @@ export const getCryptoPriceHistoryController = async (req: Request, res: Respons
     const { id } = req.params
     const period = req.query?.period
     const userCurrency = req.user ? await getUserCurrency(req.user.id) : null
+
+    const params = new URLSearchParams({
+      vs_currency: userCurrency || 'usd',
+    })
+
     // TODO type this
-    const cryptoHistory = await fetchCryptos(`/coins/${id}/market_chart?&days=${period}`, userCurrency)
+    const cryptoHistory = await fetchCryptos(`/coins/${id}/market_chart?&days=${period}`, params)
     res.send({ cryptoHistory })
   } catch (error) {
     if (error.code && error.message) res.status(error.code).send({ message: error.message })

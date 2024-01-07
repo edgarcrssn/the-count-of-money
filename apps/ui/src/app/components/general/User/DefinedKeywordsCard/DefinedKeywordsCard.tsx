@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styles from '../TrackedCryptocurrenciesCard/TrackedCryptocurrenciesCard.module.scss'
 import { Badge, Card, Divider, Empty, Skeleton, Tag } from 'antd'
 import { useMutation, useQuery, useQueryClient } from 'react-query'
@@ -20,10 +20,6 @@ export const DefinedKeywordsCard = ({ nickname, editable = false }: Props) => {
     queryKey: 'followedKeywords',
     queryFn: () => articleService.getUserFollowedKeywords(nickname),
   })
-
-  useEffect(() => {
-    followedKeywords.refetch()
-  }, [nickname, followedKeywords])
 
   const availableKeywords = useQuery({
     queryKey: 'availableKeywords',

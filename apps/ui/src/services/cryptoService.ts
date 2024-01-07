@@ -118,4 +118,16 @@ export const cryptoService = {
     }
     return await response.json()
   },
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  async getCryptoById(cryptoId: string): Promise<any> {
+    const response = await customFetch(`/cryptos/${cryptoId}`)
+
+    if (response.ok) {
+      const data = await response.json()
+      return data.cryptocurrency
+    }
+
+    throw new Error()
+  },
 }

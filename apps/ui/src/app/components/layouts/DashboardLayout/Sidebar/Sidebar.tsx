@@ -3,7 +3,6 @@ import styles from './Sidebar.module.scss'
 import {
   AreaChartOutlined,
   FileTextOutlined,
-  HomeOutlined,
   LeftCircleOutlined,
   LockOutlined,
   QuestionCircleOutlined,
@@ -31,7 +30,6 @@ export const Sidebar = () => {
     return storedCollapsed ? JSON.parse(storedCollapsed) : false
   })
 
-  const home = useRef<HTMLElement>(null)
   const cryptocurrencies = useRef<HTMLElement>(null)
   const articles = useRef<HTMLElement>(null)
   const myProfile = useRef<HTMLElement>(null)
@@ -39,11 +37,6 @@ export const Sidebar = () => {
   const [isTourOpen, setIsTourOpen] = useState<boolean>(false)
 
   const tourSteps: TourProps['steps'] = [
-    {
-      title: 'View the dashboard',
-      description: 'Explore combined cryptocurrency and article dashboards for comprehensive insights at a glance.',
-      target: () => home.current!.parentElement!,
-    },
     {
       title: 'View cryptocurrency prices',
       description: 'Track real-time cryptocurrency prices on a user-friendly page for informed market insights.',
@@ -71,21 +64,16 @@ export const Sidebar = () => {
   const menuItems: MenuItem[] = [
     {
       key: '1',
-      icon: <HomeOutlined ref={home} />,
-      label: <Link to="/">Home</Link>,
-    },
-    {
-      key: '2',
       icon: <AreaChartOutlined ref={cryptocurrencies} />,
       label: <Link to="/cryptocurrencies">Cryptocurrencies</Link>,
     },
     {
-      key: '3',
+      key: '2',
       icon: <FileTextOutlined ref={articles} />,
       label: <Link to="/articles">Articles</Link>,
     },
     {
-      key: '4',
+      key: '3',
       icon: <UserOutlined ref={myProfile} />,
       disabled: !currentUser,
       label: (
@@ -96,7 +84,7 @@ export const Sidebar = () => {
     },
     currentUser?.role === 'ADMIN'
       ? {
-          key: '5',
+          key: '4',
           icon: <LockOutlined />,
           label: <Link to="/admin">Admin</Link>,
         }
@@ -105,19 +93,19 @@ export const Sidebar = () => {
 
   const menuFooterItems: MenuItem[] = [
     {
-      key: '6',
+      key: '5',
       icon: currentTheme === Theme.LIGHT ? <MoonOutlined /> : <SunOutlined />,
       label: `${currentTheme === Theme.LIGHT ? 'Dark' : 'Light'} theme`,
       onClick: () => setCurrentTheme(currentTheme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT),
     },
     {
-      key: '7',
+      key: '6',
       icon: <QuestionCircleOutlined />,
       label: 'Help',
       onClick: () => setIsTourOpen(true),
     },
     {
-      key: '8',
+      key: '7',
       icon: <LeftCircleOutlined rotate={collapsed ? 180 : 0} />,
       label: collapsed ? 'Expand' : 'Collapse',
       onClick: () => setCollapsed(!collapsed),
@@ -125,11 +113,10 @@ export const Sidebar = () => {
   ]
 
   const getSelectedKeys = (): string[] => {
-    if (pathname === '/') return ['1']
-    if (pathname.startsWith('/cryptocurrencies')) return ['2']
-    if (pathname.startsWith('/articles')) return ['3']
-    if (pathname.startsWith(`/profile/${currentUser?.nickname}`)) return ['4']
-    if (pathname.startsWith('/admin')) return ['5']
+    if (pathname.startsWith('/cryptocurrencies')) return ['1']
+    if (pathname.startsWith('/articles')) return ['2']
+    if (pathname.startsWith(`/profile/${currentUser?.nickname}`)) return ['3']
+    if (pathname.startsWith('/admin')) return ['4']
 
     return []
   }

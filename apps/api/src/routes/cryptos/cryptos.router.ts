@@ -32,7 +32,7 @@ router.post('/:id/track', authMiddleware, trackCryptoController)
 router.delete('/:id/track', authMiddleware, untrackCryptoController)
 
 router.get('/', getCryptosController)
-router.get('/:id', authMiddleware, getCryptoByIdController)
+router.get('/:id', getCryptoByIdController)
 router.get('/:id/history/:period', authMiddleware, getCryptoPriceHistoryController)
 
 export default router

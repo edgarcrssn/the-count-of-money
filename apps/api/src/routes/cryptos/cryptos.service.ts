@@ -131,23 +131,20 @@ export const manageCryptoTracking = async (userId: number, cryptoId: string, unt
   }
 }
 
-export const fetchCryptos = async (endpoint: string, currency?: string) => {
+export const fetchCryptos = async (endpoint: string, params?: URLSearchParams) => {
   try {
-    const response = await axios.get(`${process.env.COINGECKO_API_URL}${endpoint}`, {
+    const response = await axios.get(`${process.env.COINGECKO_API_URL}${endpoint}${params ? `?${params}` : ''}`, {
       headers: {
         Accept: 'application/json',
         'Accept-Encoding': 'deflate, gzip',
         x_cg_demo_api_key: process.env.COINGECKO_API_KEY,
-      },
-      params: {
-        vs_currency: currency?.toLowerCase() || 'eur',
       },
     })
     return response.data
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('An error occurred while fetching data from CoinGecko API: ', error)
-    return []
+    throw error
   }
 }
 

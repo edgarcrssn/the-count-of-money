@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from './UserProfileHeader.module.scss'
 import { CalendarOutlined } from '@ant-design/icons'
 import { Avatar, Typography } from 'antd'
@@ -6,6 +6,7 @@ import { User } from '@prisma/client'
 import { useMutation } from 'react-query'
 import { userService } from '../../../../../services/userService'
 import { toast } from 'sonner'
+import { CurrentUserContext } from '../../../../context/CurrentUser/CurrentUserContext'
 
 type Props = {
   user: User
@@ -13,6 +14,8 @@ type Props = {
 }
 
 export const UserProfileHeader = ({ user, editable }: Props) => {
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext)
+
   const [firstName, setFirstName] = useState(user.first_name)
   const [lastName, setLastName] = useState(user.last_name)
 
@@ -26,6 +29,8 @@ export const UserProfileHeader = ({ user, editable }: Props) => {
   const editMyProfile = useMutation(userService.updateMyProfile, {
     onSuccess: ({ updatedUser }) => {
       toast.success(`Your profile has been updated successfully`)
+      if (currentUser)
+        setCurrentUser({ ...currentUser, first_name: updatedUser.first_name, last_name: updatedUser.last_name })
       setFirstName(updatedUser.first_name)
       setLastName(updatedUser.last_name)
     },

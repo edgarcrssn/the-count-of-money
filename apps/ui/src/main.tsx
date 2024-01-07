@@ -15,6 +15,7 @@ import { ThemeProvider } from './app/context/Theme/ThemeProvider'
 import NotFound from './app/pages/not-found/not-found'
 import Admin from './app/pages/admin/admin'
 import { CurrentUserProvider } from './app/context/CurrentUser/CurrentUserProvider'
+import { Cryptocurrency } from './app/pages/cryptocurrencies/cryptocurrency/cryptocurrency'
 
 const App = () => {
   const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const App = () => {
         {
           path: 'cryptocurrencies',
           element: <Cryptocurrencies />,
+        },
+        {
+          path: 'cryptocurrencies/:cryptocurrency',
+          element: <Cryptocurrency />,
         },
         {
           path: 'articles',
